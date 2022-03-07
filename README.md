@@ -1,2 +1,2 @@
 # myprolog
-A Prolg (the langage) implementation for educationnal purposes
+A Prolog (the langage) implementation for educationnal purposes
