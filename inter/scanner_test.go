@@ -12,7 +12,17 @@ func TestScanner101(t *testing.T) {
 	for tk := tzr.Next(); tk != ""; tk = tzr.Next() {
 		fmt.Printf("\t>%s<\n", tk)
 	}
+}
 
+func TestScannerFile(t *testing.T) {
+	fn := "scanner.go"
+	tzr := NewTokenizerFile(fn)
+	tk := tzr.Next()
+	fmt.Printf("Fisrt token from file %s is : %s\n", fn, tk)
+	if tk != "package" {
+		fmt.Println("It should have been 'package'")
+		t.FailNow()
+	}
 }
 func TestScanner(t *testing.T) {
 
