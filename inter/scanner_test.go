@@ -6,7 +6,10 @@ import (
 )
 
 func TestScanner101(t *testing.T) {
-	src := "hello world // comment \n next sentence 2+3; 2x /* comment \n kjh*/ x2"
+	src := `
+	hello world // comment 
+	next sentence 2+3; 2x /* comment 
+	kjh multiline */ x2 <= :-  "double 	quoted" `
 	fmt.Printf("%q\n", src)
 	tzr := NewTokenizerString(src)
 	for tk := tzr.Next(); tk != ""; tk = tzr.Next() {
@@ -39,6 +42,14 @@ func TestScanner(t *testing.T) {
 		{"1+2+3// comment", []string{"1", "+", "2", "+", "3"}},
 		{"// comment\n1+2+3// comment", []string{"1", "+", "2", "+", "3"}},
 		{"1+/* comment */2+3// comment", []string{"1", "+", "2", "+", "3"}},
+		{"1<=2", []string{"1", "<", "=", "2"}},
+		{"1<=2", []string{"1", "<", "=", "2"}},
+		{"1 <= 2", []string{"1", "<", "=", "2"}},
+		{"1:-2", []string{"1", ":", "-", "2"}},
+		{"1: -2", []string{"1", ":", "-", "2"}},
+		{"1 :-2", []string{"1", ":", "-", "2"}},
+		{"1:- 2", []string{"1", ":", "-", "2"}},
+		{" un \"deux trois   \" quatre", []string{"un", "\"deux trois   \"", "quatre"}},
 	}
 
 	// Loop table and compare results to expectation.

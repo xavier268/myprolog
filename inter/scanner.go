@@ -10,6 +10,7 @@ import (
 
 // Tokenizer scanns the token from an input stream.
 // Token follow the go syntax, including comments.
+// Combined tokens, such as :- or <= appear as two separate tokens.
 type Tokenizer interface {
 	Next() string // Get next token, empty string on EOF
 }
@@ -29,6 +30,7 @@ func (ps *pscanner) Next() string {
 // NewTokenizer from io.Reader
 func NewTokenizer(input io.Reader) Tokenizer {
 	ps := new(pscanner)
+	//ps.s.Mode = scanner.GoTokens
 	ps.s.Init(input)
 	ps.s.Filename = "io.Reader"
 	return ps
@@ -37,6 +39,7 @@ func NewTokenizer(input io.Reader) Tokenizer {
 // NewTokenizerString from srource string
 func NewTokenizerString(src string) Tokenizer {
 	ps := new(pscanner)
+	// ps.s.Mode = scanner.GoTokens
 	ps.s.Init(strings.NewReader(src))
 	ps.s.Filename = "string"
 	return ps
@@ -45,6 +48,7 @@ func NewTokenizerString(src string) Tokenizer {
 // NewTokenizerFile from file name
 func NewTokenizerFile(fileName string) Tokenizer {
 	ps := new(pscanner)
+	//ps.s.Mode = scanner.GoTokens
 	f, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
