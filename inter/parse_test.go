@@ -23,9 +23,20 @@ func TestParseVisual(t *testing.T) {
 	fmt.Println(root.StringPretty())
 	root.dump()
 	pi.dumpSymt()
+	fmt.Println("Testing if root is constant  ...")
+	if root.isConstant() {
+		pi.dumpSymt()
+		fmt.Println("root IS constant/immutable")
+	} else {
+		pi.dumpSymt()
+		fmt.Println("root IS NOT constant/immutable")
+	}
+	fmt.Println("Proactively marking constant for root ...")
+	root.markConstant()
+	pi.dumpSymt()
 }
 
-func TestParseTable(t *testing.T) {
+func TestParse0Table(t *testing.T) {
 
 	tab := map[string]struct { // map sources to ...
 		ok  bool   // true if no error
@@ -67,7 +78,7 @@ func TestParseTable(t *testing.T) {
 	for src, got := range tab {
 		tzr := NewTokenizerString(src)
 		root := pi.nodeFor("got")
-		err := pi.Parse(tzr, root)
+		err := pi.parse0(tzr, root, 0, new(int))
 		if err != nil {
 			fmt.Printf("info : %20s -> %v\n", src, err)
 		}

@@ -5,7 +5,8 @@ import "fmt"
 // Inter contains the global interpreter context.
 type Inter struct {
 	// symt maps symbols of variables and numbers to their (unique) pointer.
-	// We can reuse the same object, because variables and numbers cannot have children ; they cannot be compound objects.
+	// We can reuse the same object, because variables and numbers CANNOT HAVE CHILDREN ; they cannot be compound objects.
+	// This is enforced by the parser.
 	symt map[string]*Node
 }
 
@@ -18,7 +19,7 @@ func NewInter() *Inter {
 }
 
 // nodeFor provides a node to represent the given text.
-// If a number or a variable (having no children), then the same node is always returned.
+// If a number or a variable, then the same node is always returned.
 // Otherwise, a new node is created.
 func (i *Inter) nodeFor(text string) *Node {
 	if text == "" {
@@ -27,10 +28,10 @@ func (i *Inter) nodeFor(text string) *Node {
 	n := i.symt[text]
 	if n == nil { // not yet in symbol table
 		n = &Node{name: text}
-		if isVariable(text) || isNumber(text) { // should it be in symbol table ?
-			n.constant = true
+		if isVariable(text) || isNumber(text) {
 			i.symt[text] = n
 		}
+
 	}
 	return n
 }
