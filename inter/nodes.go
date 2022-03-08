@@ -20,25 +20,23 @@ func (n *Node) lastArg() *Node {
 	return n.args[len(n.args)-1]
 }
 
-// printPrefix used to pint node trees.
-const printPrefix = "  "
-
-// StringIndent provides a human readeable indented form for the object.
-func (n *Node) StringIndent() string {
+// StringPretty provides an idented human readeable string
+func (n *Node) StringPretty() string {
 	return n.stringPrefix("")
 }
 
 // stringPrefix prints node with the given prefix.
 func (n *Node) stringPrefix(pfx string) string {
+	const inc = "   "
 	if len(n.args) == 0 {
 		return n.name + " "
 	} else {
 		var b strings.Builder
-		fmt.Fprintf(&b, "%s (\n%s ", n.name, pfx)
+		fmt.Fprintf(&b, "%s (\n%s", n.name, pfx+inc)
 		for _, nn := range n.args {
-			fmt.Fprintf(&b, "%s ", nn.stringPrefix(pfx+printPrefix))
+			fmt.Fprintf(&b, "%s", nn.stringPrefix(pfx+inc))
 		}
-		fmt.Fprintf(&b, "\n%s ) ", pfx)
+		fmt.Fprintf(&b, "\n%s) ", pfx)
 		return b.String()
 	}
 }

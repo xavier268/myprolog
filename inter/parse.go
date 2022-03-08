@@ -31,7 +31,7 @@ func isNumber(name string) bool {
 }
 
 // Parse tokens, adding them as children of the provided node.
-// No syntax checking, no postfix operators.
+// Limited syntax checking, no postfix operators.
 func (i *Inter) Parse(tzr Tokenizer, root *Node) error {
 	return i.parse(tzr, root, 0, new(int))
 }
@@ -45,6 +45,12 @@ func (i *Inter) parse(tzr Tokenizer, root *Node, level int, par *int) error {
 			n := root.lastArg()
 			if n == nil {
 				return fmt.Errorf("cannot parse an expression starting with '('")
+			}
+			if len(n.args) != 0 {
+				return fmt.Errorf("a compound object cannot be a functor before parenthesis")
+			}
+			if isVariable(n.name) {
+				return fmt.Errorf("a Variable cannot be a functor before parenthesis")
 			}
 			err := i.parse(tzr, n, level+1, par)
 			if err != nil {

@@ -7,7 +7,7 @@ import (
 
 func TestParseVisual(t *testing.T) {
 
-	src := `f(1 555 X Y gggggg(deux f ( Z 666 _ ) 5 _ 5)`
+	src := `f(1 555 X Y gggggg(deux f ( Z 666 _ ) 5 _ 5))`
 	fmt.Println("__Source___")
 	fmt.Println(src)
 	pi := NewInter()
@@ -20,7 +20,7 @@ func TestParseVisual(t *testing.T) {
 	fmt.Println("__Plain____")
 	fmt.Println(root)
 	fmt.Println("__Indent___")
-	fmt.Println(root.StringIndent())
+	fmt.Println(root.StringPretty())
 	root.dump()
 	pi.dumpSymt()
 }
@@ -37,13 +37,15 @@ func TestParseTable(t *testing.T) {
 		"X2": {true, "X2"},
 
 		// parenthesis
-		"aa()":       {true, "aa"},
-		"aa(":        {false, "aa"},
-		"()":         {false, ""},
-		"aa(())":     {false, "aa"},
-		"aa)":        {false, "aa"},
-		"aa(f(f)))":  {false, "aa ( f ( f ) )"},
-		"aa(f)(f)))": {false, "aa ( f f )"},
+		"aa()":        {true, "aa"},
+		"aa(":         {false, "aa"},
+		"()":          {false, ""},
+		"aa(())":      {false, "aa"},
+		"aa)":         {false, "aa"},
+		"aa(f(f)))":   {false, "aa ( f ( f ) )"},
+		"aa(f)(f)))":  {false, "aa ( f )"},
+		"aa(bb)(cc)":  {false, "aa ( bb )"},
+		"aa(f()aa)()": {false, "aa ( f aa )"},
 
 		"a,b":  {true, "a b"},
 		"a,,b": {true, "a b"},
@@ -56,7 +58,7 @@ func TestParseTable(t *testing.T) {
 		root := pi.nodeFor("got")
 		err := pi.Parse(tzr, root)
 		if err != nil {
-			fmt.Printf("info : %s -> %v\n", src, err)
+			fmt.Printf("info : %20s -> %v\n", src, err)
 		}
 		if (err == nil) != got.ok {
 			t.Fatalf("unexpected error : %v,\nfor test : %s -> %v", err, src, tab[src])

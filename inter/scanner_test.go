@@ -21,7 +21,7 @@ func TestScannerFile(t *testing.T) {
 	fn := "scanner.go"
 	tzr := NewTokenizerFile(fn)
 	tk := tzr.Next()
-	fmt.Printf("Fisrt token from file %s is : %s\n", fn, tk)
+	fmt.Printf("First token from file %s is : %s\n", fn, tk)
 	if tk != "package" {
 		fmt.Println("It should have been 'package'")
 		t.FailNow()
