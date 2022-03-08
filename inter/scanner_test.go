@@ -5,7 +5,7 @@ import (
 	"testing"
 )
 
-func TestScanner101(t *testing.T) {
+func TestScannerVisual(t *testing.T) {
 	src := `
 	hello world // comment 
 	next sentence 2+3; 2x /* comment 
@@ -27,7 +27,7 @@ func TestScannerFile(t *testing.T) {
 		t.FailNow()
 	}
 }
-func TestScanner(t *testing.T) {
+func TestScannerTable(t *testing.T) {
 
 	// Test definition
 	table := [...]struct {

@@ -1,6 +1,8 @@
 package inter
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type buildin struct { // descriptor for buildin symbol or operator
 	// arity of the symbol, < 0 means it can have any arity
@@ -31,7 +33,6 @@ func isNumber(name string) bool {
 }
 
 // Parse tokens, adding them as children of the provided node.
-// Limited syntax checking, no postfix operators.
 func (i *Inter) Parse(tzr Tokenizer, root *Node) error {
 	return i.parse(tzr, root, 0, new(int))
 }
@@ -50,7 +51,10 @@ func (i *Inter) parse(tzr Tokenizer, root *Node, level int, par *int) error {
 				return fmt.Errorf("a compound object cannot be a functor before parenthesis")
 			}
 			if isVariable(n.name) {
-				return fmt.Errorf("a Variable cannot be a functor before parenthesis")
+				return fmt.Errorf("the Variable %s cannot be a functor before parenthesis", n.name)
+			}
+			if isNumber(n.name) {
+				return fmt.Errorf("the Number %s cannot be a functor before parenthesis", n.name)
 			}
 			err := i.parse(tzr, n, level+1, par)
 			if err != nil {

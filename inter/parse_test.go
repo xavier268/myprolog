@@ -32,13 +32,24 @@ func TestParseTable(t *testing.T) {
 		exp string // non idented value of parsed output
 	}{
 		// basic atoms
-		"aa": {true, "aa"},
-		"22": {true, "22"},
-		"X2": {true, "X2"},
+		"aa":       {true, "aa"},
+		"22":       {true, "22"},
+		"X2":       {true, "X2"},
+		"+":        {true, "+"},
+		":-":       {true, ": -"},
+		"\"a b \"": {true, "\"a b \""},
 
-		// parenthesis
+		// parenthesis - simple
 		"aa()":        {true, "aa"},
+		"X()":         {false, "X"},
+		"2()":         {false, "2"},
 		"aa(":         {false, "aa"},
+		"+()":         {true, "+"},
+		"+(aa)":       {true, "+ ( aa )"},
+		"\"a b \"()":  {true, "\"a b \""},
+		"\"a b \"(c)": {true, "\"a b \" ( c )"},
+
+		// parenthesis - complex
 		"()":          {false, ""},
 		"aa(())":      {false, "aa"},
 		"aa)":         {false, "aa"},
