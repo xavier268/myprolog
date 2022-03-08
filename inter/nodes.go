@@ -76,17 +76,39 @@ func (n *Node) StringType() string {
 	return b
 }
 
-// dump display detailled structure of tree.
-func (n *Node) dump() {
-
-	fmt.Printf("%p  %s %10s : ", n, n.StringType(), n.name)
-
-	for _, s := range n.args {
-		fmt.Printf("%s ", s.name)
+// dumpTree display detailled structure of tree.
+func (n *Node) DumpTree(withHeader bool) {
+	if withHeader {
+		dumpHeader()
 	}
-	fmt.Println()
+	var dedup map[*Node]bool = nil
+	if len(n.args) != 0 {
+		dedup = make(map[*Node]bool)
+	}
+	n.dumpTree(dedup)
+}
+
+func dumpHeader() {
+	fmt.Println("pointer     flags       name / arity :  args ....")
+}
+
+// using dedup to deduplicate nodes.
+func (n *Node) dumpTree(dedup map[*Node]bool) {
+
+	if dedup == nil || !dedup[n] { // no dedup or not alredy seen ?
+		if dedup != nil {
+			dedup[n] = true // mark for next time
+		}
+		// dump node
+		fmt.Printf("%p  %s %10s / %5d : ", n, n.StringType(), n.name, len(n.args))
+		for _, s := range n.args {
+			fmt.Printf("%s ", s.name)
+		}
+		fmt.Println()
+	}
+	// process childs
 	for _, a := range n.args {
-		a.dump()
+		a.dumpTree(dedup)
 	}
 }
 

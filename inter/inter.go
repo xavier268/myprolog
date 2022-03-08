@@ -39,10 +39,11 @@ func (i *Inter) nodeFor(text string) *Node {
 // dumpSymt dumps symbol table.
 func (i *Inter) dumpSymt() {
 
-	fmt.Println("\n   Symbol       pointer   const?    name  :  args ....")
+	fmt.Print("\n   Symbol       ")
+	dumpHeader()
 	for s, n := range i.symt {
 		fmt.Printf("%10s --> ", s)
-		n.dump()
+		n.DumpTree(false) // no header
 	}
 
 }

@@ -21,7 +21,7 @@ func TestParseVisual(t *testing.T) {
 	fmt.Println(root)
 	fmt.Println("__Indent___")
 	fmt.Println(root.StringPretty())
-	root.dump()
+	root.DumpTree(true)
 	pi.dumpSymt()
 	fmt.Println("Testing if root is constant  ...")
 	if root.isConstant() {
