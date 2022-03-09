@@ -307,6 +307,7 @@ func (in *Inter) preProcList(n *Node) error {
 
 			// reuse the open node
 			list := n.args[open]
+			list.name = "dot"
 			list.args = []*Node{in.nodeFor("nil"), in.nodeFor("nil")}
 
 			for p := open + 1; n.args[p].name != "]"; p++ { // iterate on the inner list

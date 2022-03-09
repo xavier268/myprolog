@@ -36,10 +36,14 @@ Rules can have the following forms :
 
 Lists can take the following forms :
 
-* dot (a dot (b dot (c dot (d nil)))) *//This is the canonical form. dot has arity of 2 exactly.*
-* [ a b c d ] *// This is the bracket form.*
-* [ a | RestOfTheList ] or [ a | [ b c d ]]*// This is the bar form*
-* [  ] *// Same as nil, its canonical form*
+* dot (a dot (b dot (c dot (nil nil)))) *//This is the canonical form. dot has arity of 2 exactly.*
+* [ a b c ] *// This is the bracket form of the same list*
+* [ a | [ b c ]]*// This is the bar form of the same*
+* [  ] *// Not the same as nil, its canonical form is dot(nil, nil)*
+
+Note taht the bar form can produce object that cannot be represented as lists :
+
+* [ a | b ] *// dot (a b)
 
 Imbrication of lists is allowed :
 

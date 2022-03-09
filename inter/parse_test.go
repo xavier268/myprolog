@@ -188,6 +188,7 @@ func TestPreProcList(t *testing.T) {
 		ok  bool   // true if no error
 		exp string // non idented value of parsed output
 	}{
+
 		// canonical
 		"a":        {true, "a"},           // ok
 		"nil":      {true, "nil"},         // ok
@@ -202,10 +203,15 @@ func TestPreProcList(t *testing.T) {
 		"[a|b]": {true, "dot ( a b )"}, // ok
 
 		// bracket lists
-
+		"[]":      {true, "dot ( nil nil )"},                     // ok
 		"[a]":     {true, "dot ( a dot ( nil nil ) )"},           // ok
 		"[ a b ]": {true, "dot ( a dot ( b dot ( nil nil ) ) )"}, // ok
-		"[]":      {true, "dot ( nil nil )"},                     // ok
+
+		// mixed
+		"[a(X,y)]":      {true, "dot ( a ( X y ) dot ( nil nil ) )"},             // ok
+		"[a(X,y)|b(T)]": {true, "dot ( a ( X y ) b ( T ) )"},                     // ok
+		"[a|[b c]]":     {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"}, // ok
+		"[a b c]":       {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"}, // ok
 
 	}
 	pi := NewInter()
