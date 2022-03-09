@@ -12,6 +12,8 @@ type Inter struct {
 	symt map[string]*Node
 	// Uinique id, used to generate unique variable names.
 	uid int
+	// the rules node is names 'rules' and contains the rules ;-)
+	rules *Node
 }
 
 func NewInter() *Inter {
@@ -48,13 +50,31 @@ func (i *Inter) nodeFor(text string) *Node {
 	return n
 }
 
-// dumpSymt dumps symbol table.
-func (i *Inter) dumpSymt() {
+func (in *Inter) Dump() {
+	in.dumpRules()
+	in.dumpSymt()
+}
 
-	fmt.Print("\n   Symbol       ")
+// dumpSymt dumps symbol table.
+func (in *Inter) dumpSymt() {
+
+	fmt.Println("\n------------ Symbole table --------------")
+	fmt.Print("   Symbol       ")
 	dumpHeader()
-	for s, n := range i.symt {
+	for s, n := range in.symt {
 		fmt.Printf("%10s --> ", s)
 		n.DumpTree(false) // no header
 	}
+	fmt.Println("-----------------------------------------")
+
+}
+
+// dump the rules loaded
+func (in *Inter) dumpRules() {
+	fmt.Printf("\n --------------- %s ------------\n", in.rules.name)
+	for i, r := range in.rules.args {
+		fmt.Printf("%4d: ", i)
+		fmt.Println(r.String())
+	}
+	fmt.Println("-----------------------------------")
 }

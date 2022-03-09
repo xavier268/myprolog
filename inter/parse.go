@@ -21,8 +21,26 @@ func isFunctor(name string) bool {
 	return name != "" && !isVariable(name) && !isNumber(name) && !strings.Contains("()_[]|.", name) && name != "nil"
 }
 
-func (i *Inter) Parse(tzr Tokenizer, root *Node) error {
-	return i.parse0(tzr, root, new(int))
+// ParseRules will load the rules (or additionnal rules) to the rules node.
+// New rules are appended to the previous ones.
+func (in *Inter) ParseRules(tzr Tokenizer) error {
+	if in.rules == nil {
+		in.rules = in.nodeFor("rules")
+	}
+	err := in.parse0(tzr, in.rules, new(int))
+	if err != nil {
+		return err
+	}
+	err = in.preProcList(in.rules)
+	if err != nil {
+		return err
+	}
+	err = in.preProcRule(in.rules)
+	if err != nil {
+		return err
+	}
+	in.rules.markConstant()
+	return nil
 }
 
 // Parse tokens, adding them as children of the provided node.
@@ -164,12 +182,16 @@ func (in *Inter) preProcRule(n *Node) error {
 				rperiod = i
 				break // do not update after !
 			}
+			if rtilda != MaxInt && n.args[i].name == "~" {
+				return fmt.Errorf("there can only be one ~ per valid rule. Did you forget a period ?")
+			}
 			if i < rtilda && i <= rstart+1 && n.args[i].name == "~" { // tilda can only appear prefix or postfix.
 				rtilda = i
 			}
 			if i < rsemi && rsemi > rtilda && n.args[i].name == ";" { // tilda required before semi
 				rsemi = i
 			}
+
 		}
 
 		//fmt.Printf("DEBUG : $=%d/%d, .=%d, ~=%d, ;=%d\n", rstart, len(n.args), rperiod, rtilda, rsemi)

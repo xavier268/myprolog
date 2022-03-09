@@ -5,17 +5,27 @@ import (
 	"testing"
 )
 
-func TestScannerVisual(t *testing.T) {
-	t.Skip()
+func ExampleNewTokenizerString() {
 	src := `
-	hello world // comment 
-	next sentence 2+3; 2x /* comment 
-	kjh multiline */ x2 <= :-  "double 	quoted" `
-	fmt.Printf("%q\n", src)
+	hello // comment 
+	2+3;/* comment 
+	kjh multiline */ x2 <= 
+	"doubled quoted" `
 	tzr := NewTokenizerString(src)
 	for tk := tzr.Next(); tk != ""; tk = tzr.Next() {
-		fmt.Printf("\t>%s<\n", tk)
+		fmt.Printf(">%s<\n", tk)
 	}
+	// Output:
+	// >hello<
+	// >2<
+	// >+<
+	// >3<
+	// >;<
+	// >x2<
+	// ><<
+	// >=<
+	// >"doubled quoted"<
+
 }
 
 func TestScannerFile(t *testing.T) {

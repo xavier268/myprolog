@@ -41,7 +41,8 @@ Lists can take the following forms :
 * [ a | [ b c ]]*// This is the bar form of the same*
 * [  ] *// Not the same as nil, its canonical form is dot(nil, nil)*
 
-Note taht the bar form can produce object that cannot be represented as lists :
+Note that the bar form can produce object that cannot be represented as lists. 
+Lists are **always** terminated with dot(nil,nil).
 
 * [ a | b ] *// dot (a b)
 

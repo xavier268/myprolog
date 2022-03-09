@@ -5,15 +5,15 @@ import (
 	"testing"
 )
 
-func TestParseVisual(t *testing.T) {
+func TestParse0Visual(t *testing.T) {
 	//t.Skip()
-	src := `f(1 555 X Y gggggg(deux f ( Z 666 _ ) 5 _ 5))`
+	src := `a(b(1+2)c[5,6])`
 	fmt.Println("__Source___")
 	fmt.Println(src)
 	pi := NewInter()
 	tzr := NewTokenizerString(src)
 	root := pi.nodeFor("parsed")
-	err := pi.Parse(tzr, root)
+	err := pi.parse0(tzr, root, new(int))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -208,10 +208,12 @@ func TestPreProcList(t *testing.T) {
 		"[ a b ]": {true, "dot ( a dot ( b dot ( nil nil ) ) )"}, // ok
 
 		// mixed
-		"[a(X,y)]":      {true, "dot ( a ( X y ) dot ( nil nil ) )"},             // ok
-		"[a(X,y)|b(T)]": {true, "dot ( a ( X y ) b ( T ) )"},                     // ok
-		"[a|[b c]]":     {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"}, // ok
-		"[a b c]":       {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"}, // ok
+		"[a(X,y)]":      {true, "dot ( a ( X y ) dot ( nil nil ) )"},                                     // ok
+		"[a(X,y)|b(T)]": {true, "dot ( a ( X y ) b ( T ) )"},                                             // ok
+		"[a|[b c]]":     {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"},                         // ok
+		"[a b c]":       {true, "dot ( a dot ( b dot ( c dot ( nil nil ) ) ) )"},                         // ok
+		"[a [b] c]":     {true, "dot ( a dot ( dot ( b dot ( nil nil ) ) dot ( c dot ( nil nil ) ) ) )"}, // ok
+		"[a [b c]]":     {true, "dot ( a dot ( dot ( b dot ( c dot ( nil nil ) ) ) dot ( nil nil ) ) )"}, // ok
 
 	}
 	pi := NewInter()
