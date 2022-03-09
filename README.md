@@ -38,9 +38,9 @@ Lists can take the following forms :
 
 * dot (a dot (b dot (c dot (d nil)))) *//This is the canonical form. dot has arity of 2 exactly.*
 * [ a b c d ] *// This is the bracket form.*
-* a | RestOfTheList *// This is the bar form*
-* [] *// Same as nil, its canonical form*
+* [ a | RestOfTheList ] or [ a | [ b c d ]]*// This is the bar form*
+* [  ] *// Same as nil, its canonical form*
 
 Imbrication of lists is allowed :
 
-* X | [ a [ b | c ] [ e f ]]
+* [X | [ a [ b | c ] [ e f ]]]

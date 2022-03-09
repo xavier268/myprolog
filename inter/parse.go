@@ -247,52 +247,108 @@ func (in *Inter) preProcRule(n *Node) error {
 	return nil
 }
 
-// preProcBar recursively pre-processes bar-formed lists, transforming non canonical forms into canonical forms.
+// preProcList recursively pre-processes bracket lists, transforming non canonical forms into canonical forms.
 // The canonical form for list of a,b and c uses the dot operator, as in :
 // dot(a dot(b dot(c)))//
-// The bar form is :
-// a | RestOfList or a | nil
-// The | operator is just the postfix version of dot/2.
-func (in *Inter) preProcBar(n *Node) error {
+// The bracket form is :
+// [ a b c ] or [ a | [ b c ]]
+func (in *Inter) preProcList(n *Node) error {
 
 	if n == nil || len(n.args) == 0 {
-		return nil // no child, done.
+		return nil // nothing to do
 	}
-	//n has children ...
+	// Now, n has children.
 	if !isFunctor(n.name) {
-		return fmt.Errorf("%s is not a valid functor", n.name)
+		return fmt.Errorf("%s cannot have children, it is not a valid functor", n.name)
 	}
-	i := 0
+
+	// while loop until all lists are handled
 	for {
-		// manual loop on n.args
-		if i >= len(n.args) {
-			break
+		// find latest open
+		open, close, bar := -1, -1, -1
+		for i, a := range n.args {
+			if a.name == "[" {
+				open = i
+			}
+			if open < 0 && a.name == "]" {
+				return fmt.Errorf("missing opening bracket before closing")
+			}
+			if open < 0 && a.name == "|" {
+				return fmt.Errorf("the | symbol must be enclosed in brackets")
+			}
+		}
+		if open < 0 {
+			break // no more open, and no hanging close or bar.
+		}
+		// find earliest close and bar AFTER open
+		for i := open; i < len(n.args); i++ {
+			a := n.args[i]
+			if a.name == "|" {
+				if bar < 0 {
+					bar = i
+				} else {
+					return fmt.Errorf("illegal multiple | in the same bracket list")
+				}
+			}
+			if a.name == "]" && close < 0 {
+				close = i
+				break
+			}
+		}
+		if close < 0 {
+			return fmt.Errorf("missing closing bracket")
+		}
+		if bar > close {
+			bar = -1
 		}
 
-		// recurse lower level
-		err := in.preProcBar(n.args[i])
+		// now, open, close and bar are valid and consitent.
+		if bar < 0 { // standard bracket list, [ a b c ] with no bar to worry about
+
+			// reuse the open node
+			list := n.args[open]
+			list.args = []*Node{in.nodeFor("nil"), in.nodeFor("nil")}
+
+			for p := open + 1; n.args[p].name != "]"; p++ { // iterate on the inner list
+				nn := in.nodeFor("dot")
+				nn.args = []*Node{in.nodeFor("nil"), in.nodeFor("nil")}
+				list.args = []*Node{n.args[p], nn}
+				list = list.args[1]
+			}
+
+			// cleanup - suppressing n.args nodes from open+1 included to close included.
+			if close+1 < len(n.args) {
+				n.args = append(n.args[:open+1], n.args[close+1:]...)
+			} else {
+				n.args = n.args[:open+1]
+			}
+		}
+
+		if bar > 0 { // bracket list in the form [ a | b ]
+			// check syntax
+			if bar-open != 2 || close-bar != 2 {
+				return fmt.Errorf("wrong number of arguments for the [x|y] operator : %s %s %s", n.args[bar-1].name, "|", n.args[bar+1].name)
+			}
+			// reuse the open node
+			n.args[open].name = "dot"
+			n.args[open].args = []*Node{n.args[open+1], n.args[open+3]}
+			// cleanup : suppress from open excluded to close included
+			if close+1 < len(n.args) {
+				n.args = append(n.args[:open+1], n.args[close+1:]...)
+			} else {
+				n.args = n.args[:open+1]
+			}
+		}
+		// go search the next list !
+	}
+
+	// now, recurse on children ...
+	for _, a := range n.args {
+		err := in.preProcList(a)
 		if err != nil {
 			return err
 		}
-
-		if n.args[i].name == "|" {
-			if i-1 >= 0 && i+1 <= len(n.args)-1 { // do we have a child before and after ?
-				n.args[i].name = "dot"                             // reuse | node as dot node
-				n.args[i].args = []*Node{n.args[i-1], n.args[i+1]} // copy children
-				// cleanup
-				n.args[i-1], n.args[i] = n.args[i], n.args[i-1] // swap to prefix
-				if i+2 < len(n.args) {
-					n.args = append(n.args[:i], n.args[i+2:]...)
-				} else {
-					n.args = n.args[:i]
-				}
-				// no need to increment. i is now pointing on the next node already.
-				continue
-			}
-			// no child before and after ...
-			return fmt.Errorf("the | operator should have exactly 2 postfix arguments")
-		}
-		i++
 	}
+
 	return nil
 }

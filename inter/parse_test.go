@@ -183,20 +183,29 @@ func TestFunctor(t *testing.T) {
 
 }
 
-func TestPreProcBar(t *testing.T) {
+func TestPreProcList(t *testing.T) {
 	tab := map[string]struct { // map sources to ...
 		ok  bool   // true if no error
 		exp string // non idented value of parsed output
 	}{
 		// canonical
-		"a":         {true, "a"},                     // ok
-		"nil":       {true, "nil"},                   // ok
-		"nil()":     {false, "nil"},                  // ok
-		"nil(a)":    {false, "nil"},                  // nok, check on nil as functor !
-		"dot(a,b)":  {true, "dot ( a b )"},           // ok
-		"a | b":     {true, "dot ( a b )"},           // ok
-		"a | nil":   {true, "dot ( a nil )"},         // ok
-		"a | b | c": {true, "dot ( dot ( a b ) c )"}, // ok - beware of the order !! Not the same as [ a b c ]
+		"a":        {true, "a"},           // ok
+		"nil":      {true, "nil"},         // ok
+		"nil()":    {false, "nil"},        // ok
+		"nil(a)":   {false, "nil"},        // nok, check on nil as functor !
+		"dot(a,b)": {true, "dot ( a b )"}, // ok
+
+		// bar lists
+		"[|]":   {false, "[ | ]"},      // nok
+		"[a|]":  {false, "[ a | ]"},    // nok
+		"[|b]":  {false, "[ | b ]"},    // nok
+		"[a|b]": {true, "dot ( a b )"}, // ok
+
+		// bracket lists
+
+		"[a]":     {true, "dot ( a dot ( nil nil ) )"},           // ok
+		"[ a b ]": {true, "dot ( a dot ( b dot ( nil nil ) ) )"}, // ok
+		"[]":      {true, "dot ( nil nil )"},                     // ok
 
 	}
 	pi := NewInter()
@@ -205,8 +214,8 @@ func TestPreProcBar(t *testing.T) {
 		root := pi.nodeFor("got")
 		err := pi.parse0(tzr, root, new(int))
 		if err == nil {
-			// no need to preProcBar if previous error !
-			err = pi.preProcBar(root)
+			// no need to preProcBar if already previous error !
+			err = pi.preProcList(root)
 		}
 		if err != nil {
 			fmt.Printf("info : %20s -> %v\n", src, err)

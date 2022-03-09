@@ -37,6 +37,7 @@ func TestScannerTable(t *testing.T) {
 	}{
 		{"Hello world", []string{"Hello", "world"}},
 		{"nil[]", []string{"nil", "[", "]"}},
+		{"[a b]", []string{"[", "a", "b", "]"}},
 		{"Hello \n   \nworld\n", []string{"Hello", "world"}},
 		{"\nHello \n   \nworld\n", []string{"Hello", "world"}},
 		{"\n\nHello \n   \nworld", []string{"Hello", "world"}},
