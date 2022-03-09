@@ -136,6 +136,8 @@ func TestPreProcRule(t *testing.T) {
 		"a;c.":        {false, "a ; c ."},                            // missing  ~
 		"a(X,Y)~b;c.": {true, "~ ( a ( X Y ) b ) ~ ( a ( X Y ) c )"}, // ok
 		"a~b.;c.":     {false, "~ ( a b ) ; c ."},                    // syntax error
+		"a~b.d;c.":    {false, "~ ( a b ) d ; c ."},                  // syntax error
+		"a~;d.":       {true, "~ ( a ) ~ ( a d )"},                   // ok
 
 	}
 	pi := NewInter()
