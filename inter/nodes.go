@@ -112,6 +112,7 @@ func (n *Node) dumpTree(dedup map[*Node]bool) {
 	}
 }
 
+/*
 // ------------------------------------------------------------------
 
 // WalkFunction used for Walk.
@@ -130,3 +131,4 @@ func (n *Node) Walk(f WalkFunction) error {
 	}
 	return nil
 }
+*/

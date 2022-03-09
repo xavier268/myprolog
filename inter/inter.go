@@ -17,7 +17,8 @@ type Inter struct {
 func NewInter() *Inter {
 	return &Inter{
 		symt: map[string]*Node{
-			"_": {name: "_", constant: false, args: []*Node{}}, // predefined, match-all variable.
+			"_":   {name: "_", constant: false, args: []*Node{}},  // predefined, match-all variable.
+			"nil": {name: "nil", constant: true, args: []*Node{}}, // predefined. Cannot be a functor.
 		},
 	}
 }

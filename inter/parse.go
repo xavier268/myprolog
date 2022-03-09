@@ -3,25 +3,8 @@ package inter
 import (
 	"fmt"
 	"math"
+	"strings"
 )
-
-type buildin struct { // descriptor for buildin symbol or operator
-	// arity of the symbol, < 0 means it can have any arity
-	arity int
-	//symbol is postfixed if it should appear immediately after the first Atom, as in :
-	// 3 symbol 4 5
-	// Symbol is not postfixed (default) if it appears as in :
-	// symbol(3 4 5)
-	postfix bool
-}
-
-// Definition of 'built in' operators and symbols.
-var BuildIns = map[string]buildin{
-	":-": {-1, true},
-	"!=": {2, true},
-	"=":  {2, true},
-	"/":  {0, false},
-}
 
 // a Variable is a leafnode that starts with a capital letter or an underscore.
 func isVariable(name string) bool {
@@ -31,6 +14,11 @@ func isVariable(name string) bool {
 // a number is a valid go token starting with a digit.
 func isNumber(name string) bool {
 	return name[0] >= '0' && name[0] <= '9'
+}
+
+// isFunctor to check if valid functor name
+func isFunctor(name string) bool {
+	return name != "" && !isVariable(name) && !isNumber(name) && !strings.Contains("()_[]|.", name) && name != "nil"
 }
 
 func (i *Inter) Parse(tzr Tokenizer, root *Node) error {
@@ -57,6 +45,9 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, par *int) error {
 			}
 			if isNumber(n.name) {
 				return fmt.Errorf("the Number %s cannot be a functor before parenthesis", n.name)
+			}
+			if !isFunctor(n.name) {
+				return fmt.Errorf("the name %s cannot be a functor, appearing before parenthesis", n.name)
 			}
 			err := i.parse0(tzr, n, par)
 			if err != nil {
@@ -252,6 +243,56 @@ func (in *Inter) preProcRule(n *Node) error {
 		}
 
 		return fmt.Errorf("unknown syntax")
+	}
+	return nil
+}
+
+// preProcBar recursively pre-processes bar-formed lists, transforming non canonical forms into canonical forms.
+// The canonical form for list of a,b and c uses the dot operator, as in :
+// dot(a dot(b dot(c)))//
+// The bar form is :
+// a | RestOfList or a | nil
+// The | operator is just the postfix version of dot/2.
+func (in *Inter) preProcBar(n *Node) error {
+
+	if n == nil || len(n.args) == 0 {
+		return nil // no child, done.
+	}
+	//n has children ...
+	if !isFunctor(n.name) {
+		return fmt.Errorf("%s is not a valid functor", n.name)
+	}
+	i := 0
+	for {
+		// manual loop on n.args
+		if i >= len(n.args) {
+			break
+		}
+
+		// recurse lower level
+		err := in.preProcBar(n.args[i])
+		if err != nil {
+			return err
+		}
+
+		if n.args[i].name == "|" {
+			if i-1 >= 0 && i+1 <= len(n.args)-1 { // do we have a child before and after ?
+				n.args[i].name = "dot"                             // reuse | node as dot node
+				n.args[i].args = []*Node{n.args[i-1], n.args[i+1]} // copy children
+				// cleanup
+				n.args[i-1], n.args[i] = n.args[i], n.args[i-1] // swap to prefix
+				if i+2 < len(n.args) {
+					n.args = append(n.args[:i], n.args[i+2:]...)
+				} else {
+					n.args = n.args[:i]
+				}
+				// no need to increment. i is now pointing on the next node already.
+				continue
+			}
+			// no child before and after ...
+			return fmt.Errorf("the | operator should have exactly 2 postfix arguments")
+		}
+		i++
 	}
 	return nil
 }

@@ -6,6 +6,7 @@ import (
 )
 
 func TestScannerVisual(t *testing.T) {
+	t.Skip()
 	src := `
 	hello world // comment 
 	next sentence 2+3; 2x /* comment 
@@ -35,6 +36,7 @@ func TestScannerTable(t *testing.T) {
 		expect []string
 	}{
 		{"Hello world", []string{"Hello", "world"}},
+		{"nil[]", []string{"nil", "[", "]"}},
 		{"Hello \n   \nworld\n", []string{"Hello", "world"}},
 		{"\nHello \n   \nworld\n", []string{"Hello", "world"}},
 		{"\n\nHello \n   \nworld", []string{"Hello", "world"}},

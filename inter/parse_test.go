@@ -6,7 +6,7 @@ import (
 )
 
 func TestParseVisual(t *testing.T) {
-
+	//t.Skip()
 	src := `f(1 555 X Y gggggg(deux f ( Z 666 _ ) 5 _ 5))`
 	fmt.Println("__Source___")
 	fmt.Println(src)
@@ -73,6 +73,12 @@ func TestParse0Table(t *testing.T) {
 		"a,,b": {true, "a b"},
 		",a b": {true, "a b"},
 		"a,b,": {true, "a b"},
+
+		// nil - checks will be made later ...
+		"nil":    {true, "nil"},  //ok
+		"nil ()": {false, "nil"}, //not a functor
+		"nil(a)": {false, "nil"}, //not a functor
+
 	}
 	pi := NewInter()
 	for src, got := range tab {
@@ -86,7 +92,7 @@ func TestParse0Table(t *testing.T) {
 			t.Fatalf("unexpected error : %v,\nfor test : %s -> %v", err, src, tab[src])
 		}
 		if got.exp != "" && root.String() != "got ( "+got.exp+" ) " {
-			t.Fatalf("unexpected result	\ngot : %s\nwant: %s", root, "got ( "+got.exp+" ) ")
+			t.Fatalf("unexpected result	for test : %s\ngot : %s\nwant: %s", src, root, "got ( "+got.exp+" ) ")
 		}
 		if got.exp == "" && root.String() != "got " {
 			t.Fatalf("unexpected result	\ngot : >%s<\nwant: >got <", root)
@@ -149,6 +155,59 @@ func TestPreProcRule(t *testing.T) {
 			t.Fatalf("parse0 should not fail for %s with %e", src, err)
 		}
 		err = pi.preProcRule(root)
+		if err != nil {
+			fmt.Printf("info : %20s -> %v\n", src, err)
+		}
+		if (err == nil) != got.ok {
+			t.Fatalf("unexpected error : %v,\nfor test : %s -> %v", err, src, tab[src])
+		}
+		if got.exp != "" && root.String() != "got ( "+got.exp+" ) " {
+			t.Fatalf("unexpected result	for %s\ngot : %s\nwant: %s", src, root, "got ( "+got.exp+" ) ")
+		}
+		if got.exp == "" && root.String() != "got " {
+			t.Fatalf("unexpected result	\ngot : >%s<\nwant: >got <", root)
+		}
+	}
+}
+
+func TestFunctor(t *testing.T) {
+	if isFunctor("nil") {
+		t.Fatal("nil is not a functor")
+	}
+	if isFunctor("_") {
+		t.Fatal("_ is not a functor")
+	}
+	if isFunctor("22") {
+		t.Fatal("22 is not a functor")
+	}
+
+}
+
+func TestPreProcBar(t *testing.T) {
+	tab := map[string]struct { // map sources to ...
+		ok  bool   // true if no error
+		exp string // non idented value of parsed output
+	}{
+		// canonical
+		"a":         {true, "a"},                     // ok
+		"nil":       {true, "nil"},                   // ok
+		"nil()":     {false, "nil"},                  // ok
+		"nil(a)":    {false, "nil"},                  // nok, check on nil as functor !
+		"dot(a,b)":  {true, "dot ( a b )"},           // ok
+		"a | b":     {true, "dot ( a b )"},           // ok
+		"a | nil":   {true, "dot ( a nil )"},         // ok
+		"a | b | c": {true, "dot ( dot ( a b ) c )"}, // ok - beware of the order !! Not the same as [ a b c ]
+
+	}
+	pi := NewInter()
+	for src, got := range tab {
+		tzr := NewTokenizerString(src)
+		root := pi.nodeFor("got")
+		err := pi.parse0(tzr, root, new(int))
+		if err == nil {
+			// no need to preProcBar if previous error !
+			err = pi.preProcBar(root)
+		}
 		if err != nil {
 			fmt.Printf("info : %20s -> %v\n", src, err)
 		}
