@@ -146,7 +146,7 @@ func (n *Node) markConstant() bool {
 
 const MaxInt int = int(math.MaxInt32)
 
-// preProcRule pre-proceeses rules. It is idempotent.
+// preProcRule pre-processes rules. It is idempotent.
 // It will turn postfix rules into prefix rules, using the "~" functor, and checking rule syntax.
 // It handles facts and alternative (semi-colon) rules.
 // Rules are supposed to be the children of n. Not recursion to look for them below that.
@@ -230,7 +230,22 @@ func (in *Inter) preProcRule(n *Node) error {
 			} else {
 				n.args = n.args[:rtilda+1]
 			}
-			n.args = append(n.args[:rstart], n.args[rtilda])
+			n.args = append(n.args[:rstart], n.args[rtilda:]...)
+			//fmt.Println("DEBUG : n.args after cleanup:", n.args)
+			rstart++
+			continue
+		}
+
+		if rtilda == rstart+1 && rsemi != MaxInt { // postfix rule (with alternative).
+			head := n.args[rstart]
+			n.args[rtilda].args = append(n.args[rtilda].args, head)
+			n.args[rtilda].args = append(n.args[rtilda].args, n.args[rtilda+1:rsemi]...)
+
+			// cleanup
+			//fmt.Println("DEBUG : n.args before cleanup:", n.args)
+			n.args[rstart], n.args[rtilda] = n.args[rtilda], n.args[rstart]
+			n.args[rsemi].name = "~"
+			n.args = append(n.args[:rtilda+1], n.args[rsemi:]...)
 			//fmt.Println("DEBUG : n.args after cleanup:", n.args)
 			rstart++
 			continue
