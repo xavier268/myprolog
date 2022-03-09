@@ -2,6 +2,7 @@ package inter
 
 import (
 	"fmt"
+	"math"
 )
 
 type buildin struct { // descriptor for buildin symbol or operator
@@ -22,9 +23,9 @@ var BuildIns = map[string]buildin{
 	"/":  {0, false},
 }
 
-// a Variable is a leafnode that starts with a capital letter or is just an underscore.
+// a Variable is a leafnode that starts with a capital letter or an underscore.
 func isVariable(name string) bool {
-	return (name[0] >= 'A' && name[0] <= 'Z') || name == "_"
+	return (name[0] >= 'A' && name[0] <= 'Z') || name[0] == '_'
 }
 
 // a number is a valid go token starting with a digit.
@@ -141,5 +142,101 @@ func (n *Node) markConstant() bool {
 	}
 	n.constant = (nbc == len(n.args))
 	return n.constant
+}
 
+const MaxInt int = int(math.MaxInt32)
+
+// preProcRule pre-proceeses rules. It is idempotent.
+// It will turn postfix rules into prefix rules, using the "~" functor, and checking rule syntax.
+// It handles facts and alternative (semi-colon) rules.
+// Rules are supposed to be the children of n. Not recursion to look for them below that.
+func (in *Inter) preProcRule(n *Node) error {
+
+	if n == nil || len(n.args) == 0 {
+		return nil
+	}
+
+	rstart := 0 // points to the first child we want to process
+	for {       // manual loop on rstart
+		if rstart >= len(n.args) {
+			break // done
+		}
+
+		// reset rule internal pointers
+		rperiod := MaxInt // points to first valid .
+		rtilda := MaxInt  // points to first ~
+		rsemi := MaxInt   // points to first semi, if before period and after tilda.
+
+		// set rule pointers
+		for i := rstart; i < len(n.args); i++ {
+			if i < rperiod && n.args[i].name == "." {
+				rperiod = i
+				break // do not update after !
+			}
+			if i < rtilda && i <= rstart+1 && n.args[i].name == "~" { // tilda can only appear prefix or postfix.
+				rtilda = i
+			}
+			if i < rsemi && rsemi > rtilda && n.args[i].name == ";" { // tilda required before semi
+				rsemi = i
+			}
+		}
+
+		//fmt.Printf("DEBUG : $=%d/%d, .=%d, ~=%d, ;=%d\n", rstart, len(n.args), rperiod, rtilda, rsemi)
+
+		// check syntax and process
+		if rtilda == rstart { // canonical from
+			if len(n.args[rtilda].args) != 0 {
+				// valid canonical form.
+				// Ignore and continue.
+				rstart++
+				continue
+			}
+			// invalid canonical form
+			return fmt.Errorf("canonical form rule has no head")
+		}
+		if rperiod == MaxInt {
+			return fmt.Errorf("rule is missing the final period")
+		}
+		if len(n.args[rperiod].args) != 0 {
+			return fmt.Errorf("the period cannot be a functor")
+		}
+		if rperiod == rstart {
+			return fmt.Errorf("empty fact rule")
+		}
+
+		if rperiod == rstart+1 { // fact
+			if isVariable(n.args[rstart].name) { // invalid fact
+				return fmt.Errorf("head of rule cannot be a Variable")
+			}
+			// construct actual rule, reusing the period node.
+			n.args[rperiod].name = "~"
+			n.args[rperiod].args = append(n.args[rperiod].args, n.args[rstart])
+			// remove head pointer
+			n.args = append(n.args[:rstart], n.args[rperiod:]...)
+			// proceed.
+			rstart++ // jump to the node following the period.
+			continue
+		}
+
+		if rtilda == rstart+1 && rsemi == MaxInt { // postfix rule (no alternative).
+			head := n.args[rstart]
+			n.args[rtilda].args = append(n.args[rtilda].args, head)
+			n.args[rtilda].args = append(n.args[rtilda].args, n.args[rtilda+1:rperiod]...)
+
+			// cleanup
+			//fmt.Println("DEBUG : n.args before cleanup:", n.args)
+			if rperiod < len(n.args) {
+				n.args = append(n.args[:rtilda+1], n.args[rperiod+1:]...)
+			} else {
+				n.args = n.args[:rtilda+1]
+			}
+			n.args = append(n.args[:rstart], n.args[rtilda])
+			//fmt.Println("DEBUG : n.args after cleanup:", n.args)
+			rstart++
+			continue
+		}
+
+		return fmt.Errorf("unknown syntax")
+	}
+	return nil
 }

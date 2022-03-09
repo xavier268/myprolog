@@ -39,6 +39,7 @@ func TestScannerTable(t *testing.T) {
 		{"\nHello \n   \nworld\n", []string{"Hello", "world"}},
 		{"\n\nHello \n   \nworld", []string{"Hello", "world"}},
 		{"1+2+3", []string{"1", "+", "2", "+", "3"}},
+		{"aa_123", []string{"aa_123"}}, // _ is a valid char in an indentifier
 		{"1+2+3// comment", []string{"1", "+", "2", "+", "3"}},
 		{"// comment\n1+2+3// comment", []string{"1", "+", "2", "+", "3"}},
 		{"1+/* comment */2+3// comment", []string{"1", "+", "2", "+", "3"}},
