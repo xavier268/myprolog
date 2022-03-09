@@ -33,12 +33,12 @@ func isNumber(name string) bool {
 }
 
 func (i *Inter) Parse(tzr Tokenizer, root *Node) error {
-	return i.parse0(tzr, root, 0, new(int))
+	return i.parse0(tzr, root, new(int))
 }
 
 // Parse tokens, adding them as children of the provided node.
 // Only parenthesis and basic checks are managed.
-func (i *Inter) parse0(tzr Tokenizer, root *Node, level int, par *int) error {
+func (i *Inter) parse0(tzr Tokenizer, root *Node, par *int) error {
 	for tk := tzr.Next(); tk != ""; tk = tzr.Next() {
 		switch tk {
 		case ",": // ignore ','
@@ -57,17 +57,14 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, level int, par *int) error {
 			if isNumber(n.name) {
 				return fmt.Errorf("the Number %s cannot be a functor before parenthesis", n.name)
 			}
-			err := i.parse0(tzr, n, level+1, par)
+			err := i.parse0(tzr, n, par)
 			if err != nil {
 				return err
 			}
 		case ")":
 			*par--
 			if *par < 0 {
-				return fmt.Errorf("closing a parenthesis too early")
-			}
-			if level == 0 {
-				return fmt.Errorf("closing a parenthesis that was never opened")
+				return fmt.Errorf("closing a parenthesis that was not open before")
 			}
 			return nil
 		case "":
@@ -78,7 +75,7 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, level int, par *int) error {
 		}
 	}
 
-	if level == 0 && *par != 0 {
+	if *par != 0 { // capture opened, not closed parenthesis
 		return fmt.Errorf("parenthesis do not match")
 	}
 	return nil

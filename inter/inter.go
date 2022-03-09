@@ -7,6 +7,7 @@ type Inter struct {
 	// symt maps symbols of variables and numbers to their (unique) pointer.
 	// We can reuse the same object, because variables and numbers CANNOT HAVE CHILDREN ; they cannot be compound objects.
 	// This is enforced by the parser.
+	// However, they are not necessary "constant", ie "immutable" (Variables are NOT "contant")
 	symt map[string]*Node
 }
 
@@ -45,5 +46,4 @@ func (i *Inter) dumpSymt() {
 		fmt.Printf("%10s --> ", s)
 		n.DumpTree(false) // no header
 	}
-
 }

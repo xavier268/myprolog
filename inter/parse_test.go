@@ -78,7 +78,7 @@ func TestParse0Table(t *testing.T) {
 	for src, got := range tab {
 		tzr := NewTokenizerString(src)
 		root := pi.nodeFor("got")
-		err := pi.parse0(tzr, root, 0, new(int))
+		err := pi.parse0(tzr, root, new(int))
 		if err != nil {
 			fmt.Printf("info : %20s -> %v\n", src, err)
 		}
