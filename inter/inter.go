@@ -33,8 +33,9 @@ func (i *Inter) Uid() string {
 }
 
 // nodeFor provides a node to represent the given text.
-// If a number or a variable, then the same node is always returned.
-// Otherwise, a new node is created.
+// If a number or a variable, then the same node is always returned,
+// so that pointer comparison can work,
+// otherwise, a new node is created.
 func (i *Inter) nodeFor(text string) *Node {
 	if text == "" {
 		panic("name is required")
@@ -77,4 +78,28 @@ func (in *Inter) dumpRules() {
 		fmt.Println(r.String())
 	}
 	fmt.Println("-----------------------------------")
+}
+
+// --------------------- Rescoping nodes ------------------------------------
+
+// Rescope the provided node, by adding a suffix to its variable names.
+// The _ is NOT rescoped.
+// The constant flags in n are used to minimize node duplication, i.e.,
+// if there are no variable, the original node is returned.
+// It is assumed that the constant flags can be relied upon, see (*Node)markConstant().
+func (in *Inter) Rescope(n *Node, suffix string) *Node {
+
+	if n == nil || n.constant || n.name == "_" {
+		return n
+	}
+
+	if isVariable(n.name) { // use symbole table to garantee unicity !
+		return in.nodeFor(n.name + suffix)
+	}
+
+	r := in.nodeFor(n.name)
+	for _, a := range n.args {
+		r.args = append(r.args, in.Rescope(a, suffix))
+	}
+	return r
 }

@@ -49,3 +49,38 @@ Lists are **always** terminated with dot(nil,nil).
 Imbrication of lists is allowed :
 
 * [X | [ a [ b | c ] [ e f ]]]
+
+
+## General solving algorithm
+
+SOLVE attempts to solve the goal node on top of the goal stack.
+For instance, trying to SOLVE f(X,Y).
+
+SOLVE will try to UNIFY successiveley with one of the rules.
+
+The first rule, being rr(X,55,6), cannot be unified.
+The second rule ..
+The next rule ...
+
+If we reach the end of the rule list without being able to UNIFY, then we report failure and return.
+
+Assuming rule f(g(Y,3),Y)~... have the right functor, UNIFY will 
+first RESCOPE it as f(g(Y#1, 3),Y)~ ..., making sure variables using the same symbol are not the same.
+
+UNIFY will compare the goal with the rescoped head of the rule, returning a new list of constraints.
+These constraints are recorded in the solving context.
+
+*For instance, to unify f(X,Y) with f(g(Y#1,3),Y#1), we would create the constraints :*
+*bind (f(X,Y) , f(g(Y#1,3),Y#1)).*
+
+Then, we recursively process the constraints, together with the ones we already have, until either we have a canonical expression, or we demonstrate impossibility.
+
+*bind(X,g(Y#1,3))*
+*bind(Y,Y#1)*
+
+If processing the constraints does not fail, the initial goal is replaced by the rescoped body of the unifed rule.
+
+Then, SOLVE iterates on the next goal on the stack.
+
+
+
