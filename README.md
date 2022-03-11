@@ -1,7 +1,16 @@
 # myprolog
 A Prolog (the langage) implementation for educationnal purposes
 
+## Work in progress
 
+Unify
+* cleaner/simpler algo
+* implementes cleanup and substition in former equation, both lhs AND RHS X=Y, X=2 => X,Y,X=2,Y=2
+* more tests, inparticular on _ 
+* number constraints ?
+
+Solve
+* to finish & test
 ## Types
 
 Variables starts by an uppercase letter, or an underscore, _
