@@ -26,7 +26,7 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 		if g.name == h.name { // X=X - rule 2
 			return ctx, nil // ignore
 		} else { // X = Y
-			// TODO - do not overwite previous X !
+			// TODO - do not overwite previous X ! <<<<<<<<<<<<<<<<<<<<<<<????????????TOODOOOO !
 			return ctx.Set(EQ, g, h), nil
 		}
 
