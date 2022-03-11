@@ -103,11 +103,7 @@ func (n *Node) isConstant() bool {
 		n.constant = false
 		return false
 	}
-	/*if len(n.args) == 0 { // all atomic that are not variable are constant.
-		n.constant = true
-		return true
-	}*/
-	for _, a := range n.args { // now, all atomic with NO children will be constant.
+	for _, a := range n.args { // all atomic with NO children will be constant.
 		if !a.isConstant() {
 			return false // lazily return. Some subtrees might not have been marked.
 		}
@@ -132,24 +128,12 @@ func (n *Node) markConstant() bool {
 		//fmt.Printf("DEBUG - marking constant %s\n", n)
 		return true
 	}
-	/*
-		// WARNING : This looks attractive, but the compiler overoptimizes and takes short cuts, not covering all nodes !
-			cc := true
-			for _, a := range n.args {
-				cc = cc && a.markConstant() // compiler optimzes and break on false !!!
-			}
-			n.constant = cc
-			return n.constant
-	*/
 
-	// Alternative, using a trick to prevent compiler over-optimization ...
-	nbc := 0
+	cc := true
 	for _, a := range n.args {
-		if a.markConstant() {
-			nbc++
-		} // no early break here !
+		cc = a.markConstant() && cc // order is important to prevent lazy evaluation on false !!!
 	}
-	n.constant = (nbc == len(n.args))
+	n.constant = cc
 	return n.constant
 }
 

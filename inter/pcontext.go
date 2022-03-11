@@ -1,6 +1,9 @@
 package inter
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 // PContext maintain the list of constraints needed to solve a query.
 type PContext struct {
@@ -28,9 +31,19 @@ const (
 	NUMBER              // X is a number ...
 )
 
+func (ct CType) String() string {
+	switch ct {
+	case EQ:
+		return "="
+	default:
+		return "?notIplm?"
+	}
+}
+
 // Set the given constraint, returns the new modified context.
 // Binding to nil is the same as not set.
 func (ctx *PContext) Set(ctp CType, lhs *Node, rhs *Node) *PContext {
+	//fmt.Printf("DEBUG : Setting %d : %s  --> %s\n", ctp, lhs, rhs)
 	// if already set to the correct value, do nothing.
 	if rhs == ctx.Get(ctp, lhs) {
 		return ctx
@@ -47,10 +60,10 @@ func (ctx *PContext) Set(ctp CType, lhs *Node, rhs *Node) *PContext {
 // Get the rhs for a given lhs and type.
 // Return nil if not found.
 func (ctx *PContext) Get(ctp CType, lhs *Node) (rhs *Node) {
-	if ctx.prt == ctx { // DEBUG
+	/*if ctx.prt == ctx {
 		panic("loop in pcontext !")
-	}
-	for c := ctx; c != nil; c = ctx.prt {
+	}*/
+	for c := ctx; c != nil; c = c.prt {
 		if c.ctp == ctp && c.lhs == lhs {
 			return c.rhs
 		}
@@ -64,6 +77,21 @@ func (ctx *PContext) dump() {
 	for c := ctx; c != nil; c = c.prt {
 		fmt.Printf("%02d:\t%s   ---->  %s\n", c.ctp, c.lhs, c.rhs)
 	}
-
+	fmt.Println("String : ", ctx)
 	fmt.Println("------------------------------------")
+}
+
+// String for a single line, deduped context.
+func (ctx *PContext) String() string {
+
+	var b strings.Builder
+	dedup := make(map[*Node]bool)
+
+	for c := ctx; c != nil; c = c.prt {
+		if c.lhs != nil && !dedup[c.lhs] {
+			dedup[c.rhs] = true
+			fmt.Fprintf(&b, "%s %s %s, ", c.lhs, c.ctp, c.rhs)
+		}
+	}
+	return b.String()
 }

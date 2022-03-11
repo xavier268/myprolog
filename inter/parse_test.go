@@ -7,7 +7,7 @@ import (
 
 func TestParse0Visual(t *testing.T) {
 	//t.Skip()
-	src := `a(b(1+2)c[5,6])`
+	src := `a(b(1 X 2)c[5 Y 6])`
 	fmt.Println("__Source___")
 	fmt.Println(src)
 	pi := NewInter()

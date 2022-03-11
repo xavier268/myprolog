@@ -6,13 +6,13 @@ import "fmt"
 // Upon success a new pcontext is returned.
 // Upon error, NO context is returned, to facilitate garbage collection.
 func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
-
-	var err error
+	//ctx.dump()
+	//fmt.Printf("DEBUG : entering unify : %s\t and \t%s\n", g, h)
 
 	// --- exclude nil -----
 	if h == nil || g == nil {
-		fmt.Printf("DEBUG :  trying to unify %s and %s\n", g.String(), h.String())
-		panic("cannot unify nil")
+		//fmt.Printf("DEBUG :  trying to unify %s and %s\n", g.String(), h.String())
+		panic("cannot unify a nil goal or a nil head")
 	}
 
 	switch {
@@ -22,16 +22,28 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 	case g.name == "_" || h.name == "_": // _ = ... or ... = _
 		return ctx, nil
 
-	case isVariable(g.name) && isVariable(h.name): // X = Y
-		if g.name == h.name { // X=X - rule 2
+	case isVariable(g.name) && isVariable(h.name): // G = H
+		if g.name == h.name { // G = G
 			return ctx, nil // ignore
-		} else { // X = Y
+		} else { // G = H
 			// TODO - do not overwite previous X ! <<<<<<<<<<<<<<<<<<<<<<<????????????TOODOOOO !
+			// test if G=u already exists ?
+			u := ctx.Get(EQ, g)
+			if u != nil {
+				return unify(ctx, h, u)
+			}
+			// test if H=u exists ?
+			u = ctx.Get(EQ, h)
+			if u != nil {
+				return unify(ctx, g, u)
+			}
+			// neither H nor G were already set ...
 			return ctx.Set(EQ, g, h), nil
 		}
 
 	case isVariable(g.name) && !isVariable(h.name): // G == h
 		if h.contains(g) {
+			fmt.Println("DEBUG : Positive error check")
 			return ctx, ErrSolve // fail, positive occur check (ie : a looping tree would be needed ...)
 		}
 		// if a variable already known appears in X=t, then substitute it (including the X in lhs !)
@@ -56,10 +68,10 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 		h.substituteVariables(ctx)
 		return ctx.Set(EQ, g, h), nil
 
-	case !isVariable(g.name) && isVariable(h.name): // t = X
+	case !isVariable(g.name) && isVariable(h.name): // g = H
 		return unify(ctx, h, g)
 
-	// ---- no more variables ----
+	// ---- handle no variables ----
 	// same arity = 0
 	case len(g.args) == 0 && len(h.args) == 0:
 		if g.name == h.name {
@@ -70,7 +82,7 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 
 	// arity != 0, same functor, same arity, for non variables
 	case len(g.args) == len(h.args) && g.name == h.name:
-
+		var err error
 		c := ctx
 		for i := range g.args {
 			c, err = unify(c, g.args[i], h.args[i])
@@ -85,7 +97,7 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 		return ctx, ErrSolve // fail
 
 	default:
-		fmt.Printf("DEBUG : cannot unify %s and %s\n", g.String(), h.String())
+		fmt.Printf("DEBUG : default fallback, cannot unify %s and %s\n", g.String(), h.String())
 		return ctx, ErrSolve
 	}
 }
