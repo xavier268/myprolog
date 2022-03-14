@@ -59,7 +59,15 @@ func TestUnify(t *testing.T) {
 		{"k(k(i,j),_)", "k(Z,Z)", true},
 		{"k(k(i,j),X)", "k(Z,Z)", true},
 
-		/*  */
+		{"k(U,k(U,666)),U", "Z,555", true},
+
+		/*  test lists in bracket or bar form ! */
+
+		{"[ 1 2 3]", "[ X | Y ]", true},
+		{"[ 1 _ 3]", "[ X | Y ]", true},
+
+		{"[ 1 X 3]", "[ Z 4 5 ]", false},
+		{"[ 1 X 3]", "[ Z 4 3 ]", true},
 	}
 
 	in := NewInter()
@@ -103,6 +111,10 @@ func (in *Inter) n(src string) *Node {
 	err := in.parse0(tzr, n, new(int))
 	if err != nil {
 		panic("invalid source : " + src)
+	}
+	err = in.preProcList(n)
+	if err != nil {
+		panic("invalid source (list syntax) : " + src)
 	}
 	return n
 }
