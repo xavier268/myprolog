@@ -1,5 +1,6 @@
 package inter
 
+/*
 import (
 	"fmt"
 )
@@ -73,3 +74,4 @@ func (b *binder) Get(v *Node) *Node {
 func (b *binder) Slash() {
 	b.bottom = b.top
 }
+*/

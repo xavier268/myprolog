@@ -4,6 +4,7 @@ import "fmt"
 
 // ErrSolve is set when backtracking is required.
 var ErrSolve = fmt.Errorf("backtracking is required")
+var ErrPosOcc = fmt.Errorf("positive occurs check")
 
 // Solve will attempt to solve the provided goal, using the rules previously loaded.
 // Solve should have no side effect on Inter and be indempotent,
@@ -29,7 +30,7 @@ func (in *Inter) Solve(ctx *PContext, goal *Node) (*PContext, error) {
 		head := in.Rescope(r.args[0], suffix)
 
 		// try to unify head with goal, keeping the new context with the new constraints.
-		newctx, err := unify(ctx, goal, head)
+		newctx, err := in.unify(ctx, goal, head)
 		if err == nil {
 			// unification of head suceeded.
 			// rescope rule body and attempt to solve each one,

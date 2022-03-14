@@ -52,16 +52,16 @@ func TestUnify(t *testing.T) {
 	in := NewInter()
 	for i, tt := range tab {
 		g, h := in.n(tt.g), in.n(tt.h)
-		dotest(t, -i, h, g, tt.ok)
+		dotest(t, in, -i, h, g, tt.ok)
 		g, h = in.n(tt.g), in.n(tt.h)
-		dotest(t, i, g, h, tt.ok)
+		dotest(t, in, i, g, h, tt.ok)
 
 	}
 }
 
-func dotest(t *testing.T, i int, h *Node, g *Node, ok bool) {
+func dotest(t *testing.T, in *Inter, i int, h *Node, g *Node, ok bool) {
 	fmt.Printf("INFO %d: \t%s and \t%s, expect %v :\t", i, h, g, ok)
-	ctx, err := unify(NewPContext(), h, g)
+	ctx, err := in.unify(NewPContext(), h, g)
 	fmt.Println(ctx)
 	if (err == nil) != ok {
 		//ctx.dump()

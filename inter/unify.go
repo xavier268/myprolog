@@ -5,7 +5,7 @@ import "fmt"
 // unify attempts to unify a goal g with a rescoped head h.
 // Upon success a new pcontext is returned.
 // Upon error, NO context is returned, to facilitate garbage collection.
-func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
+func (in *Inter) unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 	//ctx.dump()
 	//fmt.Printf("DEBUG : entering unify : %s\t and \t%s\n", g, h)
 
@@ -30,12 +30,12 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 			// test if G=u already exists ?
 			u := ctx.Get(EQ, g)
 			if u != nil {
-				return unify(ctx, h, u)
+				return in.unify(ctx, h, u)
 			}
 			// test if H=u exists ?
 			u = ctx.Get(EQ, h)
 			if u != nil {
-				return unify(ctx, g, u)
+				return in.unify(ctx, g, u)
 			}
 			// neither H nor G were already set ...
 			return ctx.Set(EQ, g, h), nil
@@ -43,8 +43,8 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 
 	case isVariable(g.name) && !isVariable(h.name): // G == h
 		if h.contains(g) {
-			fmt.Println("DEBUG : Positive error check")
-			return ctx, ErrSolve // fail, positive occur check (ie : a looping tree would be needed ...)
+			fmt.Println("WARNING : Positive error check")
+			return ctx, ErrPosOcc // fail, positive occur check (ie : a looping tree would be needed ...)
 		}
 		// if a variable already known appears in X=t, then substitute it (including the X in lhs !)
 
@@ -52,7 +52,7 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 		u := ctx.Get(EQ, g)
 		if u != nil {
 			// X=u exists
-			ctxu, err := unify(ctx, u, h) // check if u = h ?
+			ctxu, err := in.unify(ctx, u, h) // check if u = h ?
 			if err != nil {
 				return ctx, ErrSolve // fail to unify u & h !
 			} else {
@@ -64,12 +64,12 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 			//h being constant, it is now safe to Set G=h
 			return ctx.Set(EQ, g, h), nil
 		}
-		// Before adding G = h, we need to substitute in h the values of the variable we already know.
+		// Before adding G = h, we need to substitute all former equations where the value G exists.
 		h.substituteVariables(ctx)
 		return ctx.Set(EQ, g, h), nil
 
 	case !isVariable(g.name) && isVariable(h.name): // g = H
-		return unify(ctx, h, g)
+		return in.unify(ctx, h, g)
 
 	// ---- handle no variables ----
 	// same arity = 0
@@ -85,7 +85,7 @@ func unify(ctx *PContext, g *Node, h *Node) (*PContext, error) {
 		var err error
 		c := ctx
 		for i := range g.args {
-			c, err = unify(c, g.args[i], h.args[i])
+			c, err = in.unify(c, g.args[i], h.args[i])
 			if err != nil {
 				return ctx, ErrSolve
 			}

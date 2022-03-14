@@ -71,6 +71,25 @@ func (ctx *PContext) Get(ctp CType, lhs *Node) (rhs *Node) {
 	return nil
 }
 
+// GetRHSContains returns the FIRST rhs that contains the node x (typically a Variable, for further substitution), possible at a low nested level.
+// The result returned is NOT rescoped, and probably should be before it is modified.
+// Retun nil if not found.
+func (ctx *PContext) getRHSContains(ctp CType, x *Node) *Node {
+
+	dedup := make(map[*Node]bool)
+
+	for c := ctx; c != nil; c = c.prt {
+		if c.lhs == nil || c.ctp != ctp || dedup[c.lhs] {
+			continue
+		}
+		dedup[c.lhs] = true
+		if c.rhs == x || c.rhs.contains(x) {
+			return c.rhs
+		}
+	}
+	return nil
+}
+
 func (ctx *PContext) dump() {
 	fmt.Printf("-------- dump context %p -----------\n", ctx)
 
