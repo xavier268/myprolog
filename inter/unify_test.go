@@ -68,6 +68,10 @@ func TestUnify(t *testing.T) {
 
 		{"[ 1 X 3]", "[ Z 4 5 ]", false},
 		{"[ 1 X 3]", "[ Z 4 3 ]", true},
+
+		{"[1 ]", "[X|Y]", true},
+		{"[1 ]", "[X Y]", false},
+		{"[ ]", "X", true},
 	}
 
 	in := NewInter()
