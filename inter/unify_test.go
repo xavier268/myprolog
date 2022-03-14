@@ -43,8 +43,21 @@ func TestUnify(t *testing.T) {
 
 		{"a(_,X)", "a(b,c(f,g))", true},
 		{"a(_,X,c)", "a(X,_,g(X))", false},
-		{"a(Y,X,c)", "a(X,_,X)", true}, // <- NOT CLEAN, check algo ?!
+		{"a(Y,X,c)", "a(X,_,X)", true},
 		{"a(_,X,c)", "a(X,_,X)", true},
+
+		{"a(_, X,f(Y),c)", "a(X,_,X,Y)", true},
+
+		{"f(X)", "c", false},
+		{"a(f(Y),c)", "a(f(f(X)),Y)", false},
+		{"a(U,f(X,Y),f(X,Z))", "a(Z,f(_,Z),f(c,X))", true},
+		{"a(U,f(X,Y),f(X,Z))", "a(Z,f(_,Z),f(c,X))", true},
+
+		{"a(k(k(U,U),X),f(X,Y),f(X,Z))", "a(Z,f(_,Z),f(c,X))", false},
+		{"a(k(k(i,j),X),f(X,Y),f(X,Z))", "a(Z,f(_,Z),f(c,X))", false},
+
+		{"k(k(i,j),_)", "k(Z,Z)", true},
+		{"k(k(i,j),X)", "k(Z,Z)", true},
 
 		/*  */
 	}
@@ -52,11 +65,18 @@ func TestUnify(t *testing.T) {
 	in := NewInter()
 	for i, tt := range tab {
 		g, h := in.n(tt.g), in.n(tt.h)
-		dotest(t, in, -i, h, g, tt.ok)
-		g, h = in.n(tt.g), in.n(tt.h)
 		dotest(t, in, i, g, h, tt.ok)
+		g, h = in.n(tt.g), in.n(tt.h)
+		dotest(t, in, -i, h, g, tt.ok)
 
 	}
+}
+
+// which test case line should provide detailled output in dotest ?
+var detail = map[int]bool{
+	// 4: true,
+	// -26: true,
+	-31: true,
 }
 
 func dotest(t *testing.T, in *Inter, i int, h *Node, g *Node, ok bool) {
@@ -69,7 +89,9 @@ func dotest(t *testing.T, in *Inter, i int, h *Node, g *Node, ok bool) {
 	}
 
 	//fmt.Printf("INFO %d: %s and %s unified\n", i, h, g)
-	//ctx.dump()
+	if detail[i] { // select which test line to detail ?
+		in.Dump()
+	}
 
 }
 

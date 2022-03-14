@@ -17,12 +17,18 @@ type Inter struct {
 }
 
 func NewInter() *Inter {
-	return &Inter{
-		symt: map[string]*Node{
-			"_":   {name: "_", constant: false, args: []*Node{}},  // predefined, match-all variable.
-			"nil": {name: "nil", constant: true, args: []*Node{}}, // predefined. Cannot be a functor.
-		},
+	return new(Inter).Reset()
+}
+
+// Reset the internals of the Interpreter, also resetting the rules.
+func (in *Inter) Reset() *Inter {
+	in.symt = map[string]*Node{
+		"_":   {name: "_", constant: false, args: []*Node{}},  // predefined, match-all variable.
+		"nil": {name: "nil", constant: true, args: []*Node{}}, // predefined. Cannot be a functor.
 	}
+	in.rules = nil
+	in.uid = 0
+	return in
 }
 
 // Uid generate a unique suffix, such as "_125".
@@ -72,6 +78,10 @@ func (in *Inter) dumpSymt() {
 
 // dump the rules loaded
 func (in *Inter) dumpRules() {
+	if in.rules == nil {
+		fmt.Println("\n---------- NO RULES ------------")
+		return
+	}
 	fmt.Printf("\n --------------- %s ------------\n", in.rules.name)
 	for i, r := range in.rules.args {
 		fmt.Printf("%4d: ", i)

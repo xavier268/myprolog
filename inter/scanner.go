@@ -38,22 +38,14 @@ func NewTokenizer(input io.Reader) Tokenizer {
 
 // NewTokenizerString from srource string
 func NewTokenizerString(src string) Tokenizer {
-	ps := new(pscanner)
-	// ps.s.Mode = scanner.GoTokens
-	ps.s.Init(strings.NewReader(src))
-	ps.s.Filename = "string"
-	return ps
+	return NewTokenizer(strings.NewReader(src))
 }
 
 // NewTokenizerFile from file name
 func NewTokenizerFile(fileName string) Tokenizer {
-	ps := new(pscanner)
-	//ps.s.Mode = scanner.GoTokens
 	f, err := os.Open(fileName)
 	if err != nil {
 		panic(err)
 	}
-	ps.s.Init(bufio.NewReader(f))
-	ps.s.Filename = fileName
-	return ps
+	return NewTokenizer(bufio.NewReader(f))
 }

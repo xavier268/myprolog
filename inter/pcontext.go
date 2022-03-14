@@ -71,25 +71,6 @@ func (ctx *PContext) Get(ctp CType, lhs *Node) (rhs *Node) {
 	return nil
 }
 
-// GetRHSContains returns the FIRST rhs that contains the node x (typically a Variable, for further substitution), possible at a low nested level.
-// The result returned is NOT rescoped, and probably should be before it is modified.
-// Retun nil if not found.
-func (ctx *PContext) getRHSContains(ctp CType, x *Node) *Node {
-
-	dedup := make(map[*Node]bool)
-
-	for c := ctx; c != nil; c = c.prt {
-		if c.lhs == nil || c.ctp != ctp || dedup[c.lhs] {
-			continue
-		}
-		dedup[c.lhs] = true
-		if c.rhs == x || c.rhs.contains(x) {
-			return c.rhs
-		}
-	}
-	return nil
-}
-
 func (ctx *PContext) dump() {
 	fmt.Printf("-------- dump context %p -----------\n", ctx)
 
@@ -104,13 +85,35 @@ func (ctx *PContext) dump() {
 func (ctx *PContext) String() string {
 
 	var b strings.Builder
-	dedup := make(map[*Node]bool)
+	dedup := make(map[*Node]bool) // dedup lhs
 
 	for c := ctx; c != nil; c = c.prt {
 		if c.lhs != nil && !dedup[c.lhs] {
-			dedup[c.rhs] = true
+			dedup[c.lhs] = true
 			fmt.Fprintf(&b, "%s %s %s, ", c.lhs, c.ctp, c.rhs)
 		}
 	}
 	return b.String()
+}
+
+// rhsGet return the FIRST, VALID lhs which rhs, also returned, is or contains x.
+// returns nil, nil if not found.
+func (ctx *PContext) rhsGet(ctp CType, x *Node) (lhs *Node, rhs *Node) {
+
+	if x == nil {
+		panic("cannot call rhsGet with x==nil")
+	}
+
+	dedup := make(map[*Node]bool)
+
+	for c := ctx; c != nil; c = c.prt {
+		if dedup[c.lhs] || c.rhs == nil {
+			continue
+		}
+		dedup[c.lhs] = true
+		if c.rhs == x || c.rhs.contains(x) {
+			return c.lhs, c.rhs
+		}
+	}
+	return nil, nil
 }
