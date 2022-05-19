@@ -1,3 +1,5 @@
+# !!! W O R K    I N    P R O G R E S S !!!
+
 # myprolog
 A Prolog (the langage) implementation for educationnal purposes
 
