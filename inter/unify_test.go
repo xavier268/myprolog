@@ -29,6 +29,9 @@ func TestUnify(t *testing.T) {
 		{"a(b,X)", "a(b,c)", true},
 		{"a(b,X)", "a(b,c(f,g))", true},
 
+		{"a(b(c))", "a(X)", true},
+		{"a(b(c))", "X", true},
+
 		{"X Y", "b c", true},
 		{"a(b,X)", "a(Y,c)", true},
 
@@ -88,7 +91,7 @@ func TestUnify(t *testing.T) {
 var detail = map[int]bool{
 	// 4: true,
 	// -26: true,
-	-31: true,
+	// -31: true,
 }
 
 func dotest(t *testing.T, in *Inter, i int, h *Node, g *Node, ok bool) {
