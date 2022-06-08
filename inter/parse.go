@@ -90,7 +90,7 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, par *int) error {
 const MaxInt int = int(math.MaxInt32)
 
 // preProcRule pre-processes rules. It is idempotent.
-// It will turn postfix rules into prefix rules, using the "~" functor, and checking rule syntax.
+// It will turn postfix rules into prefix rules, using the ":-" functor, and checking rule syntax.
 // It handles facts and alternative (semi-colon) rules.
 // Rules are supposed to be the children of n. Not recursion to look for them below that.
 func (in *Inter) preProcRule(n *Node) error {
@@ -107,7 +107,7 @@ func (in *Inter) preProcRule(n *Node) error {
 
 		// reset rule internal pointers
 		rperiod := MaxInt // points to first valid .
-		rtilda := MaxInt  // points to first ~
+		rarrow := MaxInt  // points to first :-
 		rsemi := MaxInt   // points to first semi, if before period and after tilda.
 
 		// set rule pointers
@@ -116,23 +116,21 @@ func (in *Inter) preProcRule(n *Node) error {
 				rperiod = i
 				break // do not update after !
 			}
-			if rtilda != MaxInt && n.args[i].name == "~" {
-				return fmt.Errorf("there can only be one ~ per valid rule. Did you forget a period ?")
+			if rarrow != MaxInt && n.args[i].name == ":-" {
+				return fmt.Errorf("there can only be one arrow :- per valid rule. Did you forget a period ?")
 			}
-			if i < rtilda && i <= rstart+1 && n.args[i].name == "~" { // tilda can only appear prefix or postfix.
-				rtilda = i
+			if i < rarrow && i <= rstart+1 && n.args[i].name == ":-" { // arrow can only appear prefix or postfix.
+				rarrow = i
 			}
-			if i < rsemi && rsemi > rtilda && n.args[i].name == ";" { // tilda required before semi
+			if i < rsemi && rsemi > rarrow && n.args[i].name == ";" { // arrow required before semi
 				rsemi = i
 			}
 
 		}
 
-		//fmt.Printf("DEBUG : $=%d/%d, .=%d, ~=%d, ;=%d\n", rstart, len(n.args), rperiod, rtilda, rsemi)
-
 		// check syntax and process
-		if rtilda == rstart { // canonical from
-			if len(n.args[rtilda].args) != 0 {
+		if rarrow == rstart { // canonical from
+			if len(n.args[rarrow].args) != 0 {
 				// valid canonical form.
 				// Ignore and continue.
 				rstart++
@@ -153,10 +151,10 @@ func (in *Inter) preProcRule(n *Node) error {
 
 		if rperiod == rstart+1 { // fact
 			if isVariable(n.args[rstart].name) { // invalid fact
-				return fmt.Errorf("head of rule cannot be a Variable")
+				return fmt.Errorf("a Variable is not a rul on its own")
 			}
 			// construct actual rule, reusing the period node.
-			n.args[rperiod].name = "~"
+			n.args[rperiod].name = ":-"
 			n.args[rperiod].args = append(n.args[rperiod].args, n.args[rstart])
 			// remove head pointer
 			n.args = append(n.args[:rstart], n.args[rperiod:]...)
@@ -165,34 +163,34 @@ func (in *Inter) preProcRule(n *Node) error {
 			continue
 		}
 
-		if rtilda == rstart+1 && rsemi == MaxInt { // postfix rule (no alternative).
+		if rarrow == rstart+1 && rsemi == MaxInt { // postfix rule (no alternative).
 			head := n.args[rstart]
-			n.args[rtilda].args = append(n.args[rtilda].args, head)
-			n.args[rtilda].args = append(n.args[rtilda].args, n.args[rtilda+1:rperiod]...)
+			n.args[rarrow].args = append(n.args[rarrow].args, head)
+			n.args[rarrow].args = append(n.args[rarrow].args, n.args[rarrow+1:rperiod]...)
 
 			// cleanup
 			//fmt.Println("DEBUG : n.args before cleanup:", n.args)
 			if rperiod < len(n.args) {
-				n.args = append(n.args[:rtilda+1], n.args[rperiod+1:]...)
+				n.args = append(n.args[:rarrow+1], n.args[rperiod+1:]...)
 			} else {
-				n.args = n.args[:rtilda+1]
+				n.args = n.args[:rarrow+1]
 			}
-			n.args = append(n.args[:rstart], n.args[rtilda:]...)
+			n.args = append(n.args[:rstart], n.args[rarrow:]...)
 			//fmt.Println("DEBUG : n.args after cleanup:", n.args)
 			rstart++
 			continue
 		}
 
-		if rtilda == rstart+1 && rsemi != MaxInt { // postfix rule (with alternative).
+		if rarrow == rstart+1 && rsemi != MaxInt { // postfix rule (with alternative).
 			head := n.args[rstart]
-			n.args[rtilda].args = append(n.args[rtilda].args, head)
-			n.args[rtilda].args = append(n.args[rtilda].args, n.args[rtilda+1:rsemi]...)
+			n.args[rarrow].args = append(n.args[rarrow].args, head)
+			n.args[rarrow].args = append(n.args[rarrow].args, n.args[rarrow+1:rsemi]...)
 
 			// cleanup
 			//fmt.Println("DEBUG : n.args before cleanup:", n.args)
-			n.args[rstart], n.args[rtilda] = n.args[rtilda], n.args[rstart]
-			n.args[rsemi].name = "~"
-			n.args = append(n.args[:rtilda+1], n.args[rsemi:]...)
+			n.args[rstart], n.args[rarrow] = n.args[rarrow], n.args[rstart]
+			n.args[rsemi].name = ":-"
+			n.args = append(n.args[:rarrow+1], n.args[rsemi:]...)
 			//fmt.Println("DEBUG : n.args after cleanup:", n.args)
 			rstart++
 			continue

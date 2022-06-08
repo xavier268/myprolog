@@ -7,7 +7,7 @@ import (
 
 func TestParse0Visual(t *testing.T) {
 	//t.Skip()
-	src := `a(b(1 X 2)c[5 Y 6])`
+	src := `a(b(1 X 2)c[ 1 Y 1])`
 	fmt.Println("__Source___")
 	fmt.Println(src)
 	pi := NewInter()
@@ -94,44 +94,47 @@ func TestPreProcRule(t *testing.T) {
 		exp string // non idented value of parsed output
 	}{
 		// basic atoms, no alternatives
-		"~":                 {false, "~"},                              // illegal empty canonical
-		"~(a)":              {true, "~ ( a )"},                         // missing period
-		"~(aa)":             {true, "~ ( aa )"},                        // valid canonical form
-		"aa.":               {true, "~ ( aa )"},                        // valid fact
-		"X.":                {false, "X ."},                            // variable head error
-		"a":                 {false, "a"},                              // missing final period
-		"a~":                {false, "a ~"},                            // missing final period
-		"a~b.":              {true, "~ ( a b )"},                       // ok
-		"a~.":               {true, "~ ( a )"},                         // ok
-		"a.":                {true, "~ ( a )"},                         // ok
-		"a.b.":              {true, "~ ( a ) ~ ( b )"},                 // ok
-		"a.~(b)":            {true, "~ ( a ) ~ ( b )"},                 // ok
-		"~(a)b.":            {true, "~ ( a ) ~ ( b )"},                 // ok
-		"a.~(b c)":          {true, "~ ( a ) ~ ( b c )"},               // ok
-		"~(a c)b.":          {true, "~ ( a c ) ~ ( b )"},               // ok
-		"a~b c. d ~ e f.":   {true, "~ ( a b c ) ~ ( d e f )"},         // ok
-		"a~b c. d ~ e f.g.": {true, "~ ( a b c ) ~ ( d e f ) ~ ( g )"}, // ok
-		"a~b c. d ~ e.g.":   {true, "~ ( a b c ) ~ ( d e ) ~ ( g )"},   // ok
-		"a~b c. d ~ .g.":    {true, "~ ( a b c ) ~ ( d ) ~ ( g )"},     // ok
+		":-":                  {false, ":-"},                                // illegal empty canonical
+		":-(a)":               {true, ":- ( a )"},                           // missing period
+		":-(aa)":              {true, ":- ( aa )"},                          // valid canonical form
+		"aa.":                 {true, ":- ( aa )"},                          // valid fact
+		"X.":                  {false, "X ."},                               // Variable as a rule
+		"X:-a.":               {true, ":- ( X a )"},                         // No error here !
+		"a":                   {false, "a"},                                 // missing final period
+		"2.":                  {false, "2."},                                // missing final period, because part of number !
+		"2..":                 {true, ":- ( 2. )"},                          // one period for the numeber, the other for the rule.
+		"a:-":                 {false, "a :-"},                              // missing final period
+		"a:-b.":               {true, ":- ( a b )"},                         // ok
+		"a:-.":                {true, ":- ( a )"},                           // ok
+		"a.":                  {true, ":- ( a )"},                           // ok
+		"a.b.":                {true, ":- ( a ) :- ( b )"},                  // ok
+		"a.:-(b)":             {true, ":- ( a ) :- ( b )"},                  // ok
+		":-(a)b.":             {true, ":- ( a ) :- ( b )"},                  // ok
+		"a.:-(b c)":           {true, ":- ( a ) :- ( b c )"},                // ok
+		":-(a c)b.":           {true, ":- ( a c ) :- ( b )"},                // ok
+		"a:-b c. d :- e f.":   {true, ":- ( a b c ) :- ( d e f )"},          // ok
+		"a:-b c. d :- e f.g.": {true, ":- ( a b c ) :- ( d e f ) :- ( g )"}, // ok
+		"a:-b c. d :- e.g.":   {true, ":- ( a b c ) :- ( d e ) :- ( g )"},   // ok
+		"a:-b c. d :- .g.":    {true, ":- ( a b c ) :- ( d ) :- ( g )"},     // ok
 
 		// compound terms, no alternative
-		"a(X,Y).":          {true, "~ ( a ( X Y ) )"},             // ok
-		"a(X,Y)~.":         {true, "~ ( a ( X Y ) )"},             // ok
-		"a(X,Y)~b(Y,X).":   {true, "~ ( a ( X Y ) b ( Y X ) )"},   // ok
-		"a(X,Y)~b(Y,X),X.": {true, "~ ( a ( X Y ) b ( Y X ) X )"}, // ok
-		"a(X,_)~b(_,X),X.": {true, "~ ( a ( X _ ) b ( _ X ) X )"}, // ok
+		"a(X,Y).":           {true, ":- ( a ( X Y ) )"},             // ok
+		"a(X,Y):-.":         {true, ":- ( a ( X Y ) )"},             // ok
+		"a(X,Y):-b(Y,X).":   {true, ":- ( a ( X Y ) b ( Y X ) )"},   // ok
+		"a(X,Y):-b(Y,X),X.": {true, ":- ( a ( X Y ) b ( Y X ) X )"}, // ok
+		"a(X,_):-b(_,X),X.": {true, ":- ( a ( X _ ) b ( _ X ) X )"}, // ok
 
 		// alternatives
-		"a~b;c;d e.":  {true, "~ ( a b ) ~ ( a c ) ~ ( a d e )"},     // ok
-		"a~b;c.":      {true, "~ ( a b ) ~ ( a c )"},                 // ok
-		"a~b;c;d e":   {false, "a ~ b ; c ; d e"},                    // missing period
-		"a~b;d e":     {false, "a ~ b ; d e"},                        // missing period
-		"a~b;":        {false, "a ~ b ;"},                            // missing period
-		"a;c.":        {false, "a ; c ."},                            // missing  ~
-		"a(X,Y)~b;c.": {true, "~ ( a ( X Y ) b ) ~ ( a ( X Y ) c )"}, // ok
-		"a~b.;c.":     {false, "~ ( a b ) ; c ."},                    // syntax error
-		"a~b.d;c.":    {false, "~ ( a b ) d ; c ."},                  // syntax error
-		"a~;d.":       {true, "~ ( a ) ~ ( a d )"},                   // ok
+		"a:-b;c;d e.":  {true, ":- ( a b ) :- ( a c ) :- ( a d e )"},    // ok
+		"a:-b;c.":      {true, ":- ( a b ) :- ( a c )"},                 // ok
+		"a:-b;c;d e":   {false, "a :- b ; c ; d e"},                     // missing period
+		"a:-b;d e":     {false, "a :- b ; d e"},                         // missing period
+		"a:-b;":        {false, "a :- b ;"},                             // missing period
+		"a;c.":         {false, "a ; c ."},                              // missing  :-
+		"a(X,Y):-b;c.": {true, ":- ( a ( X Y ) b ) :- ( a ( X Y ) c )"}, // ok
+		"a:-b.;c.":     {false, ":- ( a b ) ; c ."},                     // syntax error
+		"a:-b.d;c.":    {false, ":- ( a b ) d ; c ."},                   // syntax error
+		"a:-;d.":       {true, ":- ( a ) :- ( a d )"},                   // ok
 
 	}
 	pi := NewInter()

@@ -38,10 +38,10 @@ They will require no rescoping for new rule contexts.
 
 Rules can have the following forms :
 
-* ~ ( a b ) . *// This is the canonical form**
-* f(X,Y) ~ f(1, Y) , f(X,2) .  *//commas are optionals. The final period is mandatory*
-* f(X,Y) ~ one ; two .  *//this form is short hand to define two rules with same head*
-* f(X,Y). *//final period required. This is a head only rule. Same as f(Y,Y) ~ .*
+* :- ( a b ) . *// This is the canonical form**
+* f(X,Y) :- f(1, Y) , f(X,2) .  *//commas are optionals. The final period is mandatory*
+* f(X,Y) :- one ; two .  *//this form is short hand to define two rules with same head*
+* f(X,Y). *//final period required. This is a head only rule. Same as f(Y,Y) :- .*
 
 ## Lists
 
@@ -75,8 +75,8 @@ The next rule ...
 
 If we reach the end of the rule list without being able to UNIFY, then we report failure and return.
 
-Assuming rule f(g(Y,3),Y)~... have the right functor, UNIFY will 
-first RESCOPE it as f(g(Y#1, 3),Y)~ ..., making sure variables using the same symbol are not the same.
+Assuming rule f(g(Y,3),Y):-... have the right functor, UNIFY will 
+first RESCOPE it as f(g(Y#1, 3),Y):- ..., making sure variables using the same symbol are not the same.
 
 UNIFY will compare the goal with the rescoped head of the rule, returning a new list of constraints.
 These constraints are recorded in the solving context.

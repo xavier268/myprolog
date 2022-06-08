@@ -96,7 +96,7 @@ func (n *Node) dumpTree(dedup map[*Node]bool) {
 		// dump node
 		fmt.Printf("%p  %s %10s / %5d : ", n, n.StringType(), n.name, len(n.args))
 		for _, s := range n.args {
-			fmt.Printf("%s ", s.name)
+			fmt.Printf("%s{%p} ", s.name, s)
 		}
 		fmt.Println()
 	}
