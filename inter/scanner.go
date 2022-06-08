@@ -24,7 +24,30 @@ func (ps *pscanner) Next() string {
 	if tk == scanner.EOF {
 		return ""
 	}
-	return ps.s.TokenText()
+	n := ps.s.TokenText()
+
+	// handle double tokens
+	switch n {
+	case ":": // :-
+		if ps.s.Peek() == '-' {
+			ps.s.Scan()
+			return n + ps.s.TokenText()
+		} else {
+			return n
+		}
+
+	case "<", ">", "!": // <=, != >=
+		if ps.s.Peek() == '=' {
+			ps.s.Scan()
+			return n + ps.s.TokenText()
+		} else {
+			return n
+		}
+
+	default:
+		return n
+	}
+
 }
 
 // NewTokenizer from io.Reader

@@ -3,10 +3,9 @@ package inter
 import (
 	"fmt"
 	"math"
-	"strings"
 )
 
-// a Variable is a leafnode that starts with a capital letter or an underscore.
+// a Variable starts with a capital letter or an underscore.
 func isVariable(name string) bool {
 	return (name[0] >= 'A' && name[0] <= 'Z') || name[0] == '_'
 }
@@ -16,17 +15,15 @@ func isNumber(name string) bool {
 	return name[0] >= '0' && name[0] <= '9'
 }
 
-// isFunctor to check if valid functor name
+// isFunctor to check if valid functor name.
+// It should be neither a variable, nor a number, nor named 'nil'
 func isFunctor(name string) bool {
-	return name != "" && !isVariable(name) && !isNumber(name) && !strings.Contains("()_[]|.", name) && name != "nil"
+	return name != "" && !isVariable(name) && !isNumber(name) && name != "nil"
 }
 
 // ParseRules will load the rules (or additionnal rules) to the rules node.
 // New rules are appended to the previous ones.
 func (in *Inter) ParseRules(tzr Tokenizer) error {
-	if in.rules == nil {
-		in.rules = in.nodeFor("rules")
-	}
 	err := in.parse0(tzr, in.rules, new(int))
 	if err != nil {
 		return err
@@ -39,7 +36,6 @@ func (in *Inter) ParseRules(tzr Tokenizer) error {
 	if err != nil {
 		return err
 	}
-	in.rules.markConstant()
 	return nil
 }
 
@@ -80,7 +76,7 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, par *int) error {
 		case "":
 			panic("unexpected attempt to parse empty token")
 		default:
-			n := i.nodeFor(tk)
+			n := nodeFor(tk)
 			root.args = append(root.args, n)
 		}
 	}
@@ -89,52 +85,6 @@ func (i *Inter) parse0(tzr Tokenizer, root *Node, par *int) error {
 		return fmt.Errorf("parenthesis do not match")
 	}
 	return nil
-}
-
-// isConstant recursively and lazily tells if the tree is constant, ie, contains NO variable.
-// Any node flagged constant should be considered immutable and should never change, not be given additionnal children.
-// New nodes start as non constant.
-func (n *Node) isConstant() bool {
-
-	if n.constant { // already defined as constant
-		return true
-	}
-	if isVariable(n.name) { // Variable are NEVER constant.
-		n.constant = false
-		return false
-	}
-	for _, a := range n.args { // all atomic with NO children will be constant.
-		if !a.isConstant() {
-			return false // lazily return. Some subtrees might not have been marked.
-		}
-	}
-	n.constant = true
-	return true
-}
-
-// markConstant walk the tree and recomputes all constant values.
-// Needed everytime a variable could gave been added somewhere, or the tree could have changed.
-// It returns the constant status.
-func (n *Node) markConstant() bool {
-
-	//fmt.Printf("DEBUG - exploring : %s\n", n)
-
-	if isVariable(n.name) { // Variable are NEVER constant.
-		n.constant = false
-		return false
-	}
-	if len(n.args) == 0 { // atomic and not variable are ALWAYS constant.
-		n.constant = true
-		//fmt.Printf("DEBUG - marking constant %s\n", n)
-		return true
-	}
-
-	cc := true
-	for _, a := range n.args {
-		cc = a.markConstant() && cc // order is important to prevent lazy evaluation on false !!!
-	}
-	n.constant = cc
-	return n.constant
 }
 
 const MaxInt int = int(math.MaxInt32)
@@ -314,11 +264,11 @@ func (in *Inter) preProcList(n *Node) error {
 			// reuse the open node
 			list := n.args[open]
 			list.name = "dot"
-			list.args = []*Node{in.nodeFor("nil"), in.nodeFor("nil")}
+			list.args = []*Node{nodeFor("nil"), nodeFor("nil")}
 
 			for p := open + 1; n.args[p].name != "]"; p++ { // iterate on the inner list
-				nn := in.nodeFor("dot")
-				nn.args = []*Node{in.nodeFor("nil"), in.nodeFor("nil")}
+				nn := nodeFor("dot")
+				nn.args = []*Node{nodeFor("nil"), nodeFor("nil")}
 				list.args = []*Node{n.args[p], nn}
 				list = list.args[1]
 			}

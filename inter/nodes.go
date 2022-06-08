@@ -7,9 +7,8 @@ import (
 
 // Node is the node/tree structure for prolog objects.
 type Node struct {
-	name     string  // printable name
-	constant bool    // true if there are no Variable in the whole tree. Hence, cloning can be avoided.
-	args     []*Node // Children nodes
+	name string  // printable name
+	args []*Node // Children nodes
 }
 
 // lastArg last child of a node, nil if no child.
@@ -65,11 +64,6 @@ func (n *Node) StringType() string {
 	}
 	if isNumber(n.name) {
 		b += "N"
-	} else {
-		b += "."
-	}
-	if n.constant {
-		b += "C"
 	} else {
 		b += "."
 	}

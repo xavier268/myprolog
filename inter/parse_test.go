@@ -12,7 +12,7 @@ func TestParse0Visual(t *testing.T) {
 	fmt.Println(src)
 	pi := NewInter()
 	tzr := NewTokenizerString(src)
-	root := pi.nodeFor("parsed")
+	root := nodeFor("parsed")
 	err := pi.parse0(tzr, root, new(int))
 	if err != nil {
 		t.Fatal(err)
@@ -22,18 +22,6 @@ func TestParse0Visual(t *testing.T) {
 	fmt.Println("__Indent___")
 	fmt.Println(root.StringPretty())
 	root.DumpTree(true)
-	pi.dumpSymt()
-	fmt.Println("Testing if root is constant  ...")
-	if root.isConstant() {
-		pi.dumpSymt()
-		fmt.Println("root IS constant/immutable")
-	} else {
-		pi.dumpSymt()
-		fmt.Println("root IS NOT constant/immutable")
-	}
-	fmt.Println("Proactively marking constant for root ...")
-	root.markConstant()
-	pi.dumpSymt()
 }
 
 func TestParse0Table(t *testing.T) {
@@ -47,7 +35,7 @@ func TestParse0Table(t *testing.T) {
 		"22":       {true, "22"},
 		"X2":       {true, "X2"},
 		"+":        {true, "+"},
-		":-":       {true, ": -"},
+		":-":       {true, ":-"},
 		"\"a b \"": {true, "\"a b \""},
 
 		// parenthesis - simple
@@ -83,7 +71,7 @@ func TestParse0Table(t *testing.T) {
 	pi := NewInter()
 	for src, got := range tab {
 		tzr := NewTokenizerString(src)
-		root := pi.nodeFor("got")
+		root := nodeFor("got")
 		err := pi.parse0(tzr, root, new(int))
 		if err != nil {
 			fmt.Printf("info : %20s -> %v\n", src, err)
@@ -149,7 +137,7 @@ func TestPreProcRule(t *testing.T) {
 	pi := NewInter()
 	for src, got := range tab {
 		tzr := NewTokenizerString(src)
-		root := pi.nodeFor("got")
+		root := nodeFor("got")
 		err := pi.parse0(tzr, root, new(int))
 		if err != nil {
 			t.Fatalf("parse0 should not fail for %s with %e", src, err)
@@ -219,7 +207,7 @@ func TestPreProcList(t *testing.T) {
 	pi := NewInter()
 	for src, got := range tab {
 		tzr := NewTokenizerString(src)
-		root := pi.nodeFor("got")
+		root := nodeFor("got")
 		err := pi.parse0(tzr, root, new(int))
 		if err == nil {
 			// no need to preProcBar if already previous error !
