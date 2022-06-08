@@ -2,6 +2,7 @@ package inter
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -82,6 +83,35 @@ func (ctx *PContext) GetEQ(lhs string) (rhs *Node) {
 		}
 	}
 	return nil
+}
+
+// GetLT return all the upper bounds of the provided lhs.
+// IF some of the upper bounds are actual numbers, then only the lowest one is returned.
+func GetLT(lhs string) (rhs [](*Node)) {
+
+	low := math.MaxFloat64 // lowest numerical upper bound so far
+
+	rhs = rhs[:0]
+	for c := ctx; c != nil; c = c.prt {
+		if c.ctp == LT && c.lhs == lhs {
+			rhs = append(rhs, c.rhs)
+			// update low numerical bound
+			if isNumber(c.rhs.name) {
+				var f float64
+				n, e := fmt.Sscanf(c.rhs.name, "%f", &f)
+				if e != nil || n != 1 {
+					panic("Cannot scan float64 for " + c.rhs.name)
+				}
+				low = math.Min(low, f)
+			}
+		}
+	}
+
+	// remove all uncessary NUMBER constraints that are larger than low
+	// TODO !
+
+	return rhs
+
 }
 
 // SetNUMBER sets lhs to ba a number.
