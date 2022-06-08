@@ -126,3 +126,21 @@ func (n *Node) Walk(f WalkFunction) error {
 	return nil
 }
 */
+
+// Equal recursively compares nodes for equality, based on their names.
+// Actual memory address may differ.
+func (n *Node) Equal(p *Node) bool {
+	if p == nil {
+		return n == nil
+	}
+	if n.name != p.name || len(n.args) != len(p.args) {
+		return false
+	}
+
+	for i := 0; i < len(n.args); i++ {
+		if !n.args[i].Equal(p.args[i]) {
+			return false
+		}
+	}
+	return true
+}

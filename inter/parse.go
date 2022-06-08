@@ -3,6 +3,7 @@ package inter
 import (
 	"fmt"
 	"math"
+	"strings"
 )
 
 // a Variable starts with a capital letter or an underscore.
@@ -13,6 +14,10 @@ func isVariable(name string) bool {
 // a number is a valid go token starting with a digit.
 func isNumber(name string) bool {
 	return name[0] >= '0' && name[0] <= '9'
+}
+
+func isInt(name string) bool {
+	return isNumber(name) && !strings.Contains(name, ".")
 }
 
 // isFunctor to check if valid functor name.
