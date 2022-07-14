@@ -1,4 +1,4 @@
-package inter
+package tknz
 
 import (
 	"bufio"
@@ -8,18 +8,16 @@ import (
 	"text/scanner"
 )
 
-// Tokenizer scanns the token from an input stream.
-// Token follow the go syntax, including comments.
-// Combined tokens, such as :- or <= appear as two separate tokens.
-type Tokenizer interface {
-	Next() string // Get next token, empty string on EOF
-}
-
-type pscanner struct {
+// Tokenizer scans the token from an input stream.
+type Tokenizer struct {
 	s scanner.Scanner
 }
 
-func (ps *pscanner) Next() string {
+// Next provides the next token.
+// Token follow the go syntax, including comments.
+// Combined tokens  ( :- , <= , >= , != ) are reconstructed as a single token.
+// Upon EOF, an empty string is returned.
+func (ps *Tokenizer) Next() string {
 	tk := ps.s.Scan()
 	if tk == scanner.EOF {
 		return ""
@@ -51,21 +49,21 @@ func (ps *pscanner) Next() string {
 }
 
 // NewTokenizer from io.Reader
-func NewTokenizer(input io.Reader) Tokenizer {
-	ps := new(pscanner)
+func NewTokenizer(input io.Reader) *Tokenizer {
+	ps := new(Tokenizer)
 	//ps.s.Mode = scanner.GoTokens
 	ps.s.Init(input)
 	ps.s.Filename = "io.Reader"
 	return ps
 }
 
-// NewTokenizerString from srource string
-func NewTokenizerString(src string) Tokenizer {
+// NewTokenizerString from string
+func NewTokenizerString(src string) *Tokenizer {
 	return NewTokenizer(strings.NewReader(src))
 }
 
 // NewTokenizerFile from file name
-func NewTokenizerFile(fileName string) Tokenizer {
+func NewTokenizerFile(fileName string) *Tokenizer {
 	f, err := os.Open(fileName)
 	if err != nil {
 		panic(err)

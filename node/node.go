@@ -35,6 +35,13 @@ func NewNode(name string) *Node {
 	return n
 }
 
+func (n *Node) GetLoad() any {
+	if n == nil {
+		return nil
+	}
+	return n.load
+}
+
 // Dump prints a detailled view of the node and its children, showing the type of each node.
 func (n *Node) Dump() string {
 	var sb strings.Builder
@@ -116,7 +123,7 @@ func (n *Node) Equal(m *Node) bool {
 	return true
 }
 
-func (n *Node) Leaf() bool {
+func (n *Node) IsLeaf() bool {
 	if n == nil {
 		return true
 	}
@@ -157,4 +164,22 @@ func (n *Node) Add(children ...*Node) {
 		panic("trying to add children to a Variable node")
 	}
 	n.children = append(n.children, children...)
+}
+
+// Walk the Node, applying f recursively to all node loads, stopping immediately if error.
+// (ie : generate an error if you want to break the walk ...)
+func (n *Node) Walk(f func(load any) error) error {
+
+	if n == nil || n.load == nil {
+		return nil
+	}
+	if err := f(n.load); err != nil {
+		return err
+	}
+	for _, c := range n.children {
+		if err := c.Walk(f); err != nil {
+			return err
+		}
+	}
+	return nil
 }

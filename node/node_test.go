@@ -89,3 +89,23 @@ func TestAdd(t *testing.T) {
 	}
 
 }
+
+func TestWalkVisual(t *testing.T) {
+
+	n1 := NewNode("n1")
+	n2 := NewNode("n2")
+	n3 := NewNode("n3")
+	n4 := NewNode("n4")
+
+	n1.Add(n2, n3)
+	n3.Add(n4)
+	n1.Add(n3)
+	n2.Add(nil)
+
+	var count = new(int)
+	n1.Walk(func(load any) error { *count = *count + 1; fmt.Println(load); return nil })
+	if *count != 6 { // nil node is nevr called (no load), hence 6 and not 7
+		fmt.Println(n1.Dump())
+		t.Fatalf("Unexpected node count : %d", *count)
+	}
+}
