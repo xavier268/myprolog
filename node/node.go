@@ -1,0 +1,160 @@
+// Package node implements the generic data structures and their related utilities.
+package node
+
+import (
+	"fmt"
+	"strconv"
+	"strings"
+)
+
+type Node struct {
+	load     any // load type defines the node type, should never be nil !
+	children []*Node
+}
+
+func NewNode(name string) *Node {
+	if len(name) == 0 {
+		return nil
+	}
+	n := new(Node)
+	if name == "_" {
+		n.load = Underscore{}
+		return n
+	}
+	if name[0] >= 'A' && name[0] <= 'Z' { // it's a variable node !
+		n.load = Variable{name, 0}
+		return n
+	}
+	f, err := strconv.ParseFloat(name, 64) // test if its a number ?
+	if err == nil {
+		n.load = Number{name, f}
+		return n
+	}
+	// else, its a string !
+	n.load = name
+	return n
+}
+
+// Dump prints a detailled view of the node and its children, showing the type of each node.
+func (n *Node) Dump() string {
+	var sb strings.Builder
+	n.dump(&sb, "")
+	return sb.String()
+}
+
+func (n *Node) dump(sb *strings.Builder, prefix string) {
+
+	if n == nil || n.load == nil {
+		fmt.Fprintf(sb, "%s<Nil>", prefix)
+		return
+	}
+	switch v := n.load.(type) {
+	case Variable:
+		if v.nsp == 0 {
+			fmt.Fprintf(sb, "%s<Var>%s", prefix, v.name)
+		} else {
+			fmt.Fprintf(sb, "%s<Var>%s#%d", prefix, v.name, v.nsp)
+		}
+	case Underscore:
+		fmt.Fprintf(sb, "%s<Uds>_", prefix)
+	case Number:
+		fmt.Fprintf(sb, "%s<Num>%v", prefix, v.value)
+	case string:
+		fmt.Fprintf(sb, "%s<Str>%s", prefix, v)
+	default:
+		panic("unimplemented load type for node")
+	}
+
+	prefix = prefix + "\t"
+	for _, c := range n.children {
+		fmt.Fprintln(sb)
+		c.dump(sb, prefix)
+	}
+
+}
+
+// Only print the name of the node, not the full tree (see Dump)
+func (n *Node) String() string {
+	if n == nil {
+		return ""
+	}
+	switch v := n.load.(type) {
+	case Variable:
+		if v.nsp == 0 {
+			return v.name
+		}
+		return fmt.Sprintf("%s#%d", v.name, v.nsp)
+	case Underscore:
+		return "_"
+	case Number:
+		return fmt.Sprint(v.value)
+	case string:
+		return v
+	default:
+		panic("unimplemented load type for node")
+	}
+}
+
+func (n *Node) Equal(m *Node) bool {
+	if n == nil && m == nil {
+		return true
+	}
+	if m == nil || n == nil {
+		return false
+	}
+	if n.load != m.load {
+		return false
+	}
+	if len(n.children) != len(m.children) {
+		return false
+	}
+	for i, c := range n.children {
+		if eq := c.Equal(m.children[i]); !eq {
+			return false
+		}
+	}
+	return true
+}
+
+func (n *Node) Leaf() bool {
+	if n == nil {
+		return true
+	}
+	return len(n.children) == 0
+}
+
+// Variable start with a capital letter A-Z.
+// Variables have namespace versions, to differentiate instatiation of local variables.
+type Variable struct {
+	name string
+	nsp  int // namespace version of variable
+}
+
+type Underscore struct{}
+
+type Number struct {
+	name  string
+	value float64
+}
+
+func (n *Node) Clone() *Node {
+	if n == nil {
+		return nil
+	}
+	m := new(Node)
+	m.load = n.load
+	for _, c := range n.children {
+		m.Add(c.Clone())
+	}
+	return m
+}
+
+func (n *Node) Add(children ...*Node) {
+	if n == nil || len(children) == 0 {
+		return
+	}
+	if _, ok := n.load.(Variable); ok {
+		panic("trying to add children to a Variable node")
+	}
+	n.children = append(n.children, children...)
+}
