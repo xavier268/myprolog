@@ -80,23 +80,32 @@ func (n *Node) dump(sb *strings.Builder, prefix string) {
 
 }
 
-// Only print the name of the node, not the full tree (see Dump)
 func (n *Node) String() string {
 	if n == nil {
 		return ""
 	}
+	var sb strings.Builder
+	n.string(&sb)
+	return sb.String()
+}
+
+func (n *Node) string(sb *strings.Builder) {
+	if n == nil {
+		return
+	}
 	switch v := n.load.(type) {
 	case Variable:
 		if v.nsp == 0 {
-			return v.name
+			fmt.Fprint(sb, v.name)
+		} else {
+			fmt.Fprintf(sb, "%s#%d", v.name, v.nsp)
 		}
-		return fmt.Sprintf("%s#%d", v.name, v.nsp)
 	case Underscore:
-		return "_"
+		fmt.Fprint(sb, "_")
 	case Number:
-		return fmt.Sprint(v.value)
+		fmt.Fprint(sb, v.value)
 	case string:
-		return v
+		fmt.Fprint(sb, v)
 	default:
 		panic("unimplemented load type for node")
 	}
@@ -182,4 +191,20 @@ func (n *Node) Walk(f func(load any) error) error {
 		}
 	}
 	return nil
+}
+
+// LastArg last child of a node, nil if no child.
+func (n *Node) LastArg() *Node {
+	if len(n.children) == 0 {
+		return nil
+	}
+	return n.children[len(n.children)-1]
+}
+
+// Returns the number of children.
+func (n *Node) NbChildren() int {
+	if n == nil {
+		return 0
+	}
+	return len(n.children)
 }
