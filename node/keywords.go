@@ -7,6 +7,9 @@ var keywords = []string{
 	"dot",
 	"rule",
 	"slash",
+	"halt",
+	"print",
+	"program",
 }
 
 type Keyword struct {
@@ -45,5 +48,11 @@ func NewRuleNode() *Node {
 func NewSlashNode() *Node {
 	n := new(Node)
 	n.load = Keyword{"slash"}
+	return n
+}
+
+func NewProgramNode() *Node {
+	n := new(Node)
+	n.load = Keyword{"program"}
 	return n
 }

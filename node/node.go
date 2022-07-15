@@ -243,3 +243,10 @@ func (n *Node) RemoveChild(i int) {
 		n.children = n.children[:i]
 	}
 }
+
+func (n *Node) SwapChildren(i, j int) {
+	if n == nil || i >= len(n.children) || j >= len(n.children) || i == j {
+		return
+	}
+	n.children[i], n.children[j] = n.children[j], n.children[i]
+}

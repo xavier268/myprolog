@@ -275,3 +275,27 @@ func preProcRule(n *node.Node) error {
 	}
 	return nil
 }
+
+// Parse a Prolog program.
+// Valid syntax is a set of valid rules.
+// Root node is called program.
+func Parse(tk *tknz.Tokenizer) (*node.Node, error) {
+	p := node.NewProgramNode()
+
+	err := parse0(tk, p, new(int))
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	err = preProcList(p)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	err = preProcRule(p)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	return p, nil
+}
