@@ -14,7 +14,7 @@ type Node struct {
 
 func NewStringNode(s string) *Node {
 	n := new(Node)
-	n.load = Variable{s, 0}
+	n.load = String(s)
 	return n
 }
 
@@ -32,7 +32,7 @@ func NewNode(name string) *Node {
 		return n
 	}
 
-	kw, err := Reserved(name)
+	kw, err := NewKeyword(name)
 	if err == nil {
 		n.load = kw
 		return n
@@ -111,6 +111,7 @@ func (n *Node) string(sb *strings.Builder) {
 	case String:
 		fmt.Fprintf(sb, " %s", v)
 	default:
+		fmt.Printf("Debug : %#v %t\n", v, n.load)
 		panic("unimplemented load type for node")
 	}
 
@@ -222,4 +223,23 @@ func (n *Node) NbChildren() int {
 		return 0
 	}
 	return len(n.children)
+}
+
+// ReplaceChild replaces the child in place. Replacing with nil is allowed.
+func (n *Node) ReplaceChild(i int, c *Node) {
+	if n == nil || i >= len(n.children) {
+		return
+	}
+	n.children[i] = c
+}
+
+func (n *Node) RemoveChild(i int) {
+	if n == nil || i >= len(n.children) {
+		return
+	}
+	if i+1 < len(n.children) {
+		n.children = append(n.children[:i], n.children[i+1:]...)
+	} else {
+		n.children = n.children[:i]
+	}
 }

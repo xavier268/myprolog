@@ -22,11 +22,28 @@ func (kw *Keyword) String() string {
 
 var errNotFound = fmt.Errorf("keyword not found")
 
-func Reserved(kw string) (Keyword, error) {
+func NewKeyword(kw string) (Keyword, error) {
 	for _, k := range keywords {
 		if k == kw {
 			return Keyword{kw}, nil
 		}
 	}
 	return Keyword{}, errNotFound
+}
+
+func NewDotNode() *Node {
+	n := new(Node)
+	n.load = Keyword{"dot"}
+	return n
+}
+
+func NewRuleNode() *Node {
+	n := new(Node)
+	n.load = Keyword{"rule"}
+	return n
+}
+func NewSlashNode() *Node {
+	n := new(Node)
+	n.load = Keyword{"slash"}
+	return n
 }
