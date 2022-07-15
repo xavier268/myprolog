@@ -7,56 +7,53 @@ import (
 
 func TestNilNode(t *testing.T) {
 	var n *Node
-	if n.String() != "" || n.Dump() != "<Nil>" {
+	if n.String() != " nil" {
+		fmt.Println(n)
 		t.Fatal("failed nil test")
 	}
 	n.Add()
-	n.Add(NewNode("toto")) // will be ignored, since n is nil
-	fmt.Println(n.Dump())
 	if n != nil {
 		t.Fatal("n should still be nil !")
 	}
 }
 func TestNodeNewCloneEquallStringDump(t *testing.T) {
 
-	data := []string{ // creation-name, String(), Dump()
+	data := []string{ // creation-name, String()
 
-		"lkj", "lkj", "<Str>lkj",
-		"", "", "<Nil>",
-		"123", "123", "<Num>123",
-		"123.4", "123.4", "<Num>123.4",
-		"-56.4", "-56.4", "<Num>-56.4",
-		"-.4", "-0.4", "<Num>-0.4",
-		"Xkjh", "Xkjh", "<Var>Xkjh",
-		"_", "_", "<Uds>_",
-		"_Mlkj55", "_Mlkj55", "<Str>_Mlkj55", // Not an Underscore, nor a Variable, but a String !
-		"m55", "m55", "<Str>m55",
-		"55m", "55m", "<Str>55m",
-		"$rule", "$rule", "<Str>$rule",
+		"lkj", " lkj",
+		"", " nil",
+		"123", " 123",
+		"123.4", " 123.4",
+		"-56.4", " -56.4",
+		"-.4", " -0.4",
+		"Xkjh", " Xkjh",
+		"_", " _",
+		"_Mlkj55", " _Mlkj55", // Not an Underscore, nor a Variable, but a String !
+		"m55", " m55",
+		"55m", " 55m",
+		"$rule", " $rule",
+		"rule", " rule",
 	}
 
 	var last *Node
-	for i := 0; i+2 < len(data); i += 3 {
+	for i := 0; i+1 < len(data); i += 2 {
 
 		nd := NewNode(data[i])
 		if nd.String() != data[i+1] {
-			fmt.Printf("%d : %q\n", i, data[i:i+3])
-			t.Fatal("unexpected String() value", nd.String())
+			fmt.Printf("%d : %q\n", i, data[i:i+2])
+			t.Fatalf("unexpected String() value <%s>", nd.String())
 		}
-		if nd.Dump() != data[i+2] {
-			fmt.Printf("%d : %q\n", i, data[i:i+3])
-			t.Fatal("unexpected Dump() value", nd.Dump())
-		}
+
 		// Verify a clone is equal
 		n2 := nd.Clone()
 		if !nd.Equal(n2) || !n2.Equal(nd) {
-			fmt.Printf("%d : %q\nnd:%s\nn2:%s\n", i, data[i:i+3], nd, n2)
+			fmt.Printf("%d : %q\nnd:%s\nn2:%s\n", i, data[i:i+2], nd, n2)
 			t.Fatal("failed clone should equal test")
 		}
 
 		// Verify not equal to last try ?
 		if nd.Equal(last) || last.Equal(nd) {
-			fmt.Printf("%d : %q\nnd:%s\nn2:%s\n", i, data[i:i+3], nd, n2)
+			fmt.Printf("%d : %q\nnd:%s\nn2:%s\n", i, data[i:i+2], nd, n2)
 			t.Fatal("failed should never equal last")
 		}
 		last = nd.Clone()
@@ -85,7 +82,7 @@ func TestAdd(t *testing.T) {
 
 	n12 := n1.Clone()
 	if !n12.Equal(n1) || !n1.Equal(n12) {
-		t.Fatalf("Failed equal of clone\n   n1: %s\nclone:%s\n", n1.Dump(), n1.Clone().Dump())
+		t.Fatalf("Failed equal of clone\n   n1: %s\nclone:%s\n", n1, n1.Clone())
 	}
 
 }
@@ -103,9 +100,14 @@ func TestWalkVisual(t *testing.T) {
 	n2.Add(nil)
 
 	var count = new(int)
-	n1.Walk(func(load any) error { *count = *count + 1; fmt.Println(load); return nil })
-	if *count != 6 { // nil node is nevr called (no load), hence 6 and not 7
-		fmt.Println(n1.Dump())
+	n1.Walk(func(nn *Node) error {
+		*count = *count + 1
+		fmt.Println(nn.GetLoad())
+		return nil
+	})
+	fmt.Println(n1)
+	if *count != 7 { // f should be called also on nil node , hence 7 and not 6
+		fmt.Println(n1)
 		t.Fatalf("Unexpected node count : %d", *count)
 	}
 }
