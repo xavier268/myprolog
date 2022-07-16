@@ -90,6 +90,14 @@ func (n *Node) ChildrenAllowed() bool {
 	}
 }
 
+func (v *Variable) String() string {
+	if v.nsp == 0 {
+		return v.name
+	} else {
+		return fmt.Sprintf("%s#%d", v.name, v.nsp)
+	}
+}
+
 // string generate tring output.
 func (n *Node) string(sb *strings.Builder) {
 	if n == nil {

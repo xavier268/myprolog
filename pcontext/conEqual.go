@@ -12,7 +12,11 @@ type ConEqual struct {
 	t *node.Node
 }
 
-var _ Constraint = NewConEqual(node.Variable{}, nil)
+func (ConEqual) Cons() {}
+
+func (c ConEqual) String() string {
+	return fmt.Sprintf("%s = %s", c.v.String(), c.t.String())
+}
 
 func NewConEqual(v node.Variable, t *node.Node) ConEqual {
 	c := ConEqual{v, t}
@@ -20,7 +24,7 @@ func NewConEqual(v node.Variable, t *node.Node) ConEqual {
 }
 
 // checks obvious X=X
-func (c ConEqual) Obvious() bool {
+func (c ConEqual) IsObvious() bool {
 	return c.t.GetLoad() == c.v || c.t.GetLoad() == node.Underscore{}
 }
 
@@ -35,18 +39,28 @@ func (c ConEqual) Verify() error {
 		})
 }
 
-func (c ConEqual) Merge(old Constraint) (remove bool, newcon []Constraint, err error) {
+// Update the cc constraints that contain a reference the Variable in c in their rhs, by replacing this Variable by the c rhs.
+// Return nil if no update required.
+func (c ConEqual) Update(cc Constraint) (upcc Constraint) {
 
-	if c.Obvious() {
-		return false, nil, nil
+	if cc == nil {
+		return nil
 	}
-	if err := c.Verify(); err != nil {
-		return false, nil, err
+
+	switch v := cc.(type) {
+	case ConEqual:
+		ce := v.t.Clone() // make a clone, and update it
+		ce.Walk(func(n *node.Node) error {
+			if n != nil && n.GetLoad() == v.v {
+				// TODO - I cannot reach the parent to replace n as a whole ?
+				panic("todo")
+			}
+			return nil
+		})
+		return ConEqual{v: v.v, t: ce}
+
+	default:
+		panic("type of constraint not implemented")
 	}
-
-	// TODO replace X in all previous occurence in the rhs ?
-
-	// default ..
-	return false, []Constraint{c}, nil
 
 }

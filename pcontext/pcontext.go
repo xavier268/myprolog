@@ -111,32 +111,6 @@ func (pc *PContext) Pop() *PContext {
 	return pc.parent
 }
 
-// Add a constraint to the current context.
-// Error if impossibility is detected (backtracking will be required !)
-func (pc *PContext) SetConstraint(cc Constraint) error {
-
-	if cc == nil || pc == nil {
-		return nil
-	}
-
-	for i := 0; i < len(pc.cstr); i++ {
-		c := pc.cstr[i]
-		if c == nil {
-			continue
-		}
-		remove, nc, err := cc.Merge(c)
-		if err != nil {
-			return err
-		}
-		if remove {
-			pc.cstr[i] = nil
-		}
-		pc.cstr = append(pc.cstr, nc...)
-	}
-
-	panic("todo")
-}
-
 // TODO
 func (pc *PContext) StringContent(n *node.Node) string {
 	return "PContext.StringContent not implemented - using String instead :\n" + n.String()

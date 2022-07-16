@@ -1,11 +1,38 @@
 package pcontext
 
-// A Constraints is the main information we have about the potential solutions.
-// PContext will continuously try to combine the constraints together to extract the best possible description of the solution.
-// Once created, constraints are immutable.
 type Constraint interface {
-	// Merge current Constraint with old previous constraint, returning new constraints, possibly replacing old.
-	// Remove boolean indicates if the previous constraint needs to be removed.
-	// Error is returned if an impossibility is detected, and backtracking is required.
-	Merge(old Constraint) (remove bool, newconst []Constraint, err error)
+	Cons() // marquer for the interface. No-op.
+	String() string
+}
+
+// Add a constraint to the current context.
+// Error if impossibility is detected (backtracking will be required !)
+func (pc *PContext) SetConstraint(cc Constraint) error {
+
+	if cc == nil || pc == nil {
+		return nil
+	}
+
+	switch c := cc.(type) {
+
+	case ConEqual:
+		if c.IsObvious() {
+			return nil
+		}
+		if err := c.Verify(); err != nil { // positive occur check
+			return err
+		}
+		for i, old := range pc.cstr {
+			old2 := c.Update(old)
+			if old2 != nil {
+				pc.cstr[i] = old2
+			}
+		}
+
+	default:
+		panic("unknown constraint")
+
+	}
+
+	return nil
 }
