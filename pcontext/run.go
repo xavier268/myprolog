@@ -41,8 +41,10 @@ func (pc *PContext) Run() (*PContext, error) {
 			err := pc.Unify(rule.GetChild(0), goal)
 			if err == nil { // success !
 				// update goals, erasing the initial goal used, and adding the body of the localized rule.
-				if len(pc.goals) != 0 { // should be !
+				if len(pc.goals) > 1 {
 					pc.goals = pc.goals[:len(pc.goals)-2]
+				} else {
+					pc.goals = pc.goals[:0]
 				}
 				if rule.NbChildren() > 1 {
 					pc.goals = append(pc.goals, rule.GetChildren()[1:]...)

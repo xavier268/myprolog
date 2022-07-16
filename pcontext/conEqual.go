@@ -49,15 +49,17 @@ func (c ConEqual) Update(cc Constraint) (upcc Constraint) {
 
 	switch v := cc.(type) {
 	case ConEqual:
-		ce := v.t.Clone() // make a clone, and update it
-		ce.Walk(func(n *node.Node) error {
-			if n != nil && n.GetLoad() == v.v {
-				// TODO - I cannot reach the parent to replace n as a whole ?
-				panic("todo")
+
+		vnode := node.NewVariableNode(v.v)
+		tree, changed := v.t.ReplaceSubTree(vnode, v.t)
+		if changed {
+			return ConEqual{
+				v: v.v,
+				t: tree,
 			}
+		} else {
 			return nil
-		})
-		return ConEqual{v: v.v, t: ce}
+		}
 
 	default:
 		panic("type of constraint not implemented")

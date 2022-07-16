@@ -41,7 +41,7 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 			return nil, nil
 
 		case "debug": // toggle the debug switch
-			config.FlagVerbose = !config.FlagVerbose
+			config.FlagDebug = !config.FlagDebug
 			fmt.Println("Debug flag is now", config.FlagDebug)
 			return nil, nil
 

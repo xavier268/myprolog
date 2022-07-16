@@ -113,36 +113,24 @@ func (pc *PContext) unifyString(rh, gh *node.Node) error {
 
 // unify a node variable in the first position.
 func (pc *PContext) unifyVariable(rh, gh *node.Node) error {
-	/* TODO
-	switch gh.GetLoad().(type) {
-	case node.Number:
-		c, err := NewCEqual(rh.GetLoad().(node.Variable), gh)
-		if err != nil {
-			return err
-		}
-		if err = pc.Set(c); err != nil {
-			return err
-		}
 
-	case node.Variable, node.String:
-		if rh.GetLoad() != gh.GetLoad() {
-			// skip X=X !
-			break
-		}
-		c, err := NewCEqual(rh.GetLoad().(node.Variable), gh) // X=Y
-		if err != nil {
+	switch gh.GetLoad().(type) {
+	case node.Number, node.Variable, node.String:
+		c := NewConEqual(rh.GetLoad().(node.Variable), gh)
+		if err := pc.SetConstraint(c); err != nil {
 			return err
 		}
-		if err = pc.Set(c); err != nil {
-			return err
-		}
+		return nil
 
 	case node.Underscore:
 		// ignore
 
+	case node.Keyword:
+		return fmt.Errorf("keywords cannot be unified")
+
 	default:
 		panic("internal error")
 	}
-	*/
+
 	return nil
 }

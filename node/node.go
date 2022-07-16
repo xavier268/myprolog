@@ -18,6 +18,12 @@ func NewStringNode(s string) *Node {
 	return n
 }
 
+func NewVariableNode(v Variable) *Node {
+	n := new(Node)
+	n.load = v
+	return n
+}
+
 func NewNode(name string) *Node {
 	if len(name) == 0 || name == "nil" {
 		return nil
@@ -133,6 +139,7 @@ func (n *Node) string(sb *strings.Builder) {
 	}
 }
 
+// Recursively compare trees.
 func (n *Node) Equal(m *Node) bool {
 	if n == nil && m == nil {
 		return true
@@ -280,4 +287,53 @@ func (n *Node) SwapChildren(i, j int) {
 		return
 	}
 	n.children[i], n.children[j] = n.children[j], n.children[i]
+}
+
+// ReplaceSubtree will replace each occurence of subtree with the specified remplacement,
+// returning the new tree, cloned if changed, and a flag to tell if it changed.
+// The initial tree is never modified.
+func (n *Node) ReplaceSubTree(subtree, replacement *Node) (newtree *Node, changed bool) {
+
+	if subtree == nil || n == nil {
+		return n, false
+	}
+	if n.Equal(subtree) {
+		return replacement, true
+	}
+
+	if !n.ContainsSubTree(subtree) {
+		return n, false
+	}
+
+	nn := n // For the moment, we expect n not to change.
+	cloned := false
+	for i, c := range n.children {
+		nc, ch := c.ReplaceSubTree(subtree, replacement)
+		changed = changed && ch
+		if ch && !cloned {
+			nn = n.Clone() // now, we have to clone
+			cloned = true
+		}
+		nn.children[i] = nc
+	}
+	return nn, cloned
+
+}
+
+func (n *Node) ContainsSubTree(subtree *Node) bool {
+	if subtree == nil {
+		return true
+	}
+	if n == nil {
+		return false
+	}
+	if n.Equal(subtree) {
+		return true
+	}
+	for _, c := range n.children {
+		if c.ContainsSubTree(subtree) {
+			return true
+		}
+	}
+	return false
 }
