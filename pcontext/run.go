@@ -36,11 +36,24 @@ func (pc *PContext) Run() (*PContext, error) {
 
 		rule := pc.FindRule(goal)
 		if rule != nil {
-			// attempt to use this rule !
-			// TODO - push a new context and attempt to use this rule.
-			// If it fails, pop the context back.
-		} else {
-			// verify if builtin applies ?
+			// push context, and try to confirm this rule
+			pc = pc.Push()
+			err := pc.Unify(rule.GetChild(0), goal)
+			if err == nil { // success !
+				// update goals, erasing the initial goal used, and adding the body of the localized rule.
+				if len(pc.goals) != 0 { // should be !
+					pc.goals = pc.goals[:len(pc.goals)-2]
+				}
+				if rule.NbChildren() > 1 {
+					pc.goals = append(pc.goals, rule.GetChildren()[1:]...)
+				}
+
+				continue // loop with the new context.
+			}
+			pc = pc.Pop() // on failure, pop context and continue
+			continue
+
+		} else { // no rule matches - verify if builtin applies ?
 			gg, err := pc.DoBuiltin(goal)
 			if err != nil {
 				// backtracking required
@@ -59,10 +72,18 @@ func (pc *PContext) Run() (*PContext, error) {
 }
 
 // Try to find an applicable rule, starting from the current rule pointer.
-// If found, retun a localized version, and update the current rule pointer.
-// If no found, return nil.
+// If found, return a localized version and update the current rule pointer of the context.
+// If no found, return nil. It is just a quickcheck, that will have to be confirmed later.
+// No change to the context at this stage.
 func (pc PContext) FindRule(goal *node.Node) (localizedRule *node.Node) {
-	// TODO
-	fmt.Println("WARNING : FindRule not implemented - TODO")
+	//found := -1 // found rule
+	for i := pc.current; i < len(pc.rules); i++ {
+		head := pc.rules[i].GetChild(0)                                                 // rule head
+		if head.GetLoad() == goal.GetLoad() && head.NbChildren() == goal.NbChildren() { // found a candidate
+			// Because neither can be a Variable here, it is ok to just compare payload and arity.
+			pc.current = i // update curent, so that next time the next rule will be selected.
+			return pc.rules[i].CloneLocal(pc.UID())
+		}
+	}
 	return nil
 }

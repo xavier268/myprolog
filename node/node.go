@@ -169,6 +169,7 @@ type Number struct {
 	value float64
 }
 
+// Clone recursively the tree.
 func (n *Node) Clone() *Node {
 	if n == nil {
 		return nil
@@ -179,6 +180,27 @@ func (n *Node) Clone() *Node {
 		m.Add(c.Clone())
 	}
 	return m
+}
+
+// CloneLocal makes a local clone of the node where Variable are all given the provided namespace.
+// If there are no variables, CloneLocal return n without change.
+func (n *Node) CloneLocal(nsp int) *Node {
+	if n == nil {
+		return nil
+	}
+	c := n.Clone()
+	c.Walk(
+		func(nn *Node) error {
+			if nn == nil || nn.load == nil {
+				return nil
+			}
+			switch v := nn.load.(type) {
+			case Variable:
+				v.nsp = nsp
+			}
+			return nil
+		})
+	return c
 }
 
 func (n *Node) Add(children ...*Node) {
