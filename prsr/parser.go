@@ -149,10 +149,11 @@ func preProcList(n *node.Node) error {
 	return nil
 }
 
-// preProcRule pre-processes rules. It is idempotent.
+// preProcRule pre-processes rules and queries. It is idempotent.
 // It will turn infix rules into prefix rules, using the ":-" functor, changed into the 'rule' keyword, and checking rule syntax.
 // It handles facts and alternative (semi-colon) rules.
 // Rules are supposed to be the children of input Node. Not recursion to look for them below that.
+// Queries start with a question mark (?) and finish with a period (.).
 func preProcRule(n *node.Node) error {
 
 	const large = 100_000_000 // less than max signed int 32
@@ -171,12 +172,16 @@ func preProcRule(n *node.Node) error {
 		rperiod := large // points to first valid .
 		rarrow := large  // points to first :-
 		rsemi := large   // points to first semi, if before period and after tilda.
+		rquery := large
 
 		// set rule pointers
 		for i := rstart; i < n.NbChildren(); i++ {
+			if rquery == large && rperiod == large && n.GetChild(i).GetLoad() == node.String("?") {
+				rquery = i
+			}
 			if i < rperiod && n.GetChild(i).GetLoad() == node.String(".") {
 				rperiod = i
-				break // do not update further !
+				break // do not update further beyond the first period !
 			}
 			if rarrow != large && n.GetChild(i).GetLoad() == node.String(":-") {
 				return fmt.Errorf("there can only be one arrow :- per valid rule. Did you forget a period ?")
@@ -189,9 +194,29 @@ func preProcRule(n *node.Node) error {
 			}
 		}
 		fmt.Println("DEBUG : ", n)
-		fmt.Println("DEBUG : rstart, rarrow, rsemi, rperiod:", rstart, rarrow, rsemi, rperiod)
+		fmt.Println("DEBUG : rstart, rquery, rarrow, rsemi, rperiod:", rstart, rquery, rarrow, rsemi, rperiod)
 
-		// check syntax and process
+		// process query if needed
+		if rquery != large {
+			if rquery != rstart {
+				return fmt.Errorf("missing a period before query ?")
+			}
+			if rperiod == large {
+				return fmt.Errorf("missing a period after query ?")
+			}
+			nq := node.NewQueryNode()
+			for n.GetChild(rstart+1).GetLoad() != node.String(".") {
+				nq.Add(n.GetChild(rstart + 1))
+				n.RemoveChild(rstart + 1)
+			}
+			n.RemoveChild(rstart + 1) // remove "."
+			n.ReplaceChild(rstart, nq)
+
+			rstart++
+			continue
+		}
+
+		// check syntax and process rule
 		if rarrow == rstart { // canonical form
 			if n.GetChild(rarrow).NbChildren() != 0 {
 				// valid canonical form.
@@ -268,8 +293,6 @@ func preProcRule(n *node.Node) error {
 			rstart++
 			continue
 		}
-		fmt.Println("DEBUG : ", n)
-		fmt.Println("DEBUG : rstart, rarrow, rsemi, rperiod:", rstart, rarrow, rsemi, rperiod)
 
 		return fmt.Errorf("unknown syntax")
 	}

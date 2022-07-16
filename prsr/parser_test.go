@@ -171,17 +171,32 @@ func TestPreProcRule(t *testing.T) {
 
 		// // alternatives
 
-		"a:-c;d e.":   {true, "rule ( a c ) rule ( a d e )"},              // ok
-		"a:-b;c;d e.": {true, "rule ( a b ) rule ( a c ) rule ( a d e )"}, // ok
-		// "a:-b;c.":      {true, ":- ( a b ) :- ( a c )"},                 // ok
-		// "a:-b;c;d e":   {false, "a :- b ; c ; d e"},                     // missing period
-		// "a:-b;d e":     {false, "a :- b ; d e"},                         // missing period
-		// "a:-b;":        {false, "a :- b ;"},                             // missing period
+		"a:-c;d e.":    {true, "rule ( a c ) rule ( a d e )"},               // ok
+		"a:-b;c;d e.":  {true, "rule ( a b ) rule ( a c ) rule ( a d e )"},  // ok
+		"a:-b;c.":      {true, "rule ( a b ) rule ( a c )"},                 // ok
+		"a:-b;c;d e":   {false, "a :- b ; c ; d e"},                         // missing period
+		"a:-b;d e":     {false, "a :- b ; d e"},                             // missing period
+		"a:-b;":        {false, "a :- b ;"},                                 // missing period
 		"a;c.":         {false, "a ; c ."},                                  // missing  :-
 		"a(X,Y):-b;c.": {true, "rule ( a ( X Y ) b ) rule ( a ( X Y ) c )"}, // ok
-		// "a:-b.;c.":     {false, ":- ( a b ) ; c ."},                     // syntax error
-		// "a:-b.d;c.":    {false, ":- ( a b ) d ; c ."},                   // syntax error
-		"a:-;d.": {true, "rule ( a ) rule ( a d )"}, // ok
+		"a:-b.;c.":     {false, "rule ( a b ) ; c ."},                       // syntax error
+		"a:-b.d;c.":    {false, "rule ( a b ) d ; c ."},                     // syntax error
+		"a:-;d.":       {true, "rule ( a ) rule ( a d )"},                   // ok
+		"a;d.":         {false, "a ; d ."},                                  // nok
+
+		// Queries
+		"?q.":     {true, "query ( q )"},    // ok
+		"?q r .":  {true, "query ( q r )"},  // ok
+		"a?q r .": {false, "a ? q r ."},     // neither a query nor a rule
+		"? a":     {false, "? a"},           // missing period
+		"?? a":    {false, "? ? a"},         // syntax error
+		"?q.b":    {false, "query ( q ) b"}, // nok
+
+		// mixed rules - queries
+		"?q.a.":   {true, "query ( q ) rule ( a )"},            // ok
+		"b.?q.a.": {true, "rule ( b ) query ( q ) rule ( a )"}, // ok
+		"b?q.a.":  {false, "b ? q . a ."},                      // missing period
+		"b.?q.a":  {false, "rule ( b ) query ( q ) a"},         // missing period
 
 	}
 

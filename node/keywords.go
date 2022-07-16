@@ -4,12 +4,12 @@ import "fmt"
 
 // contains reserved keywords
 var keywords = []string{
-	"dot",
 	"rule",
+	"query",
+	"program",
 	"slash",
 	"halt",
 	"print",
-	"program",
 }
 
 type Keyword struct {
@@ -36,7 +36,7 @@ func NewKeyword(kw string) (Keyword, error) {
 
 func NewDotNode() *Node {
 	n := new(Node)
-	n.load = Keyword{"dot"}
+	n.load = String("dot")
 	return n
 }
 
@@ -54,5 +54,11 @@ func NewSlashNode() *Node {
 func NewProgramNode() *Node {
 	n := new(Node)
 	n.load = Keyword{"program"}
+	return n
+}
+
+func NewQueryNode() *Node {
+	n := new(Node)
+	n.load = Keyword{"query"}
 	return n
 }
