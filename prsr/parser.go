@@ -100,7 +100,7 @@ func preProcList(n *node.Node) error {
 		}
 
 		// now ... open, close and bar are valid and consitent.
-		fmt.Println("Debug : open, close, bar =", open, close, bar)
+		// fmt.Println("Debug : open, close, bar =", open, close, bar)
 
 		if bar < 0 { // standard bracket list, [ a b c ] with no bar to worry about
 
@@ -209,8 +209,8 @@ func preProcRule(n *node.Node) error {
 				rsemi = i
 			}
 		}
-		fmt.Println("DEBUG : ", n)
-		fmt.Println("DEBUG : rstart, rquery, rarrow, rsemi, rperiod:", rstart, rquery, rarrow, rsemi, rperiod)
+		// fmt.Println("DEBUG : ", n)
+		// fmt.Println("DEBUG : rstart, rquery, rarrow, rsemi, rperiod:", rstart, rquery, rarrow, rsemi, rperiod)
 
 		// process query if needed
 		if rquery != large {

@@ -3,6 +3,7 @@ package pcontext
 import (
 	"fmt"
 
+	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
 )
 
@@ -33,6 +34,16 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 
 		case "query": // unpack the query content
 			return goal.GetChildren(), nil
+
+		case "trace": // toggle the verbose switch
+			config.FlagVerbose = !config.FlagVerbose
+			fmt.Println("Verbose flag is now", config.FlagVerbose)
+			return nil, nil
+
+		case "debug": // toggle the debug switch
+			config.FlagVerbose = !config.FlagVerbose
+			fmt.Println("Debug flag is now", config.FlagDebug)
+			return nil, nil
 
 		default: // keyword has no effect, ignore but keep
 			return []*node.Node{goal}, nil

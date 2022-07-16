@@ -69,6 +69,7 @@ func (pc *PContext) String() string {
 }
 
 func (pc *PContext) Display() {
+	fmt.Println("TODO : Better results display needed ...")
 	fmt.Println(pc) // TODO - better solution display that a simple dump !
 }
 

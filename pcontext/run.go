@@ -3,6 +3,7 @@ package pcontext
 import (
 	"fmt"
 
+	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
 )
 
@@ -12,7 +13,9 @@ func (pc *PContext) Run() (*PContext, error) {
 
 	for {
 
-		fmt.Println("DEBUG RUN : ", pc)
+		if config.FlagDebug {
+			fmt.Println("DEBUG RUN : ", pc)
+		}
 
 		if pc == nil {
 			return nil, nil
