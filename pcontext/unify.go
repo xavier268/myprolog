@@ -13,6 +13,8 @@ var errNoMatch = fmt.Errorf("no match")
 // As unification proceeds, the context contraints are updated (but not the goals).
 func (pc *PContext) Unify(rh, gh *node.Node) error {
 
+	fmt.Println("DEBUG UNIFYING : ", rh, gh)
+
 	if pc == nil {
 		panic("cannot unify with a nil context")
 	}

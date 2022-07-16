@@ -22,12 +22,17 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 		if err := c.Verify(); err != nil { // positive occur check
 			return err
 		}
+
+		// Update old constr if needed
 		for i, old := range pc.cstr {
 			old2 := c.Update(old)
 			if old2 != nil {
 				pc.cstr[i] = old2
 			}
 		}
+
+		// add this new constraint !
+		pc.cstr = append(pc.cstr, c)
 
 	default:
 		panic("unknown constraint")

@@ -65,7 +65,7 @@ func (pc *PContext) String() string {
 	fmt.Fprintln(&sb, "------ pcontext --")
 	fmt.Fprintf(&sb, "\tConstraints :\n%v\n", pc.cstr)
 	fmt.Fprintf(&sb, "\tGoals :\n%v\n", pc.goals)
-	fmt.Fprintf(&sb, "\tParent :\t%v\n", pc.parent)
+	fmt.Fprintf(&sb, "\tRoot :\t%v\n", pc.parent == nil)
 	fmt.Fprintf(&sb, "\tCurrent rule :\t%v\n", pc.current)
 	fmt.Fprintf(&sb, "\tRules :\n%v\n", pc.rules)
 	fmt.Fprintf(&sb, "\tStart :\t%v\n", pc.start)
@@ -75,7 +75,7 @@ func (pc *PContext) String() string {
 }
 
 func (pc *PContext) Display() {
-	fmt.Println("TODO : Better results display needed ...")
+	fmt.Println("Constraints : ", pc.cstr)
 	fmt.Println(pc) // TODO - better solution display that a simple dump !
 }
 

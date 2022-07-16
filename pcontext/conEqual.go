@@ -15,10 +15,11 @@ type ConEqual struct {
 func (ConEqual) Cons() {}
 
 func (c ConEqual) String() string {
-	return fmt.Sprintf("%s = %s", c.v.String(), c.t.String())
+	return fmt.Sprintf("%s =%s ", c.v.String(), c.t.String())
 }
 
 func NewConEqual(v node.Variable, t *node.Node) ConEqual {
+	fmt.Println("DEBUG : CREATING CONSTRAINT EQUAL ", v, t)
 	c := ConEqual{v, t}
 	return c
 }
@@ -42,6 +43,8 @@ func (c ConEqual) Verify() error {
 // Update the cc constraints that contain a reference the Variable in c in their rhs, by replacing this Variable by the c rhs.
 // Return nil if no update required.
 func (c ConEqual) Update(cc Constraint) (upcc Constraint) {
+
+	fmt.Println("DEBUG UPDATE CONSTR :", c, cc)
 
 	if cc == nil {
 		return nil
