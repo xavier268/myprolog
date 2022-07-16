@@ -156,10 +156,19 @@ func preProcList(n *node.Node) error {
 // Queries start with a question mark (?) and finish with a period (.).
 func preProcRule(n *node.Node) error {
 
-	const large = 100_000_000 // less than max signed int 32
-
 	if n == nil || n.NbChildren() == 0 {
 		return nil
+	}
+
+	// Define useful  constants and references
+	const large = 100_000_000 // less than max signed int 32
+	qk, err := node.NewKeyword("query")
+	if err != nil {
+		panic("internal error")
+	}
+	rk, err := node.NewKeyword("rule")
+	if err != nil {
+		panic("internal error")
 	}
 
 	rstart := 0 // points to the first child we want to process
@@ -176,6 +185,13 @@ func preProcRule(n *node.Node) error {
 
 		// set rule pointers
 		for i := rstart; i < n.NbChildren(); i++ {
+
+			// skip canonical query/rule forms
+			if n.GetChild(rstart).GetLoad() == rk || n.GetChild(rstart).GetLoad() == qk {
+				rstart++ // skip prexisting queries or rules allready processed.
+				continue
+			}
+
 			if rquery == large && rperiod == large && n.GetChild(i).GetLoad() == node.String("?") {
 				rquery = i
 			}
@@ -304,21 +320,26 @@ func preProcRule(n *node.Node) error {
 // Root node is called program.
 func Parse(tk *tknz.Tokenizer) (*node.Node, error) {
 	p := node.NewProgramNode()
+	err := ParseMore(p, tk)
+	return p, err
+}
 
+// Update the provided program with the rules and queries parsed from tokenizer.
+func ParseMore(p *node.Node, tk *tknz.Tokenizer) error {
 	err := parse0(tk, p, new(int))
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return err
 	}
 	err = preProcList(p)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return err
 	}
 	err = preProcRule(p)
 	if err != nil {
 		fmt.Println(err)
-		return nil, err
+		return err
 	}
-	return p, nil
+	return nil
 }

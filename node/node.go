@@ -90,6 +90,7 @@ func (n *Node) ChildrenAllowed() bool {
 	}
 }
 
+// string generate tring output.
 func (n *Node) string(sb *strings.Builder) {
 	if n == nil {
 		fmt.Fprint(sb, " nil")

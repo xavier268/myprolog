@@ -10,6 +10,8 @@ var keywords = []string{
 	"slash",
 	"halt",
 	"print",
+	"import",
+	"reset",
 }
 
 type Keyword struct {
