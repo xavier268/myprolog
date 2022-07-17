@@ -7,8 +7,14 @@ import (
 	"github.com/xavier268/myprolog/repl"
 )
 
-func TestIntegration(t *testing.T) {
+func TestRunFile(*testing.T) {
 	config.FlagDebug = false
 	config.FlagVerbose = false
-	repl.RUN("test.pl")
+	repl.RunFile("test.pl")
+}
+
+func TestRunString(*testing.T) {
+	config.FlagDebug = false
+	config.FlagVerbose = false
+	repl.RunString(`?print("hello world\n").`)
 }

@@ -57,8 +57,8 @@ func REPL() {
 
 }
 
-// RUN a non intercative program with rules and goals.
-func RUN(filename string) error {
+// RunFile a non intercative program with rules and goals from file.
+func RunFile(filename string) error {
 
 	tk, err := tknz.NewTokenizerFile(filename)
 	if err != nil {
@@ -73,4 +73,18 @@ func RUN(filename string) error {
 	_, err = pc.Run()
 	return err
 
+}
+
+// RunString a non intercative program with rules and goals from string.
+func RunString(s string) error {
+
+	tk := tknz.NewTokenizerString(s)
+	prog, err := prsr.Parse(tk)
+	if err != nil {
+		return err
+	}
+
+	pc := pcontext.NewPContext(prog)
+	_, err = pc.Run()
+	return err
 }

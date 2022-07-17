@@ -2,6 +2,7 @@ package tknz
 
 import (
 	"bufio"
+	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -24,9 +25,10 @@ func (ps *Tokenizer) Next() string {
 	}
 	n := ps.s.TokenText()
 
-	// remove starting or ending quotes.
-	n = strings.TrimPrefix(n, "\"")
-	n = strings.TrimSuffix(n, "\"")
+	// handle quoted strings.
+	if len(n) >= 2 && n[0] == '"' {
+		fmt.Sscanf(n, "%q", &n)
+	}
 
 	// handle double tokens
 	switch n {
