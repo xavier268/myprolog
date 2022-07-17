@@ -76,7 +76,7 @@ Strings can be quoted or not. If not quoted, the scanner uses mainly the Golang 
 
 Any non variable is a legal object name. Redefine + or £ if you so wish ...
 
-Numbers can be interger or flaoting point. 
+Numbers can be integer or flaoting point. 
 
 Neither variable nor numbers can have children elements.
 
