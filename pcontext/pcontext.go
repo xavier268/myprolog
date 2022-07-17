@@ -87,11 +87,12 @@ func (pc *PContext) StringDetailled() string {
 	return sb.String()
 }
 
+// Results, if any.
 func (pc *PContext) Display() {
 	fmt.Println("Constraints : ", pc.ResultString())
-	fmt.Println(pc) // TODO - better solution display that a simple dump !
 }
 
+// Results, if any.
 func (pc *PContext) ResultString() string {
 	if pc == nil {
 		return fmt.Sprint(nil)
