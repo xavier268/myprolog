@@ -16,7 +16,7 @@ type PContext struct {
 	cstr    []Constraint // Current list of constraints, can contain nils
 	parent  *PContext
 	start   time.Time
-	uid     *int // unique id generator sherd accross context
+	uid     *int // unique id generator shared across context
 }
 
 func (pc *PContext) UID() int {
@@ -69,8 +69,8 @@ func (pc *PContext) String() string {
 	return sb.String()
 }
 
-// Like String, but more detailled.
-func (pc *PContext) StringDetailled() string {
+// Like String, but more detailed.
+func (pc *PContext) StringDetailed() string {
 	if pc == nil {
 		return fmt.Sprintf("\n------ pcontext --\n%v", nil)
 	}

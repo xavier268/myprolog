@@ -46,12 +46,12 @@ func TestRunStringTable(t *testing.T) {
 	for i, d := range testData {
 		pc, err := repl.RunString(d.src)
 		if (err == nil) != d.ok {
-			fmt.Println(pc.StringDetailled())
+			fmt.Println(pc.StringDetailed())
 			fmt.Printf("ON TEST CASE #%d\n%v\n", i, d)
 			t.Fatalf("unexpected error outcome : %v", err)
 		}
 		if d.res != pc.ResultString() {
-			fmt.Println(pc.StringDetailled())
+			fmt.Println(pc.StringDetailed())
 			fmt.Printf("ON TEST CASE #%d\nGOT :%v\nWANT:%v\n", i, pc.ResultString(), d.res)
 			t.Fatalf("unexpected error outcome")
 		}

@@ -7,7 +7,7 @@ import (
 	"github.com/xavier268/myprolog/node"
 )
 
-// Run  the pcontext, until all goals are erased or an error has occured.
+// Run  the pcontext, until all goals are erased or an error has occurred.
 // Only rule selection trigger a context push/pop.
 func (pc *PContext) Run() (*PContext, error) {
 

@@ -189,7 +189,7 @@ func preProcRule(n *node.Node) error {
 
 			// skip canonical query/rule forms
 			if n.GetChild(rstart).GetLoad() == rk || n.GetChild(rstart).GetLoad() == qk {
-				rstart++ // skip prexisting queries or rules allready processed.
+				rstart++ // skip prexisting queries or rules already processed.
 				continue
 			}
 

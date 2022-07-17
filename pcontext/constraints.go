@@ -23,7 +23,7 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 			return err
 		}
 
-		// Update old constr if needed, replacing previous X occurence by xxx
+		// Update old constr if needed, replacing previous X occurrence by xxx
 		for i, old := range pc.cstr {
 			old2 := c.Update(old)
 			if old2 != nil {

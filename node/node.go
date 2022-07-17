@@ -289,7 +289,7 @@ func (n *Node) SwapChildren(i, j int) {
 	n.children[i], n.children[j] = n.children[j], n.children[i]
 }
 
-// ReplaceSubtree will replace each occurence of subtree with the specified remplacement,
+// ReplaceSubtree will replace each occurrence of subtree with the specified remplacement,
 // returning the new tree, cloned if changed, and a flag to tell if it changed.
 // The initial tree is never modified.
 func (n *Node) ReplaceSubTree(subtree, replacement *Node) (newtree *Node, changed bool) {
