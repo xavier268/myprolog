@@ -47,7 +47,9 @@ func (c ConEqual) Verify() error {
 // Return nil if no update required.
 func (c ConEqual) Update(cc Constraint) (upcc Constraint) {
 
-	fmt.Println("DEBUG UPDATE CONSTR :", c, cc)
+	if config.FlagDebug {
+		fmt.Println("DEBUG UPDATE CONSTR :", c, cc)
+	}
 
 	if cc == nil {
 		return nil

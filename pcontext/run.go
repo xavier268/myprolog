@@ -50,6 +50,9 @@ func (pc *PContext) Run() (*PContext, error) {
 					pc.goals = append(pc.goals, rule.GetChildren()[1:]...)
 				}
 
+				// Since the goals changed, reset the rule pointer.
+				pc.current = 0
+
 				continue // loop with the new context.
 			}
 			pc = pc.Pop() // on failure, pop context and continue
@@ -67,6 +70,8 @@ func (pc *PContext) Run() (*PContext, error) {
 			} else {
 				pc.goals = append(pc.goals[:len(pc.goals)-1], gg...)
 			}
+			// Since the goals changed, reset the rule pointer.
+			pc.current = 0
 			continue
 		}
 

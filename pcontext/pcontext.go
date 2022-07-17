@@ -71,6 +71,9 @@ func (pc *PContext) String() string {
 
 // Like String, but more detailled.
 func (pc *PContext) StringDetailled() string {
+	if pc == nil {
+		return fmt.Sprintf("\n------ pcontext --\n%v", nil)
+	}
 	var sb strings.Builder
 	fmt.Fprintln(&sb, "\n------ pcontext --")
 	fmt.Fprintf(&sb, "\nConstraints :\n%v", pc.cstr)
@@ -85,8 +88,15 @@ func (pc *PContext) StringDetailled() string {
 }
 
 func (pc *PContext) Display() {
-	fmt.Println("Constraints : ", pc.cstr)
+	fmt.Println("Constraints : ", pc.ResultString())
 	fmt.Println(pc) // TODO - better solution display that a simple dump !
+}
+
+func (pc *PContext) ResultString() string {
+	if pc == nil {
+		return fmt.Sprint(nil)
+	}
+	return fmt.Sprint(pc.cstr)
 }
 
 // Freeze will remove the parent context, making backtracking impossible.
