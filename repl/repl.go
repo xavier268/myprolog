@@ -5,6 +5,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
@@ -20,16 +21,25 @@ func REPL() {
 
 	pg := node.NewProgramNode()
 	pc := pcontext.NewPContext(pg)
-
+	fmt.Println("Type a blank line to stop input and launch execution.")
 	fmt.Print("\nOk>")
 	for {
+		// Capture src until a blank line is input.
+		var src string
+		for {
+			reader := bufio.NewReader(os.Stdin)
+			s, err := reader.ReadString('\n')
+			if err != nil {
+				fmt.Println(err)
+				break
+			}
+			src = src + s
+			if len(strings.TrimSpace(s)) == 0 {
+				break
+			}
 
-		reader := bufio.NewReader(os.Stdin)
-		src, err := reader.ReadString('\n')
-		if err != nil {
-			fmt.Println(err)
-			continue
 		}
+
 		if config.FlagDebug {
 			fmt.Println("DEBUG REPL : before parsing", pc)
 		}

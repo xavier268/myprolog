@@ -3,7 +3,7 @@ package config
 
 import "fmt"
 
-const VERSION = "v0.3.4"
+const VERSION = "v0.3.6"
 const WELCOME = "Prolog interpreter in Go"
 const GITHUBNAME = "https://github.com/xavier268/myprolog"
 const COPYRIGHT = "(c) 2022 Xavier Gandillot (aka xavier268)"
