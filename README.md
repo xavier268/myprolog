@@ -72,9 +72,13 @@ Spaces and commas are not significant nor needed as long there is no ambiguity f
 
 The _ (underscore) variable is a special variable that can match anything.
 
-Strings can be quoted or not. If not quoted, the scanner used mainly the Golang syntax. For instance, 3x is the same a 3 , x. 
+Strings can be quoted or not. If not quoted, the scanner uses mainly the Golang syntax. For instance, 3x is the same a 3 , x. 
 
 Any non variable is a legal object name. Redefine + or £ if you so wish ...
+
+Numbers can be interger or flaoting point. 
+
+Neither variable nor numbers can have children elements.
 
 ## Reserved words
 
