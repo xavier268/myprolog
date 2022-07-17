@@ -1,3 +1,4 @@
+// Package prsr contains the parserand its utilities.
 package prsr
 
 import (

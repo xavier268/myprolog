@@ -1,3 +1,4 @@
+// Package config contains shared configuration package flags and constants.
 package config
 
 const VERSION = "v0.3.3"

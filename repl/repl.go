@@ -1,3 +1,4 @@
+// Package repl contains the high-level entry points to run programs.
 package repl
 
 import (
