@@ -16,7 +16,7 @@ import (
 // REPL launch the intercative "Request-Execute-Print-Loop" main loop.
 func REPL() {
 
-	fmt.Printf("%s\nVersion : %s - %s\n", config.WELCOME, config.VERSION, config.COPYRIGHT)
+	config.PrintFullWelcome()
 
 	pg := node.NewProgramNode()
 	pc := pcontext.NewPContext(pg)
@@ -57,7 +57,7 @@ func REPL() {
 
 }
 
-// RunFile a non intercative program with rules and goals from file.
+// RunFile a non interactive program with rules and goals from file.
 func RunFile(filename string) (*pcontext.PContext, error) {
 
 	tk, err := tknz.NewTokenizerFile(filename)
@@ -74,7 +74,7 @@ func RunFile(filename string) (*pcontext.PContext, error) {
 
 }
 
-// RunString a non intercative program with rules and goals from string.
+// RunString a non interactive program with rules and goals from string.
 func RunString(s string) (*pcontext.PContext, error) {
 
 	tk := tknz.NewTokenizerString(s)

@@ -13,12 +13,7 @@ func Example_runFile1() {
 	config.FlagVerbose = false
 	repl.RunFile("test1.pl")
 	// Output:
-	// Queries : [ query ( queries )  query ( goals )  query ( queries )  query ( goals )  query ( print ( hello word ) )  query ( queries )  goals]
-	// Queries : [ query ( queries )  query ( goals )  query ( queries )  query ( goals )  query ( print ( hello word ) )  queries] hello word
-	// Queries : [ query ( queries )  query ( goals )  query ( queries )  goals]
-	// Queries : [ query ( queries )  query ( goals )  queries]
-	// Queries : [ query ( queries )  goals]
-	// Queries : [ queries]
+	// hello world from test1.pl
 }
 
 func Example_runString1() {
