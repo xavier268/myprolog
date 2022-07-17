@@ -4,16 +4,19 @@ import "fmt"
 
 // contains reserved keywords
 var keywords = []string{
-	"rule",
-	"query",
-	"program",
-	"freeze",
-	"halt",
-	"print",
-	"import",
-	"reset",
-	"trace",
-	"debug",
+	"rule",    // define a rule in a program
+	"query",   // define a query in a program
+	"program", // contains rule and query children
+	"freeze",  // prevents backtracking from now on.
+	"halt",    // pause program.
+	"print",   // print message or node
+	"load",    // load a program (rules only)
+	"reset",   // restart - TODO
+	"verbose", // toggle verbose flag
+	"debug",   // toggle debug flag
+	"rules",   // dump current rules
+	"queries", // dump current queries/goals
+	"goals",   // same - dump current queries/goals
 	"/",
 }
 

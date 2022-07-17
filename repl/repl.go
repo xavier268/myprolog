@@ -12,7 +12,7 @@ import (
 	"github.com/xavier268/myprolog/tknz"
 )
 
-// REPL launch the "Request-Execute-Print-Loop" main loop.
+// REPL launch the intercative "Request-Execute-Print-Loop" main loop.
 func REPL() {
 
 	fmt.Printf("%s\nVersion : %s - %s\n", config.WELCOME, config.VERSION, config.COPYRIGHT)
@@ -24,8 +24,7 @@ func REPL() {
 	for {
 
 		reader := bufio.NewReader(os.Stdin)
-		// ReadString will block until a period is entered
-		src, err := reader.ReadString('.')
+		src, err := reader.ReadString('\n')
 		if err != nil {
 			fmt.Println(err)
 			continue
@@ -55,5 +54,23 @@ func REPL() {
 		pc.Display() // Display results
 		fmt.Println("\nOk.")
 	}
+
+}
+
+// RUN a non intercative program with rules and goals.
+func RUN(filename string) error {
+
+	tk, err := tknz.NewTokenizerFile(filename)
+	if err != nil {
+		return err
+	}
+	prog, err := prsr.Parse(tk)
+	if err != nil {
+		return err
+	}
+
+	pc := pcontext.NewPContext(prog)
+	_, err = pc.Run()
+	return err
 
 }

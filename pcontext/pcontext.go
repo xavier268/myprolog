@@ -111,7 +111,7 @@ func (pc *PContext) Pop() *PContext {
 	return pc.parent
 }
 
-// TODO
+// TODO - redirect to variable content
 func (pc *PContext) StringContent(n *node.Node) string {
-	return "PContext.StringContent not implemented - using String instead :\n" + n.String()
+	return n.String()
 }

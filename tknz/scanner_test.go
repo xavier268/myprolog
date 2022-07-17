@@ -23,13 +23,16 @@ func ExampleNewTokenizerString() {
 	// >;<
 	// >x2<
 	// ><=<
-	// >"doubled quoted"<
+	// >doubled quoted<
 
 }
 
 func TestScannerFile(t *testing.T) {
 	fn := "scanner.go"
-	tzr := NewTokenizerFile(fn)
+	tzr, err := NewTokenizerFile(fn)
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
 	tk := tzr.Next()
 	fmt.Printf("First token from file %s is : %s\n", fn, tk)
 	if tk != "package" {
@@ -67,7 +70,7 @@ func TestScannerTable(t *testing.T) {
 		{"1 ><=  2", []string{"1", ">", "<=", "2"}},
 		{"1 !!= 2", []string{"1", "!", "!=", "2"}},
 
-		{" un \"deux trois   \" quatre", []string{"un", "\"deux trois   \"", "quatre"}},
+		{" un \"deux trois   \" quatre", []string{"un", "deux trois   ", "quatre"}},
 	}
 
 	// Loop table and compare results to expectation.

@@ -24,6 +24,10 @@ func (ps *Tokenizer) Next() string {
 	}
 	n := ps.s.TokenText()
 
+	// remove starting or ending quotes.
+	n = strings.TrimPrefix(n, "\"")
+	n = strings.TrimSuffix(n, "\"")
+
 	// handle double tokens
 	switch n {
 	case ":": // :-
@@ -63,10 +67,10 @@ func NewTokenizerString(src string) *Tokenizer {
 }
 
 // NewTokenizerFile from file name
-func NewTokenizerFile(fileName string) *Tokenizer {
+func NewTokenizerFile(fileName string) (*Tokenizer, error) {
 	f, err := os.Open(fileName)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return NewTokenizer(bufio.NewReader(f))
+	return NewTokenizer(bufio.NewReader(f)), nil
 }

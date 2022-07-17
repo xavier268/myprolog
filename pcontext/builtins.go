@@ -2,9 +2,13 @@ package pcontext
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
 
 	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
+	"github.com/xavier268/myprolog/prsr"
+	"github.com/xavier268/myprolog/tknz"
 )
 
 // DoBuiltin execute root of the goal node if it is a keyword.
@@ -26,23 +30,58 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 				fmt.Print(pc.StringContent(c))
 			}
 			return nil, nil
-		case "halt", "exit": // remove goal and exit program
+		case "halt": // pause program
 			fmt.Println("\nProgram paused. Type ^C to exit, or <Enter> to continue")
 			fmt.Scanln(new(string))
-			fmt.Println("Program resumed.")
+			fmt.Println("\nProgram resumed.")
+			return nil, nil
+
+		case "exit": // exit program
+			fmt.Println("\nProgram stopped")
+			os.Exit(0)
 			return nil, nil
 
 		case "query": // unpack the query content
+			if config.FlagDebug {
+				fmt.Println("\nDEBUG preparing to execute : ", goal)
+			}
 			return goal.GetChildren(), nil
 
-		case "trace": // toggle the verbose switch
+		case "verbose": // toggle the verbose switch
 			config.FlagVerbose = !config.FlagVerbose
-			fmt.Println("Verbose flag is now", config.FlagVerbose)
+			fmt.Println("\nVerbose flag is now", config.FlagVerbose)
 			return nil, nil
 
 		case "debug": // toggle the debug switch
 			config.FlagDebug = !config.FlagDebug
-			fmt.Println("Debug flag is now", config.FlagDebug)
+			fmt.Println("\nDebug flag is now", config.FlagDebug)
+			return nil, nil
+
+		case "load": // load more rules from an external file.
+			// For the moment : ( TODO)
+			// only use the first child, ignore the rest.
+			// Use the name of the load, do not indirect variables.
+			file := fmt.Sprint(goal.GetChild(0).GetLoad())
+			tk, err := tknz.NewTokenizerFile(file)
+			if err != nil {
+				abs, _ := filepath.Abs(file)
+				fmt.Printf("\nWARNING (cannot load %s) : %v", abs, err)
+				return nil, nil
+			}
+			rr, err := prsr.Parse(tk)
+			if err != nil {
+				fmt.Printf("\nWARNING (cannot load %s) : %v\n", file, err)
+				return nil, nil
+			}
+			pc.AddRules(rr)
+			return nil, nil
+
+		case "rules": // dump rules
+			fmt.Printf("\nRules : %v", pc.rules)
+			return nil, nil
+
+		case "queries", "goals": // dump queries, also called goals
+			fmt.Printf("\nQueries : %v", pc.goals)
 			return nil, nil
 
 		default: // keyword has no effect, ignore but keep

@@ -15,23 +15,21 @@ func TestParser0(t *testing.T) {
 		exp string // parsed output
 	}{
 		// basic atoms
-		"aa":       {true, " aa"},
-		"22":       {true, " 22"},
-		"X2":       {true, " X2"},
-		"+":        {true, " +"},
-		":-":       {true, " :-"},
-		"\"a b \"": {true, " \"a b \""},
+		"aa":   {true, " aa"},
+		"22":   {true, " 22"},
+		"X2":   {true, " X2"},
+		"+":    {true, " +"},
+		":-":   {true, " :-"},
+		"a b ": {true, " a b"},
 
 		// parenthesis - simple
-		"aa()":        {true, " aa"},
-		"X()":         {false, " X"},  // not a functor
-		"2()":         {false, " 2"},  // not a functor
-		"aa(":         {false, " aa"}, // unbalanced parenth
-		"aa)":         {false, " aa"}, // unbalanced parenth
-		"+()":         {true, " +"},
-		"+(aa)":       {true, " + ( aa )"},
-		"\"a b \"()":  {true, " \"a b \""},
-		"\"a b \"(c)": {true, " \"a b \" ( c )"},
+		"aa()":  {true, " aa"},
+		"X()":   {false, " X"},  // not a functor
+		"2()":   {false, " 2"},  // not a functor
+		"aa(":   {false, " aa"}, // unbalanced parenth
+		"aa)":   {false, " aa"}, // unbalanced parenth
+		"+()":   {true, " +"},
+		"+(aa)": {true, " + ( aa )"},
 
 		// parenthesis - complex
 		"()":          {false, ""},
@@ -54,6 +52,9 @@ func TestParser0(t *testing.T) {
 		"nil ()": {false, " nil"}, //nok, because not a functor
 		"nil(a)": {false, " nil"}, //nok, because not a functor
 
+		// quotes
+		"\"a b \"()":  {true, " a b "},
+		"\"a b \"(c)": {true, " a b  ( c )"},
 	}
 	for i, want := range tab {
 		tzr := tknz.NewTokenizerString(i)
