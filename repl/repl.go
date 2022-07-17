@@ -20,7 +20,7 @@ func REPL() {
 	pg := node.NewProgramNode()
 	pc := pcontext.NewPContext(pg)
 
-	fmt.Println("\nOk.")
+	fmt.Print("\nOk>")
 	for {
 
 		reader := bufio.NewReader(os.Stdin)
@@ -48,11 +48,10 @@ func REPL() {
 		}
 		pc, err = pc.Run()
 		if err != nil {
-			fmt.Println(err)
+			fmt.Println("Error : ", err)
 			continue
 		}
-		pc.Display() // Display results
-		fmt.Println("\nOk.")
+		fmt.Printf("\nResults : %s\nOk> ", pc.ResultString())
 	}
 
 }

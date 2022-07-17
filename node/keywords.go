@@ -9,6 +9,7 @@ var keywords = []string{
 	"program", // contains rule and query children
 	"freeze",  // prevents backtracking from now on.
 	"halt",    // pause program.
+	"exit",    // exit program.
 	"print",   // print message or node
 	"load",    // load a program (rules only)
 	"reset",   // restart - TODO
@@ -17,6 +18,7 @@ var keywords = []string{
 	"rules",   // dump current rules
 	"queries", // dump current queries/goals
 	"goals",   // same - dump current queries/goals
+	// "help",    // TODO
 }
 
 type Keyword struct {
