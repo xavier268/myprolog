@@ -1,4 +1,4 @@
-// Package prsr contains the parserand its utilities.
+// Package prsr contains the parser and its utilities.
 package prsr
 
 import (
@@ -184,7 +184,7 @@ func preProcRule(n *node.Node) error {
 		rsemi := large   // points to first semi, if before period and after tilda.
 		rquery := large
 
-		// set rule pointers
+		// set rule/query pointers
 		for i := rstart; i < n.NbChildren(); i++ {
 
 			// skip canonical query/rule forms
@@ -317,7 +317,7 @@ func preProcRule(n *node.Node) error {
 }
 
 // Parse a Prolog program.
-// Valid syntax is a set of valid rules.
+// Valid syntax is a set of valid rules or queries.
 // Root node is called program.
 func Parse(tk *tknz.Tokenizer) (*node.Node, error) {
 	p := node.NewProgramNode()

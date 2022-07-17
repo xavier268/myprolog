@@ -1,4 +1,4 @@
-// Packahe tknz contains the scanner and utilities.
+// Package tknz contains the scanner and utilities.
 package tknz
 
 import (
