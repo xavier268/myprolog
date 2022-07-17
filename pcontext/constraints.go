@@ -15,7 +15,7 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 
 	switch c := cc.(type) {
 
-	case ConEqual:
+	case ConEqual: // form X = xxx
 		if c.IsObvious() {
 			return nil
 		}
@@ -23,7 +23,7 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 			return err
 		}
 
-		// Update old constr if needed
+		// Update old constr if needed, replacing previous X occurence by xxx
 		for i, old := range pc.cstr {
 			old2 := c.Update(old)
 			if old2 != nil {
@@ -31,13 +31,32 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 			}
 		}
 
-		// add this new constraint !
+		// Look for previously existing X = yyy ?
+		for _, old := range pc.cstr {
+			switch old2 := old.(type) {
+			case ConEqual:
+				if old2.v == c.v { // same X = ....
+					err := pc.Unify(old2.t, c.t)
+					if err != nil {
+						// we couldn't unify a and b in X=a & X=b !
+						return err
+					} else {
+						// since we could unify a and b in X=a & X=b, do not add X=b, not required.
+						return nil
+					}
+				}
+			default: // ignore
+			}
+		}
+
+		// by default, add this new constraint and return no error
 		pc.cstr = append(pc.cstr, c)
+		return nil
 
 	default:
 		panic("unknown constraint")
 
 	}
 
-	return nil
+	//return nil
 }

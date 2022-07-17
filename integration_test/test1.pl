@@ -3,6 +3,6 @@
 ?queries.?goals.
 toto(a,b).toto(b,c).
 ?queries.?goals.
-?print("\nhello word").
+?print("hello word").
 ?queries.?goals.
 

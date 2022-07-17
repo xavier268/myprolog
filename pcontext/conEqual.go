@@ -3,6 +3,7 @@ package pcontext
 import (
 	"fmt"
 
+	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
 )
 
@@ -15,11 +16,13 @@ type ConEqual struct {
 func (ConEqual) Cons() {}
 
 func (c ConEqual) String() string {
-	return fmt.Sprintf("%s =%s ", c.v.String(), c.t.String())
+	return fmt.Sprintf("%s =%s, ", c.v.String(), c.t.String())
 }
 
 func NewConEqual(v node.Variable, t *node.Node) ConEqual {
-	fmt.Println("DEBUG : CREATING CONSTRAINT EQUAL ", v, t)
+	if config.FlagDebug {
+		fmt.Println("DEBUG : CREATING CONSTRAINT EQUAL ", v, t)
+	}
 	c := ConEqual{v, t}
 	return c
 }

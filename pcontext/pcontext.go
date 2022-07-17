@@ -62,14 +62,22 @@ func (pc *PContext) AddGoals(prog *node.Node) {
 
 func (pc *PContext) String() string {
 	var sb strings.Builder
-	fmt.Fprintln(&sb, "------ pcontext --")
-	fmt.Fprintf(&sb, "\tConstraints :\n%v\n", pc.cstr)
-	fmt.Fprintf(&sb, "\tGoals :\n%v\n", pc.goals)
-	fmt.Fprintf(&sb, "\tRoot :\t%v\n", pc.parent == nil)
-	fmt.Fprintf(&sb, "\tCurrent rule :\t%v\n", pc.current)
-	fmt.Fprintf(&sb, "\tRules :\n%v\n", pc.rules)
-	fmt.Fprintf(&sb, "\tStart :\t%v\n", pc.start)
-	fmt.Fprintf(&sb, "\tUID :\t%d\n", *pc.uid)
+	fmt.Fprintf(&sb, "\n%v", pc.cstr)
+	fmt.Fprintf(&sb, "\nGoals :\n%v", pc.goals)
+	return sb.String()
+}
+
+// Like String, but more detailled.
+func (pc *PContext) StringDetailled() string {
+	var sb strings.Builder
+	fmt.Fprintln(&sb, "\n------ pcontext --")
+	fmt.Fprintf(&sb, "\nConstraints :\n%v", pc.cstr)
+	fmt.Fprintf(&sb, "\nGoals :\n%v", pc.goals)
+	fmt.Fprintf(&sb, "\nRoot :\t%v", pc.parent == nil)
+	fmt.Fprintf(&sb, "\nCurrent rule :\t%v\n", pc.current)
+	fmt.Fprintf(&sb, "\nRules :\n%v", pc.rules)
+	fmt.Fprintf(&sb, "\nStart :\t%v", pc.start)
+	fmt.Fprintf(&sb, "\nUID :\t%d", *pc.uid)
 
 	return sb.String()
 }

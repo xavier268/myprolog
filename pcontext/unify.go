@@ -3,6 +3,7 @@ package pcontext
 import (
 	"fmt"
 
+	"github.com/xavier268/myprolog/config"
 	"github.com/xavier268/myprolog/node"
 )
 
@@ -13,7 +14,9 @@ var errNoMatch = fmt.Errorf("no match")
 // As unification proceeds, the context contraints are updated (but not the goals).
 func (pc *PContext) Unify(rh, gh *node.Node) error {
 
-	fmt.Println("DEBUG UNIFYING : ", rh, gh)
+	if config.FlagDebug {
+		fmt.Println("DEBUG UNIFYING : ", rh, gh)
+	}
 
 	if pc == nil {
 		panic("cannot unify with a nil context")
@@ -119,7 +122,8 @@ func (pc *PContext) unifyVariable(rh, gh *node.Node) error {
 	switch gh.GetLoad().(type) {
 	case node.Number, node.Variable, node.String:
 		c := NewConEqual(rh.GetLoad().(node.Variable), gh)
-		if err := pc.SetConstraint(c); err != nil {
+		err := pc.SetConstraint(c)
+		if err != nil {
 			return err
 		}
 		return nil

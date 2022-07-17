@@ -17,7 +17,6 @@ var keywords = []string{
 	"rules",   // dump current rules
 	"queries", // dump current queries/goals
 	"goals",   // same - dump current queries/goals
-	"/",
 }
 
 type Keyword struct {
@@ -55,7 +54,7 @@ func NewRuleNode() *Node {
 }
 func NewSlashNode() *Node {
 	n := new(Node)
-	n.load = Keyword{"/"}
+	n.load = Keyword{"freeze"}
 	return n
 }
 
