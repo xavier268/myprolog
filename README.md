@@ -32,7 +32,7 @@ Ok>
 
 ## Basic syntax
 
-The general idea is that the program defines a number of **rules**  (facts are a special case of rules) and then try to find a solution the **queries** you formulate, binding query **variables** to potential solutions.
+The general idea is that the program defines a number of **rules**  (facts are a special case of rules) and then try to find a solution to the **queries** you formulate, binding query **variables** to potential solutions.
 
 Variables start with a capital letter A-Z. Anything else can be used as facts, rules or queries (except for limited reserved keywords).
 
