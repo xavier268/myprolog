@@ -1,97 +1,84 @@
-# !!! W O R K    I N    P R O G R E S S !!!
 
 # myprolog
-A Prolog (the langage) implementation for educationnal purposes
+A Prolog (the langage) implementation for educational purposes
 
-## Work in progress
+## How to use 
 
-Unify
-* cleaner/simpler algo
-* implementes cleanup and substition in former equation, both lhs AND RHS X=Y, X=2 => X,Y,X=2,Y=2
-* more tests, inparticular on _ 
-* number constraints ?
+Launch the interpreter :
 
-Solve
-* to finish & test
-## Types
+``` 
 
-Variables starts by an uppercase letter, or an underscore, _
-Binding to variables starting with underscore can be ignored, as _ in golang.
+cd cli
+go run .
 
-Numbers are recognized because they start with a digit.
+```
 
-## Syntax parsing
+Then, at the command promt, enter some rules or facts and query them.
 
-Scanner respect the golang grammar.
+```
 
-Commas (,) are ignored.
-Comments and white spaces are ignored.
+ok>
+father(john, paul).
+father(john, henry).
+?father(john,A).
 
-Variables, Numbers, (,),[,], cannot be functors of compound object.
-We maintain a symbol list for the non functors symbols.
+Results : [A = paul, ]
+Ok> 
 
-Subtrees NOT containing Variables are identified as "constant". 
-It is a different notion than non-functors.
-They will require no rescoping for new rule contexts.
-
-## rules
-
-Rules can have the following forms :
-
-* :- ( a b ) . *// This is the canonical form**
-* f(X,Y) :- f(1, Y) , f(X,2) .  *//commas are optionals. The final period is mandatory*
-* f(X,Y) :- one ; two .  *//this form is short hand to define two rules with same head*
-* f(X,Y). *//final period required. This is a head only rule. Same as f(Y,Y) :- .*
-
-## Lists
-
-Lists can take the following forms :
-
-* dot (a dot (b dot (c dot (nil nil)))) *//This is the canonical form. dot has arity of 2 exactly.*
-* [ a b c ] *// This is the bracket form of the same list*
-* [ a | [ b c ]]*// This is the bar form of the same*
-* [  ] *// Not the same as nil, its canonical form is dot(nil, nil)*
-
-Note that the bar form can produce object that cannot be represented as lists. 
-Lists are **always** terminated with dot(nil,nil).
-
-* [ a | b ] *// dot (a b)
-
-Imbrication of lists is allowed :
-
-* [X | [ a [ b | c ] [ e f ]]]
+```
 
 
-## General solving algorithm
+## Basic syntax
 
-SOLVE attempts to solve the goal node on top of the goal stack.
-For instance, trying to SOLVE f(X,Y).
+The general idea is that the program defines a number of **rules**  (facts are a special case of rules) and then try to find a solution the **queries** you formulate, binding query **variables** to potential solutions.
 
-SOLVE will try to UNIFY successiveley with one of the rules.
+Variables start with a capital letter A-Z. Anything else can be used as facts, rules or queries (except for limited reserved keywords).
 
-The first rule, being rr(X,55,6), cannot be unified.
-The second rule ..
-The next rule ...
+Some examples : 
 
-If we reach the end of the rule list without being able to UNIFY, then we report failure and return.
+```
+// First, let's define some rules ... 
 
-Assuming rule f(g(Y,3),Y):-... have the right functor, UNIFY will 
-first RESCOPE it as f(g(Y#1, 3),Y):- ..., making sure variables using the same symbol are not the same.
+grandfather(A,B) :- father(A, S) , father (S B).  // we define the concept of grandfather.
+grandfather(paul , john).                         // We know that Paul is John's grand father.
 
-UNIFY will compare the goal with the rescoped head of the rule, returning a new list of constraints.
-These constraints are recorded in the solving context.
+// There can be multiple definitions of a grandfather ...
+grandfather(X,Y) :- father(X,D) , mother (D, Y).
 
-*For instance, to unify f(X,Y) with f(g(Y#1,3),Y#1), we would create the constraints :*
-*bind (f(X,Y) , f(g(Y#1,3),Y#1)).*
+// or, shall we define the notion of parent ?
+parent(A,B) :- mother(A,B) ; father(A,B).         // Did you notice the semi colon to specify an alternative ?
 
-Then, we recursively process the constraints, together with the ones we already have, until either we have a canonical expression, or we demonstrate impossibility.
+/*  Then, we can query the known rules and facts 
+    Notice how queries always start with a question mark (?).
+    ... And notice this as a block comment ;-) */
 
-*bind(X,g(Y#1,3))*
-*bind(Y,Y#1)*
+// Give me someone who's grandfathr is paul ?
+? grandfather (paul, S). // We will get a response like : S = john.
 
-If processing the constraints does not fail, the initial goal is replaced by the rescoped body of the unifed rule.
+// Anyone having a grand father ?
+? grandfather (GF, _).  // We will get a response like : GF = paul.
+                        // Dis you notice the use of the undesrcore _ variable, to mean anything ?
 
-Then, SOLVE iterates on the next goal on the stack.
+// Same as above, but without the underscore 
+? grandfather (GF, S).  / We will get a response like : GF = paul, S = john.
+
+```
+
+## More about the syntax
+
+Spaces and commas are not significant nor needed as long there is no ambiguity for the scanner.
+
+The _ (underscore) variable is a special variable that can match anything.
+
+Strings can be quoted or not. If not quoted, the scanner used mainly the Golang syntax. For instance, 3x is the same a 3 , x. 
+
+Any non variable is a legal object name. Redefine + or £ if you so wish ...
+
+## Reserved words
+
+( to be completed )
+
+Have fun !
 
 
 
