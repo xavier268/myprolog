@@ -62,8 +62,10 @@ func (pc *PContext) AddGoals(prog *node.Node) {
 
 func (pc *PContext) String() string {
 	var sb strings.Builder
-	fmt.Fprintf(&sb, "\n%v", pc.cstr)
-	fmt.Fprintf(&sb, "\nGoals :\n%v", pc.goals)
+	fmt.Fprintf(&sb, "Constrt : %v\n", pc.cstr)
+	fmt.Fprintf(&sb, "Goals   : %v\n", pc.goals)
+	fmt.Fprintf(&sb, "Root    : %v\n", pc.parent == nil)
+
 	return sb.String()
 }
 

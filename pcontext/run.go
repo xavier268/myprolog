@@ -77,14 +77,14 @@ func (pc *PContext) Run() (*PContext, error) {
 // If found, return a localized version and update the current rule pointer of the context.
 // If no found, return nil. It is just a quickcheck, that will have to be confirmed later.
 // No change to the context at this stage.
-func (pc PContext) FindRule(goal *node.Node) (localizedRule *node.Node) {
+func (pc *PContext) FindRule(goal *node.Node) (localizedRule *node.Node) {
 	//found := -1 // found rule
-	for i := pc.current; i < len(pc.rules); i++ {
-		head := pc.rules[i].GetChild(0)                                                 // rule head
+	for pc.current < len(pc.rules) {
+		pc.current++ // immediately update, whatever happens later ..
+		head := pc.rules[pc.current-1].GetChild(0)
 		if head.GetLoad() == goal.GetLoad() && head.NbChildren() == goal.NbChildren() { // found a candidate
 			// Because neither can be a Variable here, it is ok to just compare payload and arity.
-			pc.current = i // update curent, so that next time the next rule will be selected.
-			return pc.rules[i].CloneLocal(pc.UID())
+			return pc.rules[pc.current-1].CloneLocal(pc.UID())
 		}
 	}
 	return nil

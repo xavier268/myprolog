@@ -1,6 +1,7 @@
 package integration
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/xavier268/myprolog/config"
@@ -29,9 +30,55 @@ func Example_runString1() {
 	// world
 }
 
-func Test_runString2(*testing.T) {
+func Example_runString2() {
 	config.FlagDebug = false
 	config.FlagVerbose = config.FlagDebug
-	repl.RunString(`toto(a,b).?toto(a,X).`)
+	pc, err := repl.RunString(`toto(a,b).?toto(a,X).`)
+	fmt.Println(err)
+	fmt.Println(pc)
+	// Output:
+	// <nil>
+	// Constrt : [X = b, ]
+	// Goals   : []
+	// Root    : false
+}
 
+func Example_runString3() {
+	config.FlagDebug = false
+	config.FlagVerbose = config.FlagDebug
+	pc, err := repl.RunString(`toto(a,b).toto(a,c).?toto(a,X).`)
+	fmt.Println(err)
+	fmt.Println(pc)
+	// Output:
+	// <nil>
+	// Constrt : [X = b, ]
+	// Goals   : []
+	// Root    : false
+}
+
+func Example_runString4() {
+	config.FlagDebug = false
+	config.FlagVerbose = config.FlagDebug
+	pc, err := repl.RunString(`?toto(a,X).`)
+	fmt.Println(err)
+	fmt.Println(pc)
+	// output:
+	// no solution, unknown keyword
+	// Constrt : []
+	// Goals   : [ toto ( a X )]
+	// Root    : true
+}
+
+func TestTT(t *testing.T) {
+	//func Example_runString5() {
+	config.FlagDebug = true
+	config.FlagVerbose = config.FlagDebug
+	pc, err := repl.RunString(`?toto(a,X).toto(b,c).`)
+	fmt.Println(err)
+	fmt.Println(pc)
+	// output:
+	// no solution, unknown keyword
+	// Constrt : []
+	// Goals   : [ toto ( a X )]
+	// Root    : true
 }

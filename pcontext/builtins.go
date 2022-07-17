@@ -88,7 +88,7 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 			return []*node.Node{goal}, nil
 		}
 
-	default: // not a keyword, ignore but keep
-		return []*node.Node{goal}, nil
+	default: // not a keyword, remove, signal an error since rules have already been tried
+		return nil, fmt.Errorf("no solution, unknown keyword")
 	}
 }

@@ -58,33 +58,32 @@ func REPL() {
 }
 
 // RunFile a non intercative program with rules and goals from file.
-func RunFile(filename string) error {
+func RunFile(filename string) (*pcontext.PContext, error) {
 
 	tk, err := tknz.NewTokenizerFile(filename)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	prog, err := prsr.Parse(tk)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	pc := pcontext.NewPContext(prog)
-	_, err = pc.Run()
-	return err
+	return pc.Run()
 
 }
 
 // RunString a non intercative program with rules and goals from string.
-func RunString(s string) error {
+func RunString(s string) (*pcontext.PContext, error) {
 
 	tk := tknz.NewTokenizerString(s)
 	prog, err := prsr.Parse(tk)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	pc := pcontext.NewPContext(prog)
-	_, err = pc.Run()
-	return err
+	return pc.Run()
+
 }
