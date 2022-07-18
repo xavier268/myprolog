@@ -83,7 +83,7 @@ func (pc *PContext) doHelp(children ...*node.Node) {
 	}
 	sort.Strings(hh)
 
-	// Atual printing
+	// Actual printing
 	fmt.Println("-------- Full Help ------------")
 	for _, h := range hh {
 		fmt.Println(HelpString(h))

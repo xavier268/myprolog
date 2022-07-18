@@ -349,3 +349,11 @@ func (n *Node) ContainsSubTree(subtree *Node) bool {
 	}
 	return false
 }
+
+func (n *Node) ContainsVariable(v Variable) bool {
+	if n == nil {
+		return false
+	}
+	return n.ContainsSubTree(NewVariableNode(v))
+
+}

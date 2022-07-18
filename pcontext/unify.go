@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/xavier268/myprolog/config"
+	"github.com/xavier268/myprolog/cons"
 	"github.com/xavier268/myprolog/node"
 )
 
@@ -126,19 +127,36 @@ func (pc *PContext) unifyString(gh, rh *node.Node) error {
 	return nil
 }
 
+// SetConstraint tries to update context.
+// If error is not nil, then a contradiction appeared.
+// If no error, the context has been already simplified.
+func (pc *PContext) SetConstraint(c cons.Cons) error {
+	if !c.IsRelevant() {
+		return nil // ok, but ignore
+	}
+	if !c.IsValid() {
+		return errNoMatch // internal contradiction
+	}
+	newlist, changed, err := cons.Simplify(pc.cstr)
+	if err != nil {
+		return err
+	}
+	if !changed {
+		return nil
+	}
+	pc.cstr = newlist
+	return nil
+}
+
 // unify a node variable in the first position.
 func (pc *PContext) unifyVariable(gh, rh *node.Node) error {
 
 	switch rh.GetLoad().(type) {
 	case node.Number, node.Variable, node.String:
-		c := NewConEqual(gh.GetLoad().(node.Variable), rh)
+		c := cons.NewConEqual(gh.GetLoad().(node.Variable), rh)
 		err := pc.SetConstraint(c)
 		if err != nil {
 			return err // cannot unify !
-		}
-		err = pc.Simplify()
-		if err != nil {
-			return err // cannot simplify !
 		}
 		return nil
 
