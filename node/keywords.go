@@ -13,6 +13,10 @@ type KeywordHelp struct {
 	long  string // more lines of description
 }
 
+func (kwh KeywordHelp) Arity() int {
+	return kwh.arity
+}
+
 // contains reserved keywords
 var Keywords = map[string]KeywordHelp{
 	"rule":    {-1, "defines a rule in a program.", ""},
@@ -22,9 +26,10 @@ var Keywords = map[string]KeywordHelp{
 	"halt":    {0, "pauses execution.", "Execution will resume upon user request."},
 	"exit":    {0, "immediately terminates program execution.", ""},
 	"print":   {-1, "prints the string representation of each of the children node.", "Parameters can be anything, including complex nodes. Variable X will appear as 'X', bound values are not used."},
+	"println": {-1, "prints the string representation of each of the children node.", "Parameters can be anything, including complex nodes. Variable X will appear as 'X', bound values are not used."},
 	"load":    {-1, "loads new rules from files.", "Successively load the provided files. Parameters should only be strings. Only rules are loaded, queries are ignored."},
-	"verbose": {1, "set verbose flag.", "Parameter should be 'true' or 'false'. Any other value has no effect."},
-	"debug":   {1, "set debug flag.", "Parameter should be 'true' or 'false'. Any other value has no effect."},
+	"verbose": {1, "set verbose flag.", "Parameter should be 0 or 1. Any other value has no effect."},
+	"debug":   {1, "set debug flag.", "Parameter should be 0 or 1. Any other value has no effect."},
 	"help":    {-1, "displays help information.", "If no parameter, it displays full help. If string or keyword parameters are provided, it displays detailed help."},
 	"unknown": {-1, "has no effect.", "However, because unknown is a keyword, although it has no effect, it will never bind to anything. An unknown goal cannot be erased."},
 }

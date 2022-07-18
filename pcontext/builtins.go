@@ -24,6 +24,11 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 
 	case node.Keyword: // Handle actual keywords
 
+		// First, check arity
+		if node.Keywords[kw.String()].Arity() > 0 && goal.NbChildren() != node.Keywords[kw.String()].Arity() {
+			return nil, fmt.Errorf("unknown keyward with such arity")
+		}
+
 		switch kw.String() {
 
 		case "query": // unpack the query content
@@ -33,9 +38,10 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 			return goal.GetChildren(), nil
 
 		case "print": // print all the children nodes and remove node
-			for _, c := range goal.GetChildren() {
-				fmt.Print(pc.StringContent(c))
-			}
+			pc.doPrint(goal.GetChildren()...)
+			return nil, nil
+		case "println": // print all the children nodes and remove node
+			pc.doPrintln(goal.GetChildren()...)
 			return nil, nil
 		case "halt": // pause program
 			pc.doHalt()
@@ -50,13 +56,12 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 			return nil, nil
 
 		case "verbose": // toggle the verbose switch
-			config.FlagVerbose = !config.FlagVerbose
-			fmt.Println("\nVerbose flag is now", config.FlagVerbose)
+			pc.doVerbose(goal.GetChildren()...)
 			return nil, nil
 
 		case "debug": // toggle the debug switch
-			config.FlagDebug = !config.FlagDebug
-			fmt.Println("\nDebug flag is now", config.FlagDebug)
+			pc.doVerbose(goal.GetChildren()...)
+			pc.doDebug(goal.GetChildren()...)
 			return nil, nil
 
 		case "load": // load more rules from an external file.
@@ -95,7 +100,28 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 		return nil, fmt.Errorf("no solution")
 	}
 }
-
+func (pc *PContext) doDebug(children ...*node.Node) {
+	v, ok := children[0].GetLoad().(node.Number)
+	if ok {
+		if v.GetValue() == 0 {
+			config.FlagDebug = false
+		} else {
+			config.FlagDebug = true
+		}
+	} // ignore non number.
+	fmt.Println("Debug flag is now ", config.FlagDebug)
+}
+func (pc *PContext) doVerbose(children ...*node.Node) {
+	v, ok := children[0].GetLoad().(node.Number)
+	if ok {
+		if v.GetValue() == 0 {
+			config.FlagVerbose = false
+		} else {
+			config.FlagVerbose = true
+		}
+	} // ignore non number.
+	fmt.Println("Verbose flag is now ", config.FlagVerbose)
+}
 func (pc *PContext) doExit() {
 	fmt.Println("\nProgram stopped")
 	os.Exit(0)
@@ -105,4 +131,14 @@ func (pc *PContext) doHalt() {
 	fmt.Println("\nProgram paused. Type ^C to exit, or <Enter> to continue")
 	fmt.Scanln(new(string))
 	fmt.Println("\nProgram resumed.")
+}
+
+func (pc *PContext) doPrint(children ...*node.Node) {
+	for _, c := range children {
+		fmt.Print(c.String())
+	}
+}
+func (pc *PContext) doPrintln(children ...*node.Node) {
+	pc.doPrint(children...)
+	fmt.Println()
 }

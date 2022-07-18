@@ -100,9 +100,23 @@ func Example_runString7() {
 	// Goals   : []
 	// Root    : false
 }
+
+func Example_runString8() {
+	config.FlagDebug = false
+	config.FlagVerbose = config.FlagDebug
+	pc, err := repl.RunString(`?println(X yyy " " zzz ).`)
+	fmt.Println(err)
+	fmt.Println(pc)
+	// output:
+	// X yyy   zzz
+	// <nil>
+	// Constrt : []
+	// Goals   : []
+	// Root    : true
+}
+
 func TestHelpVisual(_ *testing.T) {
 	config.FlagDebug = false
 	config.FlagVerbose = config.FlagDebug
 	repl.RunString(`?help().`)
-
 }

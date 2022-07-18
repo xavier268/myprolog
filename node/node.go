@@ -184,6 +184,10 @@ type Number struct {
 	value float64
 }
 
+func (n Number) GetValue() float64 {
+	return n.value
+}
+
 // Clone recursively the tree.
 func (n *Node) Clone() *Node {
 	if n == nil {

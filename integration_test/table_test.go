@@ -39,6 +39,22 @@ var testData = []testDataType{
 	// Syntax issues
 	{"toto(a,b) 	?toto(X,Y).", false, "<nil>"}, // missing period
 
+	// Keywords
+	{"?verbose(1).", true, "[]"},
+	{"?verbose(0).", true, "[]"},
+	{"?verbose.", false, "[]"},
+	{"?debug(1).", true, "[]"},
+	{"?debug(0).", true, "[]"},
+	{"?debug.", false, "[]"},
+	{`?print(1).?print("yt").?print().`, true, "[]"},
+	{`?println(1).?println("yt").?println().`, true, "[]"},
+	{`?println(print println).`, true, "[]"},
+
+	// Nesting
+	{"f(Y,g(Y),a).				 ", true, "[]"}, // ok
+	{"f(Y,g(Y),a).				 ?f(X,X,X).", false, "[]"}, // positive occur check - should fail
+	{"f(Y,g(Y),a).?debug(1).?verbose(1).	 ?f(X,g(X),X).", true, "[Y = a,  X = a, ]"}, // ok - TODO - Wrong ! Should sumplify futher !!
+
 }
 
 func TestRunStringTable(t *testing.T) {
