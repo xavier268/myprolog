@@ -25,27 +25,29 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 	case node.Keyword: // Handle actual keywords
 
 		switch kw.String() {
-		case "print": // print all the children nodes and remove node
-			for _, c := range goal.GetChildren() {
-				fmt.Print(pc.StringContent(c))
-			}
-			return nil, nil
-		case "halt": // pause program
-			fmt.Println("\nProgram paused. Type ^C to exit, or <Enter> to continue")
-			fmt.Scanln(new(string))
-			fmt.Println("\nProgram resumed.")
-			return nil, nil
-
-		case "exit": // exit program
-			fmt.Println("\nProgram stopped")
-			os.Exit(0)
-			return nil, nil
 
 		case "query": // unpack the query content
 			if config.FlagDebug {
 				fmt.Println("\nDEBUG preparing to execute : ", goal)
 			}
 			return goal.GetChildren(), nil
+
+		case "print": // print all the children nodes and remove node
+			for _, c := range goal.GetChildren() {
+				fmt.Print(pc.StringContent(c))
+			}
+			return nil, nil
+		case "halt": // pause program
+			pc.doHalt()
+			return nil, nil
+
+		case "exit": // exit program
+			pc.doExit()
+			return nil, nil
+
+		case "help": // print help
+			pc.doHelp(goal.GetChildren()...)
+			return nil, nil
 
 		case "verbose": // toggle the verbose switch
 			config.FlagVerbose = !config.FlagVerbose
@@ -75,20 +77,32 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 			}
 			pc.AddRules(rr)
 			return nil, nil
+			/*
+				case "rules": // dump rules
+					fmt.Printf("\nRules : %v", pc.rules)
+					return nil, nil
 
-		case "rules": // dump rules
-			fmt.Printf("\nRules : %v", pc.rules)
-			return nil, nil
+				case "queries", "goals": // dump queries, also called goals
+					fmt.Printf("\nQueries : %v", pc.goals)
+					return nil, nil
+			*/
 
-		case "queries", "goals": // dump queries, also called goals
-			fmt.Printf("\nQueries : %v", pc.goals)
-			return nil, nil
-
-		default: // keyword has no effect, ignore but keep
+		default: // keyword has no effect, ignore but keep - see unknown !
 			return []*node.Node{goal}, nil
 		}
 
 	default: // not a keyword, remove, signal an error since rules have already been tried
-		return nil, fmt.Errorf("no solution, unknown keyword")
+		return nil, fmt.Errorf("no solution")
 	}
+}
+
+func (pc *PContext) doExit() {
+	fmt.Println("\nProgram stopped")
+	os.Exit(0)
+}
+
+func (pc *PContext) doHalt() {
+	fmt.Println("\nProgram paused. Type ^C to exit, or <Enter> to continue")
+	fmt.Scanln(new(string))
+	fmt.Println("\nProgram resumed.")
 }

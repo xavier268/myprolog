@@ -1,24 +1,32 @@
 package node
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+
+	"github.com/xavier268/myprolog/config"
+)
+
+type KeywordHelp struct {
+	arity int    // required nb of children, -1 for any
+	short string // short, one line description
+	long  string // more lines of description
+}
 
 // contains reserved keywords
-var keywords = []string{
-	"rule",    // define a rule in a program
-	"query",   // define a query in a program
-	"program", // contains rule and query children
-	"freeze",  // prevents backtracking from now on.
-	"halt",    // pause program.
-	"exit",    // exit program.
-	"print",   // print message or node
-	"load",    // load a program (rules only)
-	"reset",   // restart - TODO
-	"verbose", // toggle verbose flag
-	"debug",   // toggle debug flag
-	"rules",   // dump current rules
-	"queries", // dump current queries/goals
-	"goals",   // same - dump current queries/goals
-	// "help",    // TODO
+var Keywords = map[string]KeywordHelp{
+	"rule":    {-1, "defines a rule in a program.", ""},
+	"query":   {-1, "defines a query in a program.", ""},
+	"program": {-1, "defines the top level node for a program.", ""},
+	"freeze":  {0, "prevents backtracking from here.", ""},
+	"halt":    {0, "pauses execution.", "Execution will resume upon user request."},
+	"exit":    {0, "immediately terminates program execution.", ""},
+	"print":   {-1, "prints the string representation of each of the children node.", "Parameters can be anything, including complex nodes. Variable X will appear as 'X', bound values are not used."},
+	"load":    {-1, "loads new rules from files.", "Successively load the provided files. Parameters should only be strings. Only rules are loaded, queries are ignored."},
+	"verbose": {1, "set verbose flag.", "Parameter should be 'true' or 'false'. Any other value has no effect."},
+	"debug":   {1, "set debug flag.", "Parameter should be 'true' or 'false'. Any other value has no effect."},
+	"help":    {-1, "displays help information.", "If no parameter, it displays full help. If string or keyword parameters are provided, it displays detailed help."},
+	"unknown": {-1, "has no effect.", "However, because unknown is a keyword, although it has no effect, it will never bind to anything. An unknown goal cannot be erased."},
 }
 
 type Keyword struct {
@@ -32,15 +40,36 @@ func (kw *Keyword) String() string {
 	return kw.name
 }
 
+// Get help on a keywoard. No-op if not a keyword.
+func HelpKeyword(kw string) (string, error) {
+
+	var sb strings.Builder
+	h, ok := Keywords[kw]
+	if !ok {
+		return "", errNotFound
+	}
+	a := fmt.Sprint(h.arity)
+	if h.arity < 0 {
+		a = "any"
+	}
+	fmt.Fprintf(&sb, "%s(%s) is a keyword that %s\n", kw, a, h.short)
+	lines := config.CutString(h.long, config.TEXT_WIDTH)
+	for _, line := range lines {
+		if len(line) > 0 {
+			fmt.Fprintln(&sb, config.TEXT_PREFIX, line)
+		}
+	}
+	return sb.String(), nil
+}
+
 var errNotFound = fmt.Errorf("keyword not found")
 
 func NewKeyword(kw string) (Keyword, error) {
-	for _, k := range keywords {
-		if k == kw {
-			return Keyword{kw}, nil
-		}
+	_, ok := Keywords[kw]
+	if !ok {
+		return Keyword{}, errNotFound
 	}
-	return Keyword{}, errNotFound
+	return Keyword{kw}, nil
 }
 
 func NewDotNode() *Node {

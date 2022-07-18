@@ -58,7 +58,7 @@ func Example_runString4() {
 	fmt.Println(err)
 	fmt.Println(pc)
 	// output:
-	// no solution, unknown keyword
+	// no solution
 	// Constrt : []
 	// Goals   : [ toto ( a X )]
 	// Root    : true
@@ -71,7 +71,7 @@ func Example_runString5() {
 	fmt.Println(err)
 	fmt.Println(pc)
 	// output:
-	// no solution, unknown keyword
+	// no solution
 	// Constrt : []
 	// Goals   : [ toto ( a X )]
 	// Root    : true
@@ -83,7 +83,7 @@ func Example_runString6() {
 	fmt.Println(err)
 	fmt.Println(pc)
 	// output:
-	// no solution, unknown keyword
+	// no solution
 	// Constrt : []
 	// Goals   : [ toto ( X X )]
 	// Root    : true
@@ -100,16 +100,9 @@ func Example_runString7() {
 	// Goals   : []
 	// Root    : false
 }
-func TestTT(t *testing.T) {
-	//func Example_runString5() {
-	config.FlagDebug = true
+func TestHelpVisual(_ *testing.T) {
+	config.FlagDebug = false
 	config.FlagVerbose = config.FlagDebug
-	pc, err := repl.RunString(`?toto(X,Y).toto(b,c).`)
-	fmt.Println(err)
-	fmt.Println(pc)
-	// output:
-	// no solution, unknown keyword
-	// Constrt : []
-	// Goals   : [ toto ( a X )]
-	// Root    : true
+	repl.RunString(`?help().`)
+
 }
