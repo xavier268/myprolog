@@ -53,7 +53,7 @@ var testData = []testDataType{
 	// Nesting
 	{"f(Y,g(Y),a).				 ", true, "[]"}, // ok
 	{"f(Y,g(Y),a).				 ?f(X,X,X).", false, "[]"}, // positive occur check - should fail
-	{"f(Y,g(Y),a).?debug(1).?verbose(1).	 ?f(X,g(X),X).", true, "[Y = a,  X = a, ]"}, // ok - TODO - Wrong ! Should sumplify futher !!
+	{"f(Y,g(Y),a).?debug(1).?verbose(1).	 ?f(X,g(X),X).", true, "[Y = X,  X = a, ]"}, // ok - TODO - Wrong ! Should simplify futher !!
 
 }
 
