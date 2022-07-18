@@ -9,13 +9,13 @@ import (
 
 var errNoMatch = fmt.Errorf("no match")
 
-// Unify attempts unification of the rule head (rh) with the goal (gh), updating context constraints.
+// Unify attempts unification of the the goal (gh) with rule head (rh), updating context constraints.
 // It is called recusively, trying to unify children with each other.
 // As unification proceeds, the context contraints are updated (but not the goals).
-func (pc *PContext) Unify(rh, gh *node.Node) error {
+func (pc *PContext) Unify(gh, rh *node.Node) error {
 
 	if config.FlagDebug {
-		fmt.Println("DEBUG UNIFYING : ", rh, gh)
+		fmt.Println("DEBUG UNIFYING : ", gh, rh)
 	}
 
 	if pc == nil {
@@ -25,30 +25,30 @@ func (pc *PContext) Unify(rh, gh *node.Node) error {
 		return nil
 	}
 
-	v1 := rh.GetLoad()
-	v2 := gh.GetLoad()
+	goalLoad := gh.GetLoad()
+	ruleLoad := rh.GetLoad()
 
-	switch v1.(type) {
+	switch goalLoad.(type) {
 
 	case node.Number:
-		if err := pc.unifyNumber(rh, gh); err != nil {
+		if err := pc.unifyNumber(gh, rh); err != nil {
 			return err
 		}
 
 	case node.String:
 		// check heads
-		if err := pc.unifyString(rh, gh); err != nil {
+		if err := pc.unifyString(gh, rh); err != nil {
 			return err
 		}
 
 		// recursion could be required on children ?
-		switch v2.(type) {
+		switch ruleLoad.(type) {
 		case node.String: // string/string requires recursion
-			if v1 != v2 || rh.NbChildren() != gh.NbChildren() {
+			if ruleLoad != goalLoad || rh.NbChildren() != gh.NbChildren() {
 				return errNoMatch
 			}
 			for i := range rh.GetChildren() {
-				if err := pc.Unify(rh.GetChild(i), gh.GetChild(i)); err != nil {
+				if err := pc.Unify(gh.GetChild(i), rh.GetChild(i)); err != nil {
 					return err
 				}
 			}
@@ -58,7 +58,7 @@ func (pc *PContext) Unify(rh, gh *node.Node) error {
 		// always match
 
 	case node.Variable:
-		if err := pc.unifyVariable(rh, gh); err != nil {
+		if err := pc.unifyVariable(gh, rh); err != nil {
 			return err
 		}
 
@@ -73,15 +73,16 @@ func (pc *PContext) Unify(rh, gh *node.Node) error {
 }
 
 // The first node is a number
-func (pc *PContext) unifyNumber(rh, gh *node.Node) error {
+func (pc *PContext) unifyNumber(gh, rh *node.Node) error {
 
-	switch gh.GetLoad().(type) {
+	switch rh.GetLoad().(type) {
 	case node.Number:
 		if rh.GetLoad() != gh.GetLoad() {
 			return errNoMatch
 		}
 	case node.Variable:
-		if err := pc.unifyVariable(gh, rh); err != nil {
+		// unify in reverse order
+		if err := pc.unifyVariable(rh, gh); err != nil {
 			return err
 		}
 	case node.Underscore:
@@ -95,13 +96,14 @@ func (pc *PContext) unifyNumber(rh, gh *node.Node) error {
 	return nil
 }
 
-// unify a string with ...
-func (pc *PContext) unifyString(rh, gh *node.Node) error {
-	switch gh.GetLoad().(type) {
+// unify a goal string with ...
+func (pc *PContext) unifyString(gh, rh *node.Node) error {
+	switch rh.GetLoad().(type) {
 	case node.Number, node.Keyword:
 		return errNoMatch
 	case node.Variable:
-		if err := pc.unifyVariable(gh, rh); err != nil {
+		// reverse order
+		if err := pc.unifyVariable(rh, gh); err != nil {
 			return err
 		}
 	case node.Underscore:
@@ -110,6 +112,14 @@ func (pc *PContext) unifyString(rh, gh *node.Node) error {
 		if rh.GetLoad() != gh.GetLoad() {
 			return errNoMatch
 		}
+		if rh.NbChildren() != gh.NbChildren() {
+			return errNoMatch
+		}
+		for i := range gh.GetChildren() {
+			if err := pc.Unify(gh.GetChild(i), rh.GetChild(i)); err != nil {
+				return errNoMatch
+			}
+		}
 	default:
 		panic("internal error")
 	}
@@ -117,14 +127,18 @@ func (pc *PContext) unifyString(rh, gh *node.Node) error {
 }
 
 // unify a node variable in the first position.
-func (pc *PContext) unifyVariable(rh, gh *node.Node) error {
+func (pc *PContext) unifyVariable(gh, rh *node.Node) error {
 
-	switch gh.GetLoad().(type) {
+	switch rh.GetLoad().(type) {
 	case node.Number, node.Variable, node.String:
-		c := NewConEqual(rh.GetLoad().(node.Variable), gh)
+		c := NewConEqual(gh.GetLoad().(node.Variable), rh)
 		err := pc.SetConstraint(c)
 		if err != nil {
-			return err
+			return err // cannot unify !
+		}
+		err = pc.Simplify()
+		if err != nil {
+			return err // cannot simplify !
 		}
 		return nil
 

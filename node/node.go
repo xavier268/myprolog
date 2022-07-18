@@ -175,9 +175,17 @@ type Variable struct {
 	nsp  int // namespace version of variable
 }
 
+func NewVariable(name string, nsp int) Variable {
+	return Variable{name, nsp}
+}
+
 type Underscore struct{}
 
 type String string
+
+func NewString(a string) String {
+	return String(a)
+}
 
 type Number struct {
 	name  string

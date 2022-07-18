@@ -6,7 +6,8 @@ type Constraint interface {
 }
 
 // Add a constraint to the current context.
-// Error if impossibility is detected (backtracking will be required !)
+// Error if impossibility is detected, due to the constraint it self.
+// Not checks are performed vs previously existing constraints.
 func (pc *PContext) SetConstraint(cc Constraint) error {
 
 	if cc == nil || pc == nil {
@@ -19,34 +20,8 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 		if c.IsObvious() {
 			return nil
 		}
-		if err := c.Verify(); err != nil { // positive occur check
+		if err := c.VerifyPosOcc(); err != nil { // positive occur check, don't add !
 			return err
-		}
-
-		// Update old constr if needed, replacing previous X occurrence by xxx
-		for i, old := range pc.cstr {
-			old2 := c.Update(old)
-			if old2 != nil {
-				pc.cstr[i] = old2
-			}
-		}
-
-		// Look for previously existing X = yyy ?
-		for _, old := range pc.cstr {
-			switch old2 := old.(type) {
-			case ConEqual:
-				if old2.v == c.v { // same X = ....
-					err := pc.Unify(old2.t, c.t)
-					if err != nil {
-						// we couldn't unify a and b in X=a & X=b !
-						return err
-					} else {
-						// since we could unify a and b in X=a & X=b, do not add X=b, not required.
-						return nil
-					}
-				}
-			default: // ignore
-			}
 		}
 
 		// by default, add this new constraint and return no error
@@ -59,4 +34,9 @@ func (pc *PContext) SetConstraint(cc Constraint) error {
 	}
 
 	//return nil
+}
+
+// Simplify the constraint set
+func (pc *PContext) Simplify() error {
+
 }
