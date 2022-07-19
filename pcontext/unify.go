@@ -137,6 +137,9 @@ func (pc *PContext) SetConstraint(c cons.Cons) error {
 	if !c.IsValid() {
 		return errNoMatch // internal contradiction
 	}
+
+	pc.cstr = append(pc.cstr, c)
+
 	newlist, changed, err := cons.Simplify(pc.cstr)
 	if err != nil {
 		return err

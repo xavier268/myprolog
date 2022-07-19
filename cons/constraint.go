@@ -22,10 +22,8 @@ const (
 	ConsEQ RelType = iota
 )
 
-func (c *Cons) String() string {
-	if c == nil {
-		return fmt.Sprint(nil)
-	}
+func (c Cons) String() string {
+
 	switch c.relation {
 	case ConsEQ:
 		return fmt.Sprintf("%s =%s, ", c.variable.String(), c.tree.String())
