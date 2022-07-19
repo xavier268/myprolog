@@ -1,3 +1,5 @@
+// TODO - WARNING - SIMPLIFY NEEDS TO BE ABLE TO CALL UNIFY !!!
+// Reconsider pulling Unify xx into the cons package ?
 package cons
 
 import (
@@ -13,6 +15,7 @@ import (
 //	* substiture k,own variables by their definitions
 // It is assumed that, individually, each constraint is already both Valid ans Relevant.
 // If trees are modified, they are always cloned first.
+
 func Simplify(oldlist []Cons) (newlist []Cons, changed bool, err error) {
 
 	changed = false
