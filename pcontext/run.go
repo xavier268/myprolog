@@ -38,7 +38,7 @@ func (pc *PContext) Run() (*PContext, error) {
 		if rule != nil {
 			// push context, and try to confirm this rule
 			pc = pc.Push()
-			err := pc.Unify(rule.GetChild(0), goal)
+			err := pc.Unify(goal, rule.GetChild(0))
 			if err == nil { // success !
 				// update goals, erasing the initial goal used, and adding the body of the localized rule.
 				if len(pc.goals) > 1 {

@@ -175,9 +175,17 @@ type Variable struct {
 	nsp  int // namespace version of variable
 }
 
+func NewVariable(name string, nsp int) Variable {
+	return Variable{name, nsp}
+}
+
 type Underscore struct{}
 
 type String string
+
+func NewString(a string) String {
+	return String(a)
+}
 
 type Number struct {
 	name  string
@@ -222,14 +230,16 @@ func (n *Node) CloneLocal(nsp int) *Node {
 	return c
 }
 
-func (n *Node) Add(children ...*Node) {
+// Add in place, modifying the calling node.
+func (n *Node) Add(children ...*Node) *Node {
 	if len(children) == 0 {
-		return
+		return n
 	}
 	if n == nil || !n.ChildrenAllowed() {
 		panic("trying to add children to a Variable node")
 	}
 	n.children = append(n.children, children...)
+	return n
 }
 
 // Walk the Node, applying f recursively to all node loads, stopping immediately if error.
@@ -340,4 +350,12 @@ func (n *Node) ContainsSubTree(subtree *Node) bool {
 		}
 	}
 	return false
+}
+
+func (n *Node) ContainsVariable(v Variable) bool {
+	if n == nil {
+		return false
+	}
+	return n.ContainsSubTree(NewVariableNode(v))
+
 }

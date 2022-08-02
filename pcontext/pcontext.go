@@ -12,8 +12,8 @@ import (
 type PContext struct {
 	goals   []*node.Node
 	rules   []*node.Node
-	current int          // index of the current rule being tried.
-	cstr    []Constraint // Current list of constraints, can contain nils
+	current int    // index of the current rule being tried.
+	cstr    []Cons // Current list of constraints, can contain nils
 	parent  *PContext
 	start   time.Time
 	uid     *int // unique id generator shared across context
@@ -114,12 +114,7 @@ func (pc *PContext) Push() *PContext {
 	n.rules = append(n.rules, pc.rules...)
 	n.goals = append(n.goals, pc.goals...)
 	n.current = 0 // start looking at all rules again !
-	// special handling for constraints to cleanup nil constraints
-	for _, c := range pc.cstr {
-		if c != nil {
-			n.cstr = append(n.cstr, c)
-		}
-	}
+	n.cstr = append(n.cstr, pc.cstr...)
 	n.start = time.Now()
 	return n
 }
@@ -130,9 +125,4 @@ func (pc *PContext) Pop() *PContext {
 		return nil
 	}
 	return pc.parent
-}
-
-// TODO - redirect to variable content
-func (pc *PContext) StringContent(n *node.Node) string {
-	return n.String()
 }
