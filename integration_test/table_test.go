@@ -49,6 +49,7 @@ var testData = []testDataType{
 	{`?print(1).?print("yt").?print().`, true, "[]"},
 	{`?println(1).?println("yt").?println().`, true, "[]"},
 	{`?println(print println).`, true, "[]"},
+	{`toto(a,b).?list.`, true, "[]"},
 
 	// Nesting
 	{"f(Y,g(Y),a).				 ", true, "[]"}, // ok

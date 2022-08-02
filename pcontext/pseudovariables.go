@@ -13,9 +13,7 @@ type PVariableHelp struct {
 }
 
 var PVariables = map[string]PVariableHelp{
-	"PI":    {"represents the PI number.", ""},
-	"RULES": {"provides a string representation of the current rules.", ""},
-	"GOALS": {"provides a string representation of the current pending goals.", ""},
+	"PI": {"represents the PI number.", ""},
 }
 
 // Return help on pseudo variable. No-op if not a pseudo variable.

@@ -17,7 +17,7 @@ func (kwh KeywordHelp) Arity() int {
 	return kwh.arity
 }
 
-// contains reserved keywords
+// contains reserved keywords, and their arity. Arity of -1 means undefined.
 var Keywords = map[string]KeywordHelp{
 	"rule":    {-1, "defines a rule in a program.", ""},
 	"query":   {-1, "defines a query in a program.", ""},
@@ -31,6 +31,7 @@ var Keywords = map[string]KeywordHelp{
 	"verbose": {1, "set verbose flag.", "Parameter should be 0 or 1. Any other value has no effect."},
 	"debug":   {1, "set debug flag.", "Parameter should be 0 or 1. Any other value has no effect."},
 	"help":    {-1, "displays help information.", "If no parameter, it displays full help. If string or keyword parameters are provided, it displays detailed help."},
+	"list":    {0, "list current rules.", ""},
 	"unknown": {-1, "has no effect.", "However, because unknown is a keyword, although it has no effect, it will never bind to anything. An unknown goal cannot be erased."},
 }
 

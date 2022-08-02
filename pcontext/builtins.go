@@ -11,7 +11,7 @@ import (
 	"github.com/xavier268/myprolog/tknz"
 )
 
-// DoBuiltin execute root of the goal node if it is a keyword.
+// DoBuiltin execute root of the goal node if it is a builtin keyword.
 // Zero, one or more modified Node are returned.
 // No-op if the root of the node is not a keyword.
 func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
@@ -25,8 +25,8 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 	case node.Keyword: // Handle actual keywords
 
 		// First, check arity
-		if node.Keywords[kw.String()].Arity() > 0 && goal.NbChildren() != node.Keywords[kw.String()].Arity() {
-			return nil, fmt.Errorf("unknown keyward with such arity")
+		if node.Keywords[kw.String()].Arity() >= 0 && goal.NbChildren() != node.Keywords[kw.String()].Arity() {
+			return nil, fmt.Errorf("unknown keyword with such arity")
 		}
 
 		switch kw.String() {
@@ -62,6 +62,10 @@ func (pc *PContext) DoBuiltin(goal *node.Node) ([]*node.Node, error) {
 		case "debug": // toggle the debug switch
 			pc.doVerbose(goal.GetChildren()...)
 			pc.doDebug(goal.GetChildren()...)
+			return nil, nil
+
+		case "list": // list current rule
+			pc.doList()
 			return nil, nil
 
 		case "load": // load more rules from an external file.
@@ -141,4 +145,11 @@ func (pc *PContext) doPrint(children ...*node.Node) {
 func (pc *PContext) doPrintln(children ...*node.Node) {
 	pc.doPrint(children...)
 	fmt.Println()
+}
+
+func (pc *PContext) doList() {
+	fmt.Printf("List of current rules :\n")
+	for i, r := range pc.rules {
+		fmt.Printf("%3d)\t%s\n", i, r.String())
+	}
 }
