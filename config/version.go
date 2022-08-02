@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-const VERSION = "v0.4.1"
+const VERSION = "v0.5.1"
 const WELCOME = "Prolog interpreter in Go"
 const GITHUBNAME = "https://github.com/xavier268/myprolog"
 const COPYRIGHT = "(c) 2022 Xavier Gandillot (aka xavier268)"
