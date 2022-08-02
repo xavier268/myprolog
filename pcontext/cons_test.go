@@ -36,9 +36,11 @@ func TestTableSimplifyVisual(t *testing.T) {
 	config.FlagDebug = false
 	for i := 0; i <= len(data); i++ {
 
-		test := data[:i]
-		fmt.Print(test, " ---> ")
-		fmt.Println(Simplify(test))
+		pc := new(PContext)
+		pc.cstr = data[:i]
+		fmt.Print(data[:i], " ---> ")
+		pc.Simplify()
+		fmt.Println(pc.cstr)
 	}
 
 }

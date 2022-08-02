@@ -139,14 +139,10 @@ func (pc *PContext) SetConstraint(c Cons) error {
 
 	pc.cstr = append(pc.cstr, c)
 
-	newlist, changed, err := Simplify(pc.cstr)
+	err := pc.Simplify()
 	if err != nil {
 		return err
 	}
-	if !changed {
-		return nil
-	}
-	pc.cstr = newlist
 	return nil
 }
 

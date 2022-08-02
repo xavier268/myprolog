@@ -10,18 +10,18 @@ import (
 // Simplify a given list of constraints.
 // Simplification means :
 // 	* remove duplicates
-//	* substiture k,own variables by their definitions
+//	* substiture known variables by their definitions
 // It is assumed that, individually, each constraint is already both Valid ans Relevant.
 // If trees are modified, they are always cloned first.
 
-func Simplify(oldlist []Cons) (newlist []Cons, changed bool, err error) {
+func (pc *PContext) Simplify() (err error) {
 
-	changed = false
+	changed := false
 	err = nil
-	newlist = append(newlist, oldlist...)
+	newlist := append([]Cons{}, pc.cstr...)
 
 	if config.FlagDebug {
-		fmt.Println("DEBUG SIMPLIFY CONS : ", oldlist)
+		fmt.Println("DEBUG SIMPLIFY CONS : ", pc.cstr)
 	}
 
 	loop := true
@@ -56,7 +56,7 @@ func Simplify(oldlist []Cons) (newlist []Cons, changed bool, err error) {
 				newtree, repl := newlist[j].tree.ReplaceSubTree(node.NewVariableNode(newlist[i].variable), newlist[i].tree)
 				if repl {
 					if i == j {
-						return nil, false, fmt.Errorf("positive error check") // X = f(... X ...) - never replace !
+						return fmt.Errorf("positive error check") // X = f(... X ...) - never replace !
 					}
 					changed = true
 					loop = true
@@ -65,15 +65,17 @@ func Simplify(oldlist []Cons) (newlist []Cons, changed bool, err error) {
 			}
 		}
 
+		// TODO replace X= a X = b by X =a and Unify a & b
+
 	}
 	if config.FlagDebug {
 		fmt.Println("DEBUG SIMPLIFY - new, chg, err =", newlist, changed, err)
 	}
 	if changed {
-		return newlist, changed, nil
+		pc.cstr = newlist
+		return nil
 	} else {
 		newlist = nil
-		return oldlist, changed, nil
+		return nil
 	}
-
 }
