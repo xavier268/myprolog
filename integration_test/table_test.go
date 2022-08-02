@@ -14,47 +14,47 @@ type testDataType struct {
 }
 
 var testData = []testDataType{
-	/*
-		// Basic, simple solutions
-		{"toto(a,b).	?toto(X,Y).", true, "[X = a,  Y = b, ]"}, // ultra simple
-		{"?toto(X,Y).	toto(a,b).", true, "[X = a,  Y = b, ]"}, // query comes first ..
-		{"?toto(X,Y).	toto(a,a).", true, "[X = a,  Y = a, ]"}, // query comes first ..
 
-		// Basic, no solution
-		{"toto.			?toto(X,Y).", false, "[]"}, // arity does not match !
-		{"toto(X).		?toto(X,Y).", false, "[]"}, // arity does not match !
+	// Basic, simple solutions
+	{"toto(a,b).	?toto(X,Y).", true, "[X = a,  Y = b, ]"}, // ultra simple
+	{"?toto(X,Y).	toto(a,b).", true, "[X = a,  Y = b, ]"}, // query comes first ..
+	{"?toto(X,Y).	toto(a,a).", true, "[X = a,  Y = a, ]"}, // query comes first ..
 
-		// Underscore in queries
-		{"toto(a,b).	?toto(_,Y).", true, "[Y = b, ]"}, //
-		{"toto(a,b).	?toto(X,_).", true, "[X = a, ]"}, //
-		{"toto(a,b).	?toto(_,_).", true, "[]"}, //
+	// Basic, no solution
+	{"toto.			?toto(X,Y).", false, "[]"}, // arity does not match !
+	{"toto(X).		?toto(X,Y).", false, "[]"}, // arity does not match !
 
-		// underscore in rules
-		{"toto(_).		?toto(X,Y).", false, "[]"}, // arity does not match !
-		{"toto(a,_).	?toto(X,Y).", true, "[X = a, ]"}, //
+	// Underscore in queries
+	{"toto(a,b).	?toto(_,Y).", true, "[Y = b, ]"}, //
+	{"toto(a,b).	?toto(X,_).", true, "[X = a, ]"}, //
+	{"toto(a,b).	?toto(_,_).", true, "[]"}, //
 
-		// Misc.
-		{"toto(a,b,c).toto(a,X,X).    ?toto(X,X,c).", false, "[]"}, //
+	// underscore in rules
+	{"toto(_).		?toto(X,Y).", false, "[]"}, // arity does not match !
+	{"toto(a,_).	?toto(X,Y).", true, "[X = a, ]"}, //
 
-		// Syntax issues
-		{"toto(a,b) 	?toto(X,Y).", false, "<nil>"}, // missing period
+	// Misc.
+	{"toto(a,b,c).toto(a,X,X).    ?toto(X,X,c).", false, "[]"}, //
 
-		// Keywords
-		{"?verbose(1).", true, "[]"},
-		{"?verbose(0).", true, "[]"},
-		{"?verbose.", false, "[]"},
-		{"?debug(1).", true, "[]"},
-		{"?debug(0).", true, "[]"},
-		{"?debug.", false, "[]"},
-		{`?print(1).?print("yt").?print().`, true, "[]"},
-		{`?println(1).?println("yt").?println().`, true, "[]"},
-		{`?println(print println).`, true, "[]"},
+	// Syntax issues
+	{"toto(a,b) 	?toto(X,Y).", false, "<nil>"}, // missing period
 
-		// Nesting
-		{"f(Y,g(Y),a).				 ", true, "[]"}, // ok
-		{"f(Y,g(Y),a).				 ?f(X,X,X).", false, "[]"}, // positive occur check - should fail
-	*/
-	{"f(Y,g(Y),a).?debug(1).?verbose(1).	 ?f(X,g(X),X).", true, "[X = Y,  Y = a, ]"}, // ok - TODO - Wrong ! Should sumplify futher !!
+	// Keywords
+	{"?verbose(1).", true, "[]"},
+	{"?verbose(0).", true, "[]"},
+	{"?verbose.", false, "[]"},
+	{"?debug(1).", true, "[]"},
+	{"?debug(0).", true, "[]"},
+	{"?debug.", false, "[]"},
+	{`?print(1).?print("yt").?print().`, true, "[]"},
+	{`?println(1).?println("yt").?println().`, true, "[]"},
+	{`?println(print println).`, true, "[]"},
+
+	// Nesting
+	{"f(Y,g(Y),a).				 ", true, "[]"}, // ok
+	{"f(Y,g(Y),a).				 ?f(X,X,X).", false, "[]"}, // positive occur check - should fail
+
+	{"f(Y,g(Y),a).?debug(1).?verbose(1).	 ?f(X,g(X),X).", true, "[X = a,  Y = a, ]"}, // ok
 
 }
 

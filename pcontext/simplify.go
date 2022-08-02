@@ -28,7 +28,7 @@ func (pc *PContext) Simplify() (err error) {
 	for loop {
 		loop = false
 
-		// Look for duplicates X = .. and X = ...
+		// Look for duplicates X ~ ... and X ~ ... (whatever the ~ relation)
 		for i := 0; i < len(newlist); i++ {
 			for j := i + 1; j < len(newlist); j++ {
 
@@ -65,9 +65,19 @@ func (pc *PContext) Simplify() (err error) {
 			}
 		}
 
-		// TODO replace X= a X = b by X =a and Unify a & b
+		// replace X= a X = b by X =a and Unify a & b
+		for i := 0; i < len(newlist); i++ {
+			for j := i + 1; j < len(newlist); j++ {
+				if newlist[i].variable == newlist[j].variable &&
+					newlist[i].relation == newlist[j].relation &&
+					newlist[i].relation == ConsEQ {
+					pc.cstr = newlist                                 // update already identified simplifications
+					return pc.Unify(newlist[i].tree, newlist[j].tree) // Unify will trigger further simplification if needed
+				}
+			}
+		}
 
-	}
+	} // for loop
 	if config.FlagDebug {
 		fmt.Println("DEBUG SIMPLIFY - new, chg, err =", newlist, changed, err)
 	}

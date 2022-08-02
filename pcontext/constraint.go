@@ -19,7 +19,7 @@ type Cons struct {
 type RelType int
 
 const (
-	ConsEQ RelType = iota
+	ConsEQ RelType = 1 + iota
 )
 
 func (c Cons) String() string {
