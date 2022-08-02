@@ -1,6 +1,4 @@
-// TODO - WARNING - SIMPLIFY NEEDS TO BE ABLE TO CALL UNIFY !!!
-// Reconsider pulling Unify xx into the cons package ?
-package cons
+package pcontext
 
 import (
 	"fmt"

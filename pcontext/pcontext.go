@@ -6,15 +6,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/xavier268/myprolog/cons"
 	"github.com/xavier268/myprolog/node"
 )
 
 type PContext struct {
 	goals   []*node.Node
 	rules   []*node.Node
-	current int         // index of the current rule being tried.
-	cstr    []cons.Cons // Current list of constraints, can contain nils
+	current int    // index of the current rule being tried.
+	cstr    []Cons // Current list of constraints, can contain nils
 	parent  *PContext
 	start   time.Time
 	uid     *int // unique id generator shared across context
