@@ -3,6 +3,8 @@ package tknz
 import (
 	"fmt"
 	"testing"
+
+	"github.com/xavier268/myprolog/config"
 )
 
 func ExampleNewTokenizerString() {
@@ -11,7 +13,7 @@ func ExampleNewTokenizerString() {
 	2+3;/* comment 
 	kjh multiline */ x2 <= 
 	"doubled quoted" `
-	tzr := NewTokenizerString(src)
+	tzr := NewTokenizerString(config.New(), src)
 	for tk := tzr.Next(); tk != ""; tk = tzr.Next() {
 		fmt.Printf(">%s<\n", tk)
 	}
@@ -23,13 +25,13 @@ func ExampleNewTokenizerString() {
 	// >;<
 	// >x2<
 	// ><=<
-	// >doubled quoted<
+	// >"doubled quoted"<
 
 }
 
 func TestScannerFile(t *testing.T) {
 	fn := "scanner.go"
-	tzr, err := NewTokenizerFile(fn)
+	tzr, err := NewTokenizerFile(config.New(), fn)
 	if err != nil {
 		t.Fatalf(err.Error())
 	}
@@ -70,14 +72,19 @@ func TestScannerTable(t *testing.T) {
 		{"1 ><=  2", []string{"1", ">", "<=", "2"}},
 		{"1 !!= 2", []string{"1", "!", "!=", "2"}},
 
-		{" un \"deux trois   \" quatre", []string{"un", "deux trois   ", "quatre"}},
+		{" un \"deux trois   \" quatre", []string{"un", "\"deux trois   \"", "quatre"}},
 		{" ?- un", []string{"?-", "un"}},
 		{" ? - un", []string{"?", "-", "un"}},
+
+		// period handling
+		{" 2 . 3", []string{"2", ".", "3"}},
+		{" 2.3", []string{"2"}}, // floats are not allowed, read an integer
+		{" toto.xavier", []string{"toto", ".", "xavier"}},
 	}
 
 	// Loop table and compare results to expectation.
 	for _, ts := range table {
-		tzr := NewTokenizerString(ts.input)
+		tzr := NewTokenizerString(config.New(), ts.input)
 		var got []string
 		for i, tk := 0, tzr.Next(); tk != ""; tk, i = tzr.Next(), i+1 {
 			got = append(got, tk)

@@ -1,0 +1,139 @@
+
+state 0
+	$accept: .top $end 
+
+	ATOM  shift 3
+	STRING  shift 5
+	INT  shift 4
+	.  error
+
+	term  goto 2
+	top  goto 1
+
+state 1
+	$accept:  top.$end 
+
+	$end  accept
+	.  error
+
+
+state 2
+	top:  term.'.' 
+	term:  term.';' term 
+	term:  term.',' term 
+
+	'.'  shift 6
+	','  shift 8
+	';'  shift 7
+	.  error
+
+
+state 3
+	term:  ATOM.'(' term ')' 
+	term:  ATOM.    (6)
+
+	'('  shift 9
+	.  reduce 6 (src line 39)
+
+
+state 4
+	term:  INT.    (5)
+
+	.  reduce 5 (src line 38)
+
+
+state 5
+	term:  STRING.    (7)
+
+	.  reduce 7 (src line 40)
+
+
+state 6
+	top:  term '.'.    (1)
+
+	.  reduce 1 (src line 32)
+
+
+state 7
+	term:  term ';'.term 
+
+	ATOM  shift 3
+	STRING  shift 5
+	INT  shift 4
+	.  error
+
+	term  goto 10
+
+state 8
+	term:  term ','.term 
+
+	ATOM  shift 3
+	STRING  shift 5
+	INT  shift 4
+	.  error
+
+	term  goto 11
+
+state 9
+	term:  ATOM '('.term ')' 
+
+	ATOM  shift 3
+	STRING  shift 5
+	INT  shift 4
+	.  error
+
+	term  goto 12
+
+10: shift/reduce conflict (shift 8(0), red'n 2(0)) on ','
+10: shift/reduce conflict (shift 7(0), red'n 2(0)) on ';'
+state 10
+	term:  term.';' term 
+	term:  term ';' term.    (2)
+	term:  term.',' term 
+
+	','  shift 8
+	';'  shift 7
+	.  reduce 2 (src line 35)
+
+
+11: shift/reduce conflict (shift 8(0), red'n 3(0)) on ','
+11: shift/reduce conflict (shift 7(0), red'n 3(0)) on ';'
+state 11
+	term:  term.';' term 
+	term:  term.',' term 
+	term:  term ',' term.    (3)
+
+	','  shift 8
+	';'  shift 7
+	.  reduce 3 (src line 36)
+
+
+state 12
+	term:  term.';' term 
+	term:  term.',' term 
+	term:  ATOM '(' term.')' 
+
+	')'  shift 13
+	','  shift 8
+	';'  shift 7
+	.  error
+
+
+state 13
+	term:  ATOM '(' term ')'.    (4)
+
+	.  reduce 4 (src line 37)
+
+
+13 terminals, 3 nonterminals
+8 grammar rules, 14/16000 states
+4 shift/reduce, 0 reduce/reduce conflicts reported
+52 working sets used
+memory: parser 4/240000
+10 extra closures
+23 shift entries, 1 exceptions
+5 goto entries
+0 entries saved by goto default
+Optimizer space used: output 17/240000
+17 table entries, 0 zero
+maximum spread: 13, maximum offset: 9
