@@ -3,7 +3,6 @@ package tknz
 
 import (
 	"bufio"
-	"fmt"
 	"io"
 	"os"
 	"strings"
@@ -17,7 +16,8 @@ type Tokenizer struct {
 
 // Next provides the next token.
 // Token follow the go syntax, including comments.
-// Combined tokens  ( :- , <= , >= , != ) are reconstructed as a single token.
+// Combined tokens  ( :- , <= , >= , != , ?- ) are reconstructed as a single token.
+// quotes are not removed from quted strings.
 // Upon EOF, an empty string is returned.
 func (ps *Tokenizer) Next() string {
 	tk := ps.s.Scan()
@@ -26,12 +26,6 @@ func (ps *Tokenizer) Next() string {
 	}
 	n := ps.s.TokenText()
 
-	// handle quoted strings.
-	if len(n) >= 2 && n[0] == '"' {
-		fmt.Sscanf(n, "%q", &n)
-	}
-
-	// handle double tokens
 	switch n {
 	case ":": // :-
 		if ps.s.Peek() == '-' {
@@ -43,6 +37,14 @@ func (ps *Tokenizer) Next() string {
 
 	case "<", ">", "!": // <=, != >=
 		if ps.s.Peek() == '=' {
+			ps.s.Scan()
+			return n + ps.s.TokenText()
+		} else {
+			return n
+		}
+
+	case "?": // ?-
+		if ps.s.Peek() == '-' {
 			ps.s.Scan()
 			return n + ps.s.TokenText()
 		} else {

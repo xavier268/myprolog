@@ -71,6 +71,8 @@ func TestScannerTable(t *testing.T) {
 		{"1 !!= 2", []string{"1", "!", "!=", "2"}},
 
 		{" un \"deux trois   \" quatre", []string{"un", "deux trois   ", "quatre"}},
+		{" ?- un", []string{"?-", "un"}},
+		{" ? - un", []string{"?", "-", "un"}},
 	}
 
 	// Loop table and compare results to expectation.
