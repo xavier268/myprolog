@@ -19,44 +19,103 @@
 
 %union{
     // define the SymType structure
-    name string // the raw token text content
+    list []Term // list of Terms
+    value  Term // single Term
 }
 
-%type  <name> term top
+%type <list> top 
+%type <value> phrase head disjterms conjterms conjterm 
+%type <value> compterm number list params param
 
-%token <name> '(' ')' '.' ',' ';'
-%token <name> ATOM STRING RULEOP QUERYOP INT
+
+%token <name> '(' ')' '.' ',' ';' '[' ']' '|' '_'
+%token <name> OPRULE OPQUERY
+%token <name> ATOM STRING INTEGER FLOAT VARIABLE
 
 %% 
 
 top:
-    term '.'      {             $$ = $1; fmt.Println($1) ;}
+    phrase                              { $$ = append($$, $1)}
+    | top phrase                        { $$ = append($$, $1)}
 
-term: term ';' term   {    $$ = $1 + $3; fmt.Println($1); }
-    | term ',' term   {         $$ = $1 + $3; fmt.Println($1); }
-    | ATOM '('  term ')'   {    $$ = $1 + $3; fmt.Println($1); }
-    | INT   {                   $$ = $1; fmt.Println($1); }
-    | ATOM    {                 $$ = $1; fmt.Println($1); }
-    | STRING      {             $$ = $1; fmt.Println($1);   }
+phrase: 
+    OPQUERY compterm '.'                { 
+                                        $$ = &CompoundTerm{
+                                                Functor : OPQUERY, 
+                                                Children: []Term{ $1} 
+                                                }
+                                        }
+    | compterm '.'                      { 
+                                        $$ = &CompoundTerm{
+                                                Functor : OPRULE,
+                                                Children: []Term{ $1} 
+                                                }
+                                        }
+    | compterm OPRULE '.'               { 
+                                        $$ = &CompoundTerm{
+                                                Functor : OPRULE,
+                                                Children: []Term{ $1} 
+                                                }
+                                        }
+    | compterm OPRULE disjterms '.'     { 
+                                        $$ = &CompoundTerm{
+                                                Functor : OPRULE,
+                                                Children: []Term{ $1, $3}) 
+                                                }
+                                        }
+
+head: 
+    compterm                            { $$ = $1 }
+
+disjterms:
+    conjterms                           { $$ = $1 }
+    | conjterms ';' disjterms           { $$ = &CompondTerm{
+                                                Functor : ';'
+                                                Children : []Term{ $1, $2}
+                                                }
+                                        }
+
+conjterms:
+    conjterm                            { $$ = $1 }
+    | conjterm ',' conjterms            { $$ = &CompoundTerm {
+                                                Functor : ','
+                                                Children: []Term{$1 , $3}
+                                                }
+                                        }
+
+conjterm:
+    ATOM
+    | compterm
+
+compterm:
+    ATOM '(' params ')'                 { $$ = &CompoundTerm {
+                                                Functor : $1.String()
+                                                Children : $3.Children
+                                                }
+                                        }
+    | list                              
+
+params:                                 
+    param                               
+    | param ',' params
+
+param:
+    ATOM
+    | number
+    | STRING
+    | VARIABLE
+    | '_'
+    | compterm
+
+number:
+    INTEGER
+    | FLOAT
+
+
+list: 
+    '[' ']'
+    | '['  params ']'
+    | '[' param '|' param ']'
 
 
 %%
-
-func Parse( c *config.Config, r io.Reader) (tt [] config.Term, err error) {
-
-    lx := newLexer(c , r)
-    res := myParse(lx)
-    if res != 0 {
-        return nil, fmt.Errorf("error parsing source data")
-    }
-    return nil, nil // TODO - how to build the parse tree ?
-    
-}
-
-func ParseString(c *config.Config, data string) (tt [] config.Term, err error) {
-    panic("todo")
-}
-
-func ParseFile( c *config.Config, fileName string) (tt [] config.Term, err error) {
-    panic("todo")
-}
