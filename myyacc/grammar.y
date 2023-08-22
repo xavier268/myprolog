@@ -23,9 +23,9 @@
     value  Term // single Term
 }
 
-%type <list> top 
+%type <list> top params
 %type <value> phrase head disjterms conjterms conjterm 
-%type <value> compterm number list params param
+%type <value> compterm number list param
 
 
 %token <name> '(' ')' '.' ',' ';' '[' ']' '|' '_'
