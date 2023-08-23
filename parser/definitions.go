@@ -1,26 +1,32 @@
-package myyacc
+package parser
 
 import (
 	"fmt"
 	"strings"
 )
 
-type Term interface { // Term is the most gerenic level of data
-	String() string // String() is the string representation of the term
+var (
+	INTFORMAT   = "%d"
+	FLOATFORMAT = "%.3e"
+)
+
+type Term interface { // Term is the most general form of a term
+	String() string // String() is the string representation of the entire term
+	// Strings are neither quoted nor escaped, they are stored without the start/end " or `
 }
 
 type Variable struct { // a named variable
-	name string
-	nsp  int // name space
+	Name string
+	Nsp  int // name space
 }
 
 var _ Term = &Variable{}
 
 func (v *Variable) String() string {
-	if v.nsp > 0 {
-		return fmt.Sprintf("%v$%d", v.name, v.nsp)
+	if v.Nsp > 0 {
+		return fmt.Sprintf("%v$%d", v.Name, v.Nsp)
 	}
-	return v.name
+	return v.Name
 }
 
 type Underscore struct{}
@@ -52,7 +58,7 @@ type Atom struct {
 var _ AtomicTerm = new(Atom)
 
 func (s *Atom) String() string {
-	return s.Value
+	return fmt.Sprintf("%q", s.Value) // quote the string
 }
 
 type Integer struct {
@@ -65,7 +71,6 @@ func (i *Integer) String() string {
 	return fmt.Sprintf(INTFORMAT, i.Value)
 }
 
-/*
 type Float struct {
 	Value float64
 }
@@ -75,10 +80,11 @@ var _ AtomicTerm = new(Float)
 func (f *Float) String() string {
 	return fmt.Sprintf(FLOATFORMAT, f.Value)
 }
-*/
 
-type CompoundTerm struct { // a compound term is a Term with children
-	Functor  *Atom
+// a compound term is a Term with children.
+// A compound term withoutout children remains a compound term, different from an Atom.
+type CompoundTerm struct {
+	Functor  string
 	Children []Term
 }
 
@@ -96,4 +102,29 @@ func (c *CompoundTerm) String() string {
 		}
 	}
 	return sb.String()
+}
+
+type Char struct {
+	Char rune
+}
+
+// Char implements Term.
+func (c *Char) String() string {
+	return fmt.Sprintf("%q", c.Char)
+}
+
+var _ Term = new(Char)
+
+// create a new list with the provided terms
+func newList(terms ...Term) *CompoundTerm {
+	if len(terms) == 0 {
+		return &CompoundTerm{Functor: "dot"}
+	}
+	if len(terms) == 1 {
+		return &CompoundTerm{Functor: "dot", Children: terms}
+	}
+	return &CompoundTerm{
+		Functor:  "dot",
+		Children: []Term{terms[0], newList(terms[1:]...)},
+	}
 }
