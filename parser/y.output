@@ -2,407 +2,420 @@
 state 0
 	$accept: .top $end 
 
-	'['  shift 7
-	OPQUERY  shift 3
-	ATOM  shift 5
+	'['  shift 9
+	OPQUERY  shift 4
+	ATOM  shift 6
 	.  error
 
 	top  goto 1
-	phrase  goto 2
-	compterm  goto 4
-	list  goto 6
+	phrases  goto 2
+	phrase  goto 3
+	conjterm  goto 5
+	compterm  goto 7
+	list  goto 8
 
 state 1
 	$accept:  top.$end 
-	top:  top.phrase 
 
 	$end  accept
-	'['  shift 7
-	OPQUERY  shift 3
-	ATOM  shift 5
 	.  error
 
-	phrase  goto 8
-	compterm  goto 4
-	list  goto 6
 
 state 2
-	top:  phrase.    (1)
+	top:  phrases.    (1)
+	phrases:  phrases.phrase 
 
-	.  reduce 1 (src line 36)
+	'['  shift 9
+	OPQUERY  shift 4
+	ATOM  shift 6
+	.  reduce 1 (src line 47)
 
+	phrase  goto 10
+	conjterm  goto 5
+	compterm  goto 7
+	list  goto 8
 
 state 3
-	phrase:  OPQUERY.compterm '.' 
+	phrases:  phrase.    (2)
 
-	'['  shift 7
-	ATOM  shift 5
-	.  error
+	.  reduce 2 (src line 54)
 
-	compterm  goto 9
-	list  goto 6
 
 state 4
-	phrase:  compterm.'.' 
-	phrase:  compterm.OPRULE '.' 
-	phrase:  compterm.OPRULE disjterms '.' 
+	phrase:  OPQUERY.conjterm '.' 
 
-	'.'  shift 10
-	OPRULE  shift 11
+	'['  shift 9
+	ATOM  shift 6
 	.  error
 
+	conjterm  goto 11
+	compterm  goto 7
+	list  goto 8
 
 state 5
-	compterm:  ATOM.'(' params ')' 
+	phrase:  conjterm.'.' 
+	phrase:  conjterm.OPRULE '.' 
+	phrase:  conjterm.OPRULE disjterms '.' 
 
-	'('  shift 12
+	'.'  shift 12
+	OPRULE  shift 13
 	.  error
 
 
 state 6
-	compterm:  list.    (14)
+	conjterm:  ATOM.    (12)
+	compterm:  ATOM.'(' params ')' 
+	compterm:  ATOM.'(' ')' 
 
-	.  reduce 14 (src line 92)
+	'('  shift 14
+	.  reduce 12 (src line 100)
 
 
 state 7
+	conjterm:  compterm.    (13)
+
+	.  reduce 13 (src line 102)
+
+
+state 8
+	compterm:  list.    (16)
+
+	.  reduce 16 (src line 115)
+
+
+state 9
 	list:  '['.']' 
 	list:  '['.params ']' 
 	list:  '['.param '|' param ']' 
 	list:  '['.param '|' ']' 
 
-	'['  shift 7
-	']'  shift 13
-	'_'  shift 20
-	ATOM  shift 16
-	STRING  shift 18
-	INTEGER  shift 22
-	FLOAT  shift 23
-	VARIABLE  shift 19
+	'['  shift 9
+	']'  shift 15
+	'_'  shift 22
+	ATOM  shift 18
+	STRING  shift 20
+	INTEGER  shift 24
+	FLOAT  shift 25
+	VARIABLE  shift 21
 	.  error
 
-	params  goto 14
-	compterm  goto 21
-	number  goto 17
-	list  goto 6
-	param  goto 15
-
-state 8
-	top:  top phrase.    (2)
-
-	.  reduce 2 (src line 38)
-
-
-state 9
-	phrase:  OPQUERY compterm.'.' 
-
-	'.'  shift 24
-	.  error
-
+	params  goto 16
+	compterm  goto 23
+	number  goto 19
+	list  goto 8
+	param  goto 17
 
 state 10
-	phrase:  compterm '.'.    (4)
+	phrases:  phrases phrase.    (3)
 
-	.  reduce 4 (src line 47)
+	.  reduce 3 (src line 56)
 
 
 state 11
-	phrase:  compterm OPRULE.'.' 
-	phrase:  compterm OPRULE.disjterms '.' 
+	phrase:  OPQUERY conjterm.'.' 
 
-	'.'  shift 25
-	'['  shift 7
-	ATOM  shift 29
+	'.'  shift 26
 	.  error
 
-	disjterms  goto 26
-	conjterms  goto 27
-	conjterm  goto 28
-	compterm  goto 30
-	list  goto 6
 
 state 12
-	compterm:  ATOM '('.params ')' 
+	phrase:  conjterm '.'.    (5)
 
-	'['  shift 7
-	'_'  shift 20
-	ATOM  shift 16
-	STRING  shift 18
-	INTEGER  shift 22
-	FLOAT  shift 23
-	VARIABLE  shift 19
+	.  reduce 5 (src line 65)
+
+
+state 13
+	phrase:  conjterm OPRULE.'.' 
+	phrase:  conjterm OPRULE.disjterms '.' 
+
+	'.'  shift 27
+	'['  shift 9
+	ATOM  shift 6
+	.  error
+
+	disjterms  goto 28
+	conjterms  goto 29
+	conjterm  goto 30
+	compterm  goto 7
+	list  goto 8
+
+state 14
+	compterm:  ATOM '('.params ')' 
+	compterm:  ATOM '('.')' 
+
+	')'  shift 32
+	'['  shift 9
+	'_'  shift 22
+	ATOM  shift 18
+	STRING  shift 20
+	INTEGER  shift 24
+	FLOAT  shift 25
+	VARIABLE  shift 21
 	.  error
 
 	params  goto 31
-	compterm  goto 21
-	number  goto 17
-	list  goto 6
-	param  goto 32
+	compterm  goto 23
+	number  goto 19
+	list  goto 8
+	param  goto 33
 
-state 13
-	list:  '[' ']'.    (25)
+state 15
+	list:  '[' ']'.    (27)
 
-	.  reduce 25 (src line 116)
+	.  reduce 27 (src line 138)
 
 
-state 14
+state 16
 	list:  '[' params.']' 
 
-	']'  shift 33
+	']'  shift 34
 	.  error
 
 
-state 15
-	params:  param.    (15)
+state 17
+	params:  param.    (17)
 	params:  param.',' params 
 	list:  '[' param.'|' param ']' 
 	list:  '[' param.'|' ']' 
 
-	','  shift 34
-	'|'  shift 35
-	.  reduce 15 (src line 97)
-
-
-state 16
-	compterm:  ATOM.'(' params ')' 
-	param:  ATOM.    (17)
-
-	'('  shift 12
-	.  reduce 17 (src line 103)
-
-
-state 17
-	param:  number.    (18)
-
-	.  reduce 18 (src line 105)
+	','  shift 35
+	'|'  shift 36
+	.  reduce 17 (src line 119)
 
 
 state 18
-	param:  STRING.    (19)
+	compterm:  ATOM.'(' params ')' 
+	compterm:  ATOM.'(' ')' 
+	param:  ATOM.    (19)
 
-	.  reduce 19 (src line 106)
+	'('  shift 14
+	.  reduce 19 (src line 125)
 
 
 state 19
-	param:  VARIABLE.    (20)
+	param:  number.    (20)
 
-	.  reduce 20 (src line 107)
+	.  reduce 20 (src line 127)
 
 
 state 20
-	param:  '_'.    (21)
+	param:  STRING.    (21)
 
-	.  reduce 21 (src line 108)
+	.  reduce 21 (src line 128)
 
 
 state 21
-	param:  compterm.    (22)
+	param:  VARIABLE.    (22)
 
-	.  reduce 22 (src line 109)
+	.  reduce 22 (src line 129)
 
 
 state 22
-	number:  INTEGER.    (23)
+	param:  '_'.    (23)
 
-	.  reduce 23 (src line 111)
+	.  reduce 23 (src line 130)
 
 
 state 23
-	number:  FLOAT.    (24)
+	param:  compterm.    (24)
 
-	.  reduce 24 (src line 113)
+	.  reduce 24 (src line 131)
 
 
 state 24
-	phrase:  OPQUERY compterm '.'.    (3)
+	number:  INTEGER.    (25)
 
-	.  reduce 3 (src line 40)
+	.  reduce 25 (src line 133)
 
 
 state 25
-	phrase:  compterm OPRULE '.'.    (5)
+	number:  FLOAT.    (26)
 
-	.  reduce 5 (src line 53)
+	.  reduce 26 (src line 135)
 
 
 state 26
-	phrase:  compterm OPRULE disjterms.'.' 
+	phrase:  OPQUERY conjterm '.'.    (4)
 
-	'.'  shift 36
-	.  error
+	.  reduce 4 (src line 58)
 
 
 state 27
-	disjterms:  conjterms.    (7)
-	disjterms:  conjterms.';' disjterms 
+	phrase:  conjterm OPRULE '.'.    (6)
 
-	';'  shift 37
-	.  reduce 7 (src line 66)
+	.  reduce 6 (src line 71)
 
 
 state 28
-	conjterms:  conjterm.    (9)
-	conjterms:  conjterm.',' conjterms 
+	phrase:  conjterm OPRULE disjterms.'.' 
 
-	','  shift 38
-	.  reduce 9 (src line 74)
+	'.'  shift 37
+	.  error
 
 
 state 29
-	conjterm:  ATOM.    (11)
-	compterm:  ATOM.'(' params ')' 
+	disjterms:  conjterms.    (8)
+	disjterms:  conjterms.';' disjterms 
 
-	'('  shift 12
-	.  reduce 11 (src line 82)
+	';'  shift 38
+	.  reduce 8 (src line 84)
 
 
 state 30
-	conjterm:  compterm.    (12)
+	conjterms:  conjterm.    (10)
+	conjterms:  conjterm.',' conjterms 
 
-	.  reduce 12 (src line 84)
+	','  shift 39
+	.  reduce 10 (src line 92)
 
 
 state 31
 	compterm:  ATOM '(' params.')' 
 
-	')'  shift 39
+	')'  shift 40
 	.  error
 
 
 state 32
-	params:  param.    (15)
-	params:  param.',' params 
+	compterm:  ATOM '(' ')'.    (15)
 
-	','  shift 34
-	.  reduce 15 (src line 97)
+	.  reduce 15 (src line 110)
 
 
 state 33
-	list:  '[' params ']'.    (26)
+	params:  param.    (17)
+	params:  param.',' params 
 
-	.  reduce 26 (src line 122)
+	','  shift 35
+	.  reduce 17 (src line 119)
 
 
 state 34
-	params:  param ','.params 
+	list:  '[' params ']'.    (28)
 
-	'['  shift 7
-	'_'  shift 20
-	ATOM  shift 16
-	STRING  shift 18
-	INTEGER  shift 22
-	FLOAT  shift 23
-	VARIABLE  shift 19
-	.  error
+	.  reduce 28 (src line 144)
 
-	params  goto 40
-	compterm  goto 21
-	number  goto 17
-	list  goto 6
-	param  goto 32
 
 state 35
+	params:  param ','.params 
+
+	'['  shift 9
+	'_'  shift 22
+	ATOM  shift 18
+	STRING  shift 20
+	INTEGER  shift 24
+	FLOAT  shift 25
+	VARIABLE  shift 21
+	.  error
+
+	params  goto 41
+	compterm  goto 23
+	number  goto 19
+	list  goto 8
+	param  goto 33
+
+state 36
 	list:  '[' param '|'.param ']' 
 	list:  '[' param '|'.']' 
 
-	'['  shift 7
-	']'  shift 42
-	'_'  shift 20
-	ATOM  shift 16
-	STRING  shift 18
-	INTEGER  shift 22
-	FLOAT  shift 23
-	VARIABLE  shift 19
+	'['  shift 9
+	']'  shift 43
+	'_'  shift 22
+	ATOM  shift 18
+	STRING  shift 20
+	INTEGER  shift 24
+	FLOAT  shift 25
+	VARIABLE  shift 21
 	.  error
 
-	compterm  goto 21
-	number  goto 17
-	list  goto 6
-	param  goto 41
-
-state 36
-	phrase:  compterm OPRULE disjterms '.'.    (6)
-
-	.  reduce 6 (src line 59)
-
+	compterm  goto 23
+	number  goto 19
+	list  goto 8
+	param  goto 42
 
 state 37
-	disjterms:  conjterms ';'.disjterms 
+	phrase:  conjterm OPRULE disjterms '.'.    (7)
 
-	'['  shift 7
-	ATOM  shift 29
-	.  error
+	.  reduce 7 (src line 77)
 
-	disjterms  goto 43
-	conjterms  goto 27
-	conjterm  goto 28
-	compterm  goto 30
-	list  goto 6
 
 state 38
-	conjterms:  conjterm ','.conjterms 
+	disjterms:  conjterms ';'.disjterms 
 
-	'['  shift 7
-	ATOM  shift 29
+	'['  shift 9
+	ATOM  shift 6
 	.  error
 
-	conjterms  goto 44
-	conjterm  goto 28
-	compterm  goto 30
-	list  goto 6
+	disjterms  goto 44
+	conjterms  goto 29
+	conjterm  goto 30
+	compterm  goto 7
+	list  goto 8
 
 state 39
-	compterm:  ATOM '(' params ')'.    (13)
+	conjterms:  conjterm ','.conjterms 
 
-	.  reduce 13 (src line 86)
+	'['  shift 9
+	ATOM  shift 6
+	.  error
 
+	conjterms  goto 45
+	conjterm  goto 30
+	compterm  goto 7
+	list  goto 8
 
 state 40
-	params:  param ',' params.    (16)
+	compterm:  ATOM '(' params ')'.    (14)
 
-	.  reduce 16 (src line 99)
+	.  reduce 14 (src line 104)
 
 
 state 41
-	list:  '[' param '|' param.']' 
+	params:  param ',' params.    (18)
 
-	']'  shift 45
-	.  error
+	.  reduce 18 (src line 121)
 
 
 state 42
-	list:  '[' param '|' ']'.    (28)
+	list:  '[' param '|' param.']' 
 
-	.  reduce 28 (src line 130)
+	']'  shift 46
+	.  error
 
 
 state 43
-	disjterms:  conjterms ';' disjterms.    (8)
+	list:  '[' param '|' ']'.    (30)
 
-	.  reduce 8 (src line 68)
+	.  reduce 30 (src line 152)
 
 
 state 44
-	conjterms:  conjterm ',' conjterms.    (10)
+	disjterms:  conjterms ';' disjterms.    (9)
 
-	.  reduce 10 (src line 76)
+	.  reduce 9 (src line 86)
 
 
 state 45
-	list:  '[' param '|' param ']'.    (27)
+	conjterms:  conjterm ',' conjterms.    (11)
 
-	.  reduce 27 (src line 125)
+	.  reduce 11 (src line 94)
 
 
-19 terminals, 11 nonterminals
-29 grammar rules, 46/16000 states
+state 46
+	list:  '[' param '|' param ']'.    (29)
+
+	.  reduce 29 (src line 147)
+
+
+19 terminals, 12 nonterminals
+31 grammar rules, 47/16000 states
 0 shift/reduce, 0 reduce/reduce conflicts reported
-60 working sets used
-memory: parser 50/240000
-14 extra closures
+61 working sets used
+memory: parser 57/240000
+17 extra closures
 60 shift entries, 1 exceptions
-23 goto entries
-19 entries saved by goto default
-Optimizer space used: output 69/240000
-69 table entries, 0 zero
-maximum spread: 19, maximum offset: 38
+25 goto entries
+21 entries saved by goto default
+Optimizer space used: output 86/240000
+86 table entries, 9 zero
+maximum spread: 19, maximum offset: 39

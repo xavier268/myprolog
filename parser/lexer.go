@@ -1,11 +1,8 @@
 package parser
 
 import (
-	"bufio"
 	"fmt"
 	"io"
-	"os"
-	"strings"
 	"text/scanner"
 )
 
@@ -23,42 +20,24 @@ type myLex struct {
 
 // Required to satisfy interface.
 func (lx *myLex) Error(s string) {
-	fmt.Printf("LexerError in %s, line %d : %v\n", lx.s.Filename, lx.s.Line, s)
+	fmt.Printf("error in %s, line %d : %v\n", lx.s.Filename, lx.s.Line, s)
 }
 
 // The myLexer interface is implemented by myLex, defined by generated parser.
-var _ MyLexer = new(myLex)
+var _ myLexer = new(myLex)
 
 // NewLexer from io.Reader
-func NewLexer(input io.Reader) *myLex {
+func NewLexer(input io.Reader, sourcename string) *myLex {
 	ps := new(myLex)
 	ps.s.Mode = scanner.GoTokens
 	ps.s.Init(input)
-	ps.s.Filename = "io.Reader"
+	ps.s.Filename = sourcename
 	return ps
-}
-
-// NewLexerString from string
-func NewLexerString(src string) *myLex {
-	ps := NewLexer(strings.NewReader(src))
-	ps.s.Filename = "string"
-	return ps
-}
-
-// NewLexerFile from file name. File is left open.
-func NewLexerFile(fileName string) (*myLex, error) {
-	f, err := os.Open(fileName)
-	if err != nil {
-		return nil, err
-	}
-	ps := NewLexer(bufio.NewReader(f))
-	ps.s.Filename = fileName
-	return ps, nil
 }
 
 // The parser calls this method to get each new token.
 // This implementation returns token extracted from scanner
-func (lx *myLex) Lex(lval *MySymType) int {
+func (lx *myLex) Lex(lval *mySymType) int {
 
 	lval.list = []Term{} // lexer never return a list
 	lval.value = nil     // reset the value to nil
@@ -120,7 +99,7 @@ func (lx *myLex) Lex(lval *MySymType) int {
 		}
 		return INTEGER
 
-	case '(', ')', '[', ']', ',', ';', '.': // single char tokens recognized by parser, cannot begin a multichar operaotor.
+	case '(', ')', '[', ']', ',', ';', '.', '|': // single char tokens recognized by parser, cannot begin a multichar operaotor.
 		// yylval is not set for these.
 		return int(tk)
 

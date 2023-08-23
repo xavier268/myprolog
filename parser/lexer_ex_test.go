@@ -1,10 +1,13 @@
 package parser
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
-func ExampleNewLexerString() {
+func Example() {
 
-	lx := NewLexerString(`hello world 
+	lx := newLexerString(`hello world |
 		X23 _ , . 
 		:- ?- 
 		12 0x12 0b111 
@@ -13,7 +16,7 @@ func ExampleNewLexerString() {
 		// another comment
 		555.55  ` + " `a raw \"string`  " +
 		" a(b,c(d,e,f,g))")
-	vtok := new(MySymType)
+	vtok := new(mySymType)
 	for tk := lx.Lex(vtok); tk != eof; tk = lx.Lex(vtok) {
 		if len(vtok.list) > 0 {
 			fmt.Printf("the 'list' value should not be set, but was set to %v\n", vtok.list)
@@ -27,8 +30,9 @@ func ExampleNewLexerString() {
 
 	}
 	// Output:
-	// token type: 57348, ( '\ue004' ), string representation: "hello"
-	// token type: 57348, ( '\ue004' ), string representation: "world"
+	// token type: 57348, ( '\ue004' ), string representation: hello
+	// token type: 57348, ( '\ue004' ), string representation: world
+	// token type: 124, ( '|' ), lvalue is nil
 	// token type: 57352, ( '\ue008' ), string representation: X23
 	// token type: 95, ( '_' ), string representation: _
 	// token type: 44, ( ',' ), lvalue is nil
@@ -40,23 +44,30 @@ func ExampleNewLexerString() {
 	// token type: 57350, ( '\ue006' ), string representation: 7
 	// token type: 57351, ( '\ue007' ), string representation: 1.001e+00
 	// token type: 57351, ( '\ue007' ), string representation: 3.140e+00
-	// token type: 57349, ( '\ue005' ), string representation: a normal string
-	// token type: 57349, ( '\ue005' ), string representation: &
+	// token type: 57349, ( '\ue005' ), string representation: "a normal string"
+	// token type: 57349, ( '\ue005' ), string representation: "&"
 	// token type: 57351, ( '\ue007' ), string representation: 5.555e+02
-	// token type: 57349, ( '\ue005' ), string representation: a raw "string
-	// token type: 57348, ( '\ue004' ), string representation: "a"
+	// token type: 57349, ( '\ue005' ), string representation: "a raw \"string"
+	// token type: 57348, ( '\ue004' ), string representation: a
 	// token type: 40, ( '(' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "b"
+	// token type: 57348, ( '\ue004' ), string representation: b
 	// token type: 44, ( ',' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "c"
+	// token type: 57348, ( '\ue004' ), string representation: c
 	// token type: 40, ( '(' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "d"
+	// token type: 57348, ( '\ue004' ), string representation: d
 	// token type: 44, ( ',' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "e"
+	// token type: 57348, ( '\ue004' ), string representation: e
 	// token type: 44, ( ',' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "f"
+	// token type: 57348, ( '\ue004' ), string representation: f
 	// token type: 44, ( ',' ), lvalue is nil
-	// token type: 57348, ( '\ue004' ), string representation: "g"
+	// token type: 57348, ( '\ue004' ), string representation: g
 	// token type: 41, ( ')' ), lvalue is nil
 	// token type: 41, ( ')' ), lvalue is nil
+
+}
+
+// newLexerString from string
+func newLexerString(src string) *myLex {
+	ps := NewLexer(strings.NewReader(src), "string")
+	return ps
 }
