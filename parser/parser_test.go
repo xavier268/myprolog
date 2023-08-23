@@ -2,151 +2,110 @@ package parser
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+	"testing"
 )
 
-func ExampleParseString_valid1() {
+func TestParser(t *testing.T) {
 
-	tdata := []string{
-		// valid 1
+	var tdata = []string{
+
+		// rules
 		"un(deux,trois).",
 		"un.",
 		"un(deux).",
 		"un(2,3).",
 		"empty().",
 		"un(deux(),trois).",
-	}
 
-	runex(tdata)
+		// queries
+		"?- 3.", // invalid syntax
+		"?- test.",
+		"?- un(deux,X).",
+		"?- un(deux,X), trois(X).",
 
-	// Output:
-	// un(deux,trois).
-	// -- OK
-	//                 (string)      :-(un(deux, trois))
-	//                 (pretty)      :-(un(deux, trois))
-	// un.
-	// -- OK
-	//                 (string)      :-(un)
-	//                 (pretty)      :-(un)
-	// un(deux).
-	// -- OK
-	//                 (string)      :-(un(deux))
-	//                 (pretty)      :-(un(deux))
-	// un(2,3).
-	// -- OK
-	//                 (string)      :-(un(2, 3))
-	//                 (pretty)      :-(un(2, 3))
-	// empty().
-	// -- OK
-	//                 (string)      :-(empty())
-	//                 (pretty)      :-(empty())
-	// un(deux(),trois).
-	// -- OK
-	//                 (string)      :-(un(deux(), trois))
-	//                 (pretty)      :-(un(deux(), trois))
-}
-
-func ExampleParseString_lists1() {
-
-	tdata := []string{
-
+		// list
 		"[].",
 		"[2].",
 		"[2,3].",
 		"[2,3,4].",
 
+		// sublist
 		"[[2,3],4].",
 		"[2,[3,4]].",
-	}
 
-	runex(tdata)
+		// list and pairs
+		"[2|3].",
+		"[4|].",
+		"[4|X].",
 
-	// Output:
-	// 	[].
-	// -- OK
-	//                 (string)      :-(dot())
-	//                 (pretty)      :-([])
-	// [2].
-	// -- OK
-	//                 (string)      :-(dot(2, dot()))
-	//                 (pretty)      :-([2])
-	// [2,3].
-	// -- OK
-	//                 (string)      :-(dot(2, dot(3, dot())))
-	//                 (pretty)      :-([2, 3])
-	// [2,3,4].
-	// -- OK
-	//                 (string)      :-(dot(2, dot(3, dot(4, dot()))))
-	//                 (pretty)      :-([2, 3, 4])
-	// [[2,3],4].
-	// -- OK
-	//                 (string)      :-(dot(dot(2, dot(3, dot())), dot(4, dot())))
-	//                 (pretty)      :-([[2, 3], 4])
-	// [2,[3,4]].
-	// -- OK
-	//                 (string)      :-(dot(2, dot(dot(3, dot(4, dot())), dot())))
-	//                 (pretty)      :-([2, [3, 4]])
-}
+		// non list
+		"dot(1,dot(2,3)).",                   // not a list
+		"dot(1,dot(dot(4,dot(5,dot())),3)).", // not a list, but contains a list
 
-func ExampleParseString_list2() {
-
-	tdata := []string{
-
-		"[[2,3],4].",
-		//"[2,[3,4]].",
-
-		// "[2|3].",
-		// "[4|].",
-		// "[4|X].",
-
-		// "dot(1,dot(2,3)).",                   // not a list
-		// "dot(1,dot(dot(4,dot(5,dot())),3)).", // not a list, but contains a list
-
-	}
-
-	runex(tdata)
-
-	// Output:
-	// [[2,3],4].
-	// -- OK
-	// (string)      :-(dot(dot(2, dot(3, dot())), dot(4, dot())))
-	// (pretty)      :-([[2, 3], 4])
-
-}
-
-func ExampleParseString_invalid1() {
-
-	tdata := []string{
-
+		// invalid
 		"un,deux.",
 		"2(a).",
+		" [|2].",
+		"[|]",
+		"a(b,,).",
 	}
 
-	runex(tdata)
+	res := run(tdata)
 
-	// Output:
-	// error in <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
-	// un,deux.
-	// -- error :  Parse error
-	// error in <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
-	// 2(a).
-	// -- error :  Parse error
+	verify(t, res, "parser_test_want.txt")
 
 }
 
-func runex(tdata []string) {
+func run(tdata []string) string {
+	sb := new(strings.Builder)
+	for i, d := range tdata {
 
-	for _, d := range tdata {
-
-		r, err := ParseString(d, "<"+d+">")
-		fmt.Println(d)
-		if err != nil {
-			fmt.Println("-- error : ", err)
-		} else {
-			fmt.Println("-- OK")
-		}
+		r, err := ParseString(d, fmt.Sprintf("test # %d <%s>", i, d))
+		fmt.Fprintf(sb, "\n%d \t\t<%s>\n", i, d)
+		fmt.Fprintf(sb, "%d\t\terr=%v\n", i, err)
 		for _, v := range r {
-			fmt.Println("\t\t(string)     ", v.String())
-			fmt.Println("\t\t(pretty)     ", v.Pretty())
+			fmt.Fprintf(sb, "%d\t\t(string)    %s\n", i, v.String())
+			fmt.Fprintf(sb, "%d\t\t(pretty)    %s\n", i, v.Pretty())
+		}
+	}
+	return sb.String()
+}
+
+func verify(t *testing.T, content string, filename string) {
+	filename, _ = filepath.Abs(filename)
+	fmt.Println("Verifying parse results against file : ", filename)
+	check, err := os.ReadFile(filename)
+	if err != nil {
+		fmt.Println("File not found, create it as a reference for future test. Make sure you manually review it !")
+		os.WriteFile(filename, []byte(content), 0644)
+		return
+	}
+	sc := string(check)
+	if sc != content {
+		for i, c := range content {
+			if i >= len([]rune(sc)) || c != ([]rune(sc)[i]) {
+				i1 := i - 160
+				i2 := i + 160
+				if i1 <= 0 {
+					i1 = 0
+				}
+				if i2 > len(content) {
+					i2 = len(content)
+				}
+				fmt.Printf("Parser result differ from reference file\n")
+				fmt.Printf("\n============================ got ==============================\n%s%s%s%s\n",
+					content[i1:i], START_RED, content[i:i2], END_RED)
+				if i2 >= len([]rune(sc)) {
+					i2 = len([]rune(sc))
+				}
+				fmt.Printf("\n============================ want==============================\n%s%s%s%s\n",
+					sc[i1:i], START_RED, sc[i:i2], END_RED)
+
+				t.Fatalf("parser result differs from reference file")
+			}
 		}
 	}
 }

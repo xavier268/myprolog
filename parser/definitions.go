@@ -130,7 +130,11 @@ func (c *CompoundTerm) Pretty() string {
 		var sb strings.Builder
 		fmt.Fprintf(&sb, "%s(", c.Functor)
 		for i, child := range c.Children {
-			fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
+			if child == nil {
+				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+			} else {
+				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
+			}
 			if i < len(c.Children)-1 {
 				fmt.Fprintf(&sb, ", ")
 			}

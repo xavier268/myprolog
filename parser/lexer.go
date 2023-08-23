@@ -15,12 +15,14 @@ const eof = 0
 // The parser uses the type <prefix>Lex as a lexer. It must provide
 // the methods Lex(*<prefix>SymType) int and Error(string).
 type myLex struct {
-	s scanner.Scanner // golang scanner
+	s       scanner.Scanner // golang scanner
+	LastErr error           // last error emitted
 }
 
 // Required to satisfy interface.
 func (lx *myLex) Error(s string) {
-	fmt.Printf("error in %s, line %d : %v\n", lx.s.Filename, lx.s.Line, s)
+	lx.LastErr = fmt.Errorf("error in %s, line %d : %v", lx.s.Filename, lx.s.Line, s)
+	fmt.Println(lx.LastErr)
 }
 
 // The myLexer interface is implemented by myLex, defined by generated parser.

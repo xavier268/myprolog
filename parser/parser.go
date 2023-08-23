@@ -524,7 +524,7 @@ mydefault:
 		{
 			myVAL.value = &CompoundTerm{
 				Functor:  "?-",
-				Children: []Term{myDollar[1].value},
+				Children: []Term{myDollar[2].value},
 			}
 		}
 	case 5:

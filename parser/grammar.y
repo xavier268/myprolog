@@ -59,7 +59,7 @@ phrase:
     OPQUERY conjterm '.'                { 
                                         $$ = &CompoundTerm{  
                                                 Functor : "?-", 
-                                                Children: []Term{$1},
+                                                Children: []Term{$2},
                                                 }                                                
                                         }
     | conjterm '.'                      {  // implicit OPRULE
