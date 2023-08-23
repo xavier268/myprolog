@@ -84,15 +84,15 @@ phrase:
 disjterms:
     conjterms                           { $$ = $1 }
     | conjterms ';' disjterms           { $$ = &CompoundTerm{
-                                                Functor : ";",
-                                                Children : []Term{ $1, $2},
+                                                Functor : "or",
+                                                Children : []Term{ $1, $3},
                                                 }
                                         }
 
 conjterms:
     conjterm                            { $$ = $1 }
     | conjterm ',' conjterms            { $$ = &CompoundTerm {
-                                                Functor : ",",
+                                                Functor : "and",
                                                 Children: []Term{$1 , $3},
                                                 }
                                         }

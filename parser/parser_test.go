@@ -12,13 +12,19 @@ func TestParser(t *testing.T) {
 
 	var tdata = []string{
 
-		// rules
+		// rules implicit
 		"un(deux,trois).",
 		"un.",
 		"un(deux).",
 		"un(2,3).",
 		"empty().",
 		"un(deux(),trois).",
+
+		// rules explicit
+		"a(X):-un(X).",
+		"a(X):-un(X,Y).",
+		"a(X):-un(X,Y,Z);b(Y);c(X).",
+		"a(X):-.",
 
 		// queries
 		"?- 3.", // invalid syntax

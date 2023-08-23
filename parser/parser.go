@@ -565,8 +565,8 @@ mydefault:
 //line grammar.y:86
 		{
 			myVAL.value = &CompoundTerm{
-				Functor:  ";",
-				Children: []Term{myDollar[1].value, myDollar[2].value},
+				Functor:  "or",
+				Children: []Term{myDollar[1].value, myDollar[3].value},
 			}
 		}
 	case 10:
@@ -580,7 +580,7 @@ mydefault:
 //line grammar.y:94
 		{
 			myVAL.value = &CompoundTerm{
-				Functor:  ",",
+				Functor:  "and",
 				Children: []Term{myDollar[1].value, myDollar[3].value},
 			}
 		}

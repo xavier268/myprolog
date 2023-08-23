@@ -29,88 +29,108 @@
 5		(string)    :-(un(deux(), trois))
 5		(pretty)    :-(un(deux(), trois))
 
-6 		<?- 3.>
-6		err=parse error : error in test # 6 <?- 3.>, line 1 : syntax error: unexpected FLOAT, expecting '[' or ATOM
+6 		<a(X):-un(X).>
+6		err=<nil>
+6		(string)    :-(a(X), un(X))
+6		(pretty)    :-(a(X), un(X))
 
-7 		<?- test.>
+7 		<a(X):-un(X,Y).>
 7		err=<nil>
-7		(string)    ?-(%!s(<nil>))
-7		(pretty)    ?-()
+7		(string)    :-(a(X), un(X, Y))
+7		(pretty)    :-(a(X), un(X, Y))
 
-8 		<?- un(deux,X).>
+8 		<a(X):-un(X,Y,Z);b(Y);c(X).>
 8		err=<nil>
-8		(string)    ?-(%!s(<nil>))
-8		(pretty)    ?-()
+8		(string)    :-(a(X), or(un(X, Y, Z), or(b(Y), c(X))))
+8		(pretty)    :-(a(X), or(un(X, Y, Z), or(b(Y), c(X))))
 
-9 		<?- un(deux,X), trois(X).>
-9		err=parse error : error in test # 9 <?- un(deux,X), trois(X).>, line 1 : syntax error: unexpected ',', expecting '.'
+9 		<a(X):-.>
+9		err=<nil>
+9		(string)    :-(a(X))
+9		(pretty)    :-(a(X))
 
-10 		<[].>
-10		err=<nil>
-10		(string)    :-(dot())
-10		(pretty)    :-([])
+10 		<?- 3.>
+10		err=parse error : error in test # 10 <?- 3.>, line 1 : syntax error: unexpected FLOAT, expecting '[' or ATOM
 
-11 		<[2].>
+11 		<?- test.>
 11		err=<nil>
-11		(string)    :-(dot(2, dot()))
-11		(pretty)    :-([2])
+11		(string)    ?-(test)
+11		(pretty)    ?-(test)
 
-12 		<[2,3].>
+12 		<?- un(deux,X).>
 12		err=<nil>
-12		(string)    :-(dot(2, dot(3, dot())))
-12		(pretty)    :-([2, 3])
+12		(string)    ?-(un(deux, X))
+12		(pretty)    ?-(un(deux, X))
 
-13 		<[2,3,4].>
-13		err=<nil>
-13		(string)    :-(dot(2, dot(3, dot(4, dot()))))
-13		(pretty)    :-([2, 3, 4])
+13 		<?- un(deux,X), trois(X).> // CHECK ??????????????!!
+13		err=parse error : error in test # 13 <?- un(deux,X), trois(X).>, line 1 : syntax error: unexpected ',', expecting '.'
 
-14 		<[[2,3],4].>
+14 		<[].>
 14		err=<nil>
-14		(string)    :-(dot(dot(2, dot(3, dot())), dot(4, dot())))
-14		(pretty)    :-([[2, 3], 4])
+14		(string)    :-(dot())
+14		(pretty)    :-([])
 
-15 		<[2,[3,4]].>
+15 		<[2].>
 15		err=<nil>
-15		(string)    :-(dot(2, dot(dot(3, dot(4, dot())), dot())))
-15		(pretty)    :-([2, [3, 4]])
+15		(string)    :-(dot(2, dot()))
+15		(pretty)    :-([2])
 
-16 		<[2|3].>
+16 		<[2,3].>
 16		err=<nil>
-16		(string)    :-(dot(2, 3))
-16		(pretty)    :-([2|3])
+16		(string)    :-(dot(2, dot(3, dot())))
+16		(pretty)    :-([2, 3])
 
-17 		<[4|].>
+17 		<[2,3,4].>
 17		err=<nil>
-17		(string)    :-(dot(4))
-17		(pretty)    :-([4|])
+17		(string)    :-(dot(2, dot(3, dot(4, dot()))))
+17		(pretty)    :-([2, 3, 4])
 
-18 		<[4|X].>
+18 		<[[2,3],4].>
 18		err=<nil>
-18		(string)    :-(dot(4, X))
-18		(pretty)    :-([4|X])
+18		(string)    :-(dot(dot(2, dot(3, dot())), dot(4, dot())))
+18		(pretty)    :-([[2, 3], 4])
 
-19 		<dot(1,dot(2,3)).>
+19 		<[2,[3,4]].>
 19		err=<nil>
-19		(string)    :-(dot(1, dot(2, 3)))
-19		(pretty)    :-([1|[2|3]])
+19		(string)    :-(dot(2, dot(dot(3, dot(4, dot())), dot())))
+19		(pretty)    :-([2, [3, 4]])
 
-20 		<dot(1,dot(dot(4,dot(5,dot())),3)).>
+20 		<[2|3].>
 20		err=<nil>
-20		(string)    :-(dot(1, dot(dot(4, dot(5, dot())), 3)))
-20		(pretty)    :-([1|[[4, 5]|3]])
+20		(string)    :-(dot(2, 3))
+20		(pretty)    :-([2|3])
 
-21 		<un,deux.>
-21		err=parse error : error in test # 21 <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
+21 		<[4|].>
+21		err=<nil>
+21		(string)    :-(dot(4))
+21		(pretty)    :-([4|])
 
-22 		<2(a).>
-22		err=parse error : error in test # 22 <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
+22 		<[4|X].>
+22		err=<nil>
+22		(string)    :-(dot(4, X))
+22		(pretty)    :-([4|X])
 
-23 		< [|2].>
-23		err=parse error : error in test # 23 < [|2].>, line 1 : syntax error: unexpected '|'
+23 		<dot(1,dot(2,3)).>
+23		err=<nil>
+23		(string)    :-(dot(1, dot(2, 3)))
+23		(pretty)    :-([1|[2|3]])
 
-24 		<[|]>
-24		err=parse error : error in test # 24 <[|]>, line 1 : syntax error: unexpected '|'
+24 		<dot(1,dot(dot(4,dot(5,dot())),3)).>
+24		err=<nil>
+24		(string)    :-(dot(1, dot(dot(4, dot(5, dot())), 3)))
+24		(pretty)    :-([1|[[4, 5]|3]])
 
-25 		<a(b,,).>
-25		err=parse error : error in test # 25 <a(b,,).>, line 1 : syntax error: unexpected ','
+25 		<un,deux.>
+25		err=parse error : error in test # 25 <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
+
+26 		<2(a).>
+26		err=parse error : error in test # 26 <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
+
+27 		< [|2].>
+27		err=parse error : error in test # 27 < [|2].>, line 1 : syntax error: unexpected '|'
+
+28 		<[|]>
+28		err=parse error : error in test # 28 <[|]>, line 1 : syntax error: unexpected '|'
+
+29 		<a(b,,).>
+29		err=parse error : error in test # 29 <a(b,,).>, line 1 : syntax error: unexpected ','
