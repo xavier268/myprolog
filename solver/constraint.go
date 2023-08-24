@@ -18,7 +18,7 @@ var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
 
 type VarIsAtom struct {
-	V *Variable
+	V Variable
 	A Atom
 }
 
@@ -30,7 +30,7 @@ func (VarIsAtom) Simplify(c Constraint) (cc Constraint, changed bool, err error)
 // Clone implements Constraint.
 func (c VarIsAtom) Clone() Constraint {
 	return VarIsAtom{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -40,7 +40,7 @@ func (c VarIsAtom) Clone() Constraint {
 
 // Constraint for X = term
 type VarIsCompoundTerm struct {
-	V *Variable
+	V Variable
 	T Term
 }
 
@@ -52,7 +52,7 @@ func (VarIsCompoundTerm) Simplify(c Constraint) (cc Constraint, changed bool, er
 // Clone implements Constraint.
 func (c VarIsCompoundTerm) Clone() Constraint {
 	return VarIsCompoundTerm{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -62,7 +62,7 @@ func (c VarIsCompoundTerm) Clone() Constraint {
 
 // Constraint for var that should resolve to an Integer in the given range
 type VarIsInteger struct {
-	V   *Variable
+	V   Variable
 	Min int // minimum acceptable value, included.
 	Max int // max acceptable value, included.
 }
@@ -74,7 +74,7 @@ func (VarIsInteger) Simplify(c Constraint) (cc Constraint, changed bool, err err
 
 func (c VarIsInteger) Clone() Constraint {
 	return VarIsInteger{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -84,7 +84,7 @@ func (c VarIsInteger) Clone() Constraint {
 }
 
 type VarIsFloat struct {
-	V   *Variable
+	V   Variable
 	Min float64
 	Max float64
 }
@@ -97,7 +97,7 @@ func (VarIsFloat) Simplify(c Constraint) (cc Constraint, changed bool, err error
 // Clone implements Constraint.
 func (c VarIsFloat) Clone() Constraint {
 	return VarIsFloat{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -107,7 +107,7 @@ func (c VarIsFloat) Clone() Constraint {
 }
 
 type VarIsString struct {
-	V *Variable
+	V Variable
 	S string
 }
 
@@ -119,7 +119,7 @@ func (VarIsString) Simplify(c Constraint) (cc Constraint, changed bool, err erro
 // Clone implements Constraint.
 func (c VarIsString) Clone() Constraint {
 	return VarIsString{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -128,7 +128,7 @@ func (c VarIsString) Clone() Constraint {
 }
 
 type VarIsChar struct {
-	V *Variable
+	V Variable
 	C rune
 }
 
@@ -140,7 +140,7 @@ func (VarIsChar) Simplify(c Constraint) (cc Constraint, changed bool, err error)
 // Clone implements Constraint.
 func (c VarIsChar) Clone() Constraint {
 	return VarIsChar{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
@@ -149,8 +149,8 @@ func (c VarIsChar) Clone() Constraint {
 }
 
 type VarIsVar struct {
-	V *Variable
-	W *Variable
+	V Variable
+	W Variable
 }
 
 // Simplify implements Constraint.
@@ -161,11 +161,11 @@ func (VarIsVar) Simplify(c Constraint) (cc Constraint, changed bool, err error) 
 // Clone implements Constraint.
 func (c VarIsVar) Clone() Constraint {
 	return VarIsVar{
-		V: &Variable{
+		V: Variable{
 			Name: c.V.Name,
 			Nsp:  c.V.Nsp,
 		},
-		W: &Variable{
+		W: Variable{
 			Name: c.W.Name,
 			Nsp:  c.W.Nsp,
 		},
