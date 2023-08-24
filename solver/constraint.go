@@ -1,7 +1,5 @@
 package solver
 
-import "github.com/xavier268/myprolog/solver"
-
 //a Constraint is immutable
 type Constraint interface {
 	Clone() Constraint
@@ -21,7 +19,7 @@ type VarIsAtom struct {
 }
 
 // Clone implements Constraint.
-func (c VarIsAtom) Clone() solver.Constraint {
+func (c VarIsAtom) Clone() Constraint {
 	return VarIsAtom{
 		V: &Variable{
 			Name: c.V.Name,
@@ -79,7 +77,7 @@ type VarIsFloat struct {
 }
 
 // Clone implements Constraint.
-func (c VarIsFloat) Clone() solver.Constraint {
+func (c VarIsFloat) Clone() Constraint {
 	return VarIsFloat{
 		V: &Variable{
 			Name: c.V.Name,
@@ -96,7 +94,7 @@ type VarIsString struct {
 }
 
 // Clone implements Constraint.
-func (c VarIsString) Clone() solver.Constraint {
+func (c VarIsString) Clone() Constraint {
 	return VarIsString{
 		V: &Variable{
 			Name: c.V.Name,
@@ -112,7 +110,7 @@ type VarIsChar struct {
 }
 
 // Clone implements Constraint.
-func (c VarIsChar) Clone() solver.Constraint {
+func (c VarIsChar) Clone() Constraint {
 	return VarIsChar{
 		V: &Variable{
 			Name: c.V.Name,
@@ -128,7 +126,7 @@ type VarIsVar struct {
 }
 
 // Clone implements Constraint.
-func (c VarIsVar) Clone() solver.Constraint {
+func (c VarIsVar) Clone() Constraint {
 	return VarIsVar{
 		V: &Variable{
 			Name: c.V.Name,
