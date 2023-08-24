@@ -1,6 +1,7 @@
 package solver
 
 // make a deep clone of Term
+// OBSOLETE - use Clone interface instead.
 func Clone(t Term) Term {
 	switch t := t.(type) {
 

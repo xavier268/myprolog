@@ -13,8 +13,9 @@ var (
 type Term interface { // Term is the most general form of a term
 	String() string // String() is the string representation of the entire term
 	// Strings are neither quoted nor escaped internally, they are stored without the start/end " or `
-	Pretty() string // Pretty() is the string representation of the term, pretty printing lists and rules and queries.
-	Clone() Term    // Clone() returns a deep copy of the term
+	Pretty() string        // Pretty() is the string representation of the term, pretty printing lists and rules and queries.
+	Clone() Term           // Clone() returns a deep copy of the term
+	CloneNsp(nsp int) Term // CloneNsp() returns a deep copy of the term with a new name space
 }
 
 var _ Term = Atom{}
@@ -29,6 +30,14 @@ var _ Term = Char{}
 type Variable struct { // a named variable
 	Name string
 	Nsp  int // name space
+}
+
+// CloneNsp implements Term.
+func (t Variable) CloneNsp(nsp int) Term {
+	return Variable{
+		Name: t.Name,
+		Nsp:  nsp,
+	}
 }
 
 // Clone implements Term.
@@ -53,6 +62,11 @@ func (v Variable) String() string {
 
 type Underscore struct{}
 
+// CloneNsp implements Term.
+func (Underscore) CloneNsp(nsp int) Term {
+	return Underscore{}
+}
+
 // Clone implements Term.
 func (Underscore) Clone() Term {
 	return Underscore{}
@@ -69,6 +83,13 @@ func (u Underscore) String() string {
 
 type String struct {
 	Value string
+}
+
+// CloneNsp implements Term.
+func (t String) CloneNsp(nsp int) Term {
+	return String{
+		Value: t.Value,
+	}
 }
 
 // Clone implements Term.
@@ -91,6 +112,13 @@ type Atom struct {
 	Value string
 }
 
+// CloneNsp implements Term.
+func (t Atom) CloneNsp(nsp int) Term {
+	return Atom{
+		Value: t.Value,
+	}
+}
+
 // Clone implements Term.
 func (t Atom) Clone() Term {
 	return Atom{
@@ -111,6 +139,13 @@ type Integer struct {
 	Value int
 }
 
+// CloneNsp implements Term.
+func (t Integer) CloneNsp(nsp int) Term {
+	return Integer{
+		Value: t.Value,
+	}
+}
+
 // Clone implements Term.
 func (t Integer) Clone() Term {
 	return Integer{
@@ -129,6 +164,13 @@ func (i Integer) String() string {
 
 type Float struct {
 	Value float64
+}
+
+// CloneNsp implements Term.
+func (t Float) CloneNsp(nsp int) Term {
+	return Float{
+		Value: t.Value,
+	}
 }
 
 // Clone implements Term.
@@ -152,6 +194,18 @@ func (f Float) String() string {
 type CompoundTerm struct {
 	Functor  string
 	Children []Term
+}
+
+// CloneNsp implements Term.
+func (t CompoundTerm) CloneNsp(nsp int) Term {
+	var children = make([]Term, 0, len(t.Children))
+	for _, child := range t.Children {
+		children = append(children, child.CloneNsp(nsp))
+	}
+	return CompoundTerm{
+		Functor:  t.Functor,
+		Children: children,
+	}
 }
 
 func (t CompoundTerm) Clone() Term {
@@ -241,6 +295,13 @@ func (c CompoundTerm) String() string {
 
 type Char struct {
 	Char rune
+}
+
+// CloneNsp implements Term.
+func (t Char) CloneNsp(nsp int) Term {
+	return Char{
+		Char: t.Char,
+	}
 }
 
 // Clone implements Term.
