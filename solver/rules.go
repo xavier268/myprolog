@@ -111,6 +111,7 @@ func ApplyRule(st *State, rule Term) (*State, error) {
 // regardless of potential constraints . It may not be unifiable later.
 // Do not check too deep into the structure, since predicates or expressions
 // can be hidden inside that will disappear later.
+// Float and Integer could unify if same float64 value.
 // The goal is to eliminate early non match.
 func SameStructure(t1, t2 Term) bool {
 
@@ -145,6 +146,8 @@ func SameStructure(t1, t2 Term) bool {
 		switch t2 := t2.(type) {
 		case *Integer:
 			return t1.Value == t2.Value
+		case *Float:
+			return float64(t1.Value) == t2.Value
 		default:
 			return false
 		}
@@ -153,6 +156,8 @@ func SameStructure(t1, t2 Term) bool {
 		switch t2 := t2.(type) {
 		case *Float:
 			return t1.Value == t2.Value
+		case *Integer:
+			return t1.Value == float64(t2.Value)
 		default:
 			return false
 		}

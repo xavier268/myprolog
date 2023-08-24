@@ -23,12 +23,15 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			return st, true
 		case *Integer: // integers unify with themselves
 			return st, head.Value == goal.Value
-		case *Float, *String, *Char, *Atom: //  do not unify
+		case *String, *Char, *Atom: //  do not unify
 			return st, false
+		case *Float: // integer can unif with float
+			return st, float64(head.Value) == goal.Value
 		case *Variable: // goal is a variable
-			c := VarEqCons{
-				V: Clone(goal).(*Variable),
-				T: head,
+			c := VarIsInteger{
+				V:   goal,
+				Min: head.Value,
+				Max: head.Value,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -49,12 +52,15 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			return st, true
 		case *Float:
 			return st, head.Value == goal.Value
-		case *Integer, *String, *Char, *Atom: //  do not unify
+		case *String, *Char, *Atom: //  do not unify
 			return st, false
+		case *Integer: // Float and Integer can unify
+			return st, head.Value == float64(goal.Value)
 		case *Variable: // goal is a variable
-			c := VarEqCons{
-				V: goal,
-				T: head,
+			c := VarIsFloat{
+				V:   goal,
+				Min: head.Value,
+				Max: head.Value,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -78,9 +84,9 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Integer, *Float, *Char, *Atom: //  do not unify
 			return st, false
 		case *Variable: // goal is a variable
-			c := VarEqCons{
+			c := VarIsString{
 				V: goal,
-				T: head,
+				S: head.Value,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -104,9 +110,9 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Integer, *Float, *String, *Atom: //  do not unify
 			return st, false
 		case *Variable: // goal is a variable
-			c := VarEqCons{
+			c := VarIsChar{
 				V: goal,
-				T: head,
+				C: head.Char,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -126,9 +132,9 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Underscore:
 			return st, true
 		case *Variable:
-			c := VarEqCons{
-				V: goal, // prefer goal when it is the variable, switch order
-				T: head,
+			c := VarIsVar{
+				V: goal,
+				W: head,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -138,7 +144,7 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			}
 
 		case *CompoundTerm, *Atom, *String, *Char, *Integer, *Float:
-			c := VarEqCons{
+			c := VarIsCompoundTerm{
 				V: head, // head is the variable
 				T: goal, // goal not a variable anymore
 			}
@@ -161,9 +167,9 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Underscore:
 			return st, true
 		case *Variable:
-			c := VarEqCons{
+			c := VarIsAtom{
 				V: goal, // prefer goal when it is the variable, switch order
-				T: head,
+				A: *head,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -190,7 +196,7 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Underscore:
 			return st, true
 		case *Variable:
-			c := VarEqCons{
+			c := VarIsCompoundTerm{
 				V: goal, // prefer goal when it is the variable, switch order
 				T: head,
 			}
