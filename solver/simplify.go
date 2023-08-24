@@ -21,7 +21,16 @@ func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 				}
 			}
 		}
-	}
 
+		if changed { // remove nil constraints
+			cc := make([]Constraint, 0, len(constraints))
+			for _, c := range constraints {
+				if c != nil {
+					cc = append(cc, c)
+				}
+			}
+			constraints = cc
+		}
+	}
 	return constraints, nil
 }

@@ -1,5 +1,7 @@
 package solver
 
+import "fmt"
+
 // State maintains the current state of the puzzle current state, and is used for backtracking.
 // A new state is created if and only if we have to make a choice and backtracking may be necessary.
 type State struct {
@@ -39,7 +41,41 @@ func NewState(parent *State) *State {
 
 // Add a constraint to state and simplify immediately.
 func (s *State) AddConstraint(c Constraint) (err error) {
+	c, err = CleanUpConstraint(c)
+	if err != nil {
+		return err
+	}
+	if c == nil {
+		return nil // ignopre
+	}
+
 	s.Constraints = append(s.Constraints, c)
 	s.Constraints, err = SimplifyConstraints(s.Constraints)
 	return err
+}
+
+// Basic check, cleanup and early incoherence detection
+func CleanConstraint(c Constraint) (newc Constraint, err error) {
+	if c == nil {
+		return nil, nil
+	}
+	switch c := c.(type) {
+	case VarIsInteger:
+		if c.Min > c.Max {
+			return c, fmt.Errorf("impossible integer interval")
+		}
+		return c, nil
+	case VarIsFloat:
+		if c.Min > c.Max {
+			return c, fmt.Errorf("impossible float interval")
+		}
+		return c, nil
+	case VarIsVar:
+		if c.V.Name == c.W.Name && c.V.Nsp == c.W.Nsp {
+			return nil, nil // ignore X=X
+		}
+	default:
+		return c, nil
+	}
+	panic("unreacheable code was reached")
 }
