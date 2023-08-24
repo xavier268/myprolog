@@ -29,7 +29,7 @@ func NewState(parent *State) *State {
 	st.Constraints = make([]Constraint, 0, len(parent.Constraints))
 	st.Goals = make([]Term, 0, len(parent.Goals))
 	for _, g := range parent.Goals {
-		st.Goals = append(st.Goals, Clone(g))
+		st.Goals = append(st.Goals, g.Clone())
 	}
 	for _, c := range parent.Constraints {
 		st.Constraints = append(st.Constraints, c.Clone())

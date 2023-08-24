@@ -16,18 +16,18 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 	// handle other non nil & non underscore cases
 	switch head := head.(type) {
 
-	case *Integer: // integer head
+	case Integer: // integer head
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Integer: // integers unify with themselves
+		case Integer: // integers unify with themselves
 			return st, head.Value == goal.Value
-		case *String, *Char, *Atom: //  do not unify
+		case String, *Char, *Atom: //  do not unify
 			return st, false
-		case *Float: // integer can unif with float
+		case Float: // integer can unif with float
 			return st, float64(head.Value) == goal.Value
-		case *Variable: // goal is a variable
+		case Variable: // goal is a variable
 			c := VarIsInteger{
 				V:   goal,
 				Min: head.Value,
@@ -39,24 +39,24 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			} else {
 				return st, true
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			return st, false
 		default:
 			panic("unreacheable code reached")
 		}
 
-	case *Float: // float head
+	case Float: // float head
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Float:
+		case Float:
 			return st, head.Value == goal.Value
-		case *String, *Char, *Atom: //  do not unify
+		case String, *Char, *Atom: //  do not unify
 			return st, false
-		case *Integer: // Float and Integer can unify
+		case Integer: // Float and Integer can unify
 			return st, head.Value == float64(goal.Value)
-		case *Variable: // goal is a variable
+		case Variable: // goal is a variable
 			c := VarIsFloat{
 				V:   goal,
 				Min: head.Value,
@@ -68,22 +68,22 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			} else {
 				return st, true
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			return st, false
 		default:
 			panic("unreacheable code reached")
 		}
 
-	case *String: // string head
+	case String: // string head
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *String:
+		case String:
 			return st, head.Value == goal.Value
-		case *Integer, *Float, *Char, *Atom: //  do not unify
+		case Integer, *Float, *Char, *Atom: //  do not unify
 			return st, false
-		case *Variable: // goal is a variable
+		case Variable: // goal is a variable
 			c := VarIsString{
 				V: goal,
 				S: head.Value,
@@ -94,22 +94,22 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			} else {
 				return st, true
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			return st, false
 		default:
 			panic("unreacheable code reached")
 		}
 
-	case *Char: // char head
+	case Char: // char head
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Char:
+		case Char:
 			return st, head.Char == goal.Char
-		case *Integer, *Float, *String, *Atom: //  do not unify
+		case Integer, *Float, *String, *Atom: //  do not unify
 			return st, false
-		case *Variable: // goal is a variable
+		case Variable: // goal is a variable
 			c := VarIsChar{
 				V: goal,
 				C: head.Char,
@@ -120,18 +120,18 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			} else {
 				return st, true
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			return st, false
 		default:
 			panic("unreacheable code reached")
 		}
 
-	case *Variable: // variable head
+	case Variable: // variable head
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Variable:
+		case Variable:
 			if head.Name == goal.Name && head.Nsp == goal.Nsp {
 				return st, true // X=X
 			}
@@ -146,7 +146,7 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 				return st, true
 			}
 
-		case *CompoundTerm, *Atom, *String, *Char, *Integer, *Float:
+		case CompoundTerm, Atom, String, Char, Integer, Float:
 			c := VarIsCompoundTerm{
 				V: head, // head is the variable
 				T: goal, // goal not a variable anymore
@@ -161,18 +161,18 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			panic("unreacheable code reached")
 		}
 
-	case *Underscore:
+	case Underscore:
 		return st, true
 
-	case *Atom:
+	case Atom:
 
 		switch goal := goal.(type) {
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Variable:
+		case Variable:
 			c := VarIsAtom{
 				V: goal, // prefer goal when it is the variable, switch order
-				A: *head,
+				A: head,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {
@@ -181,24 +181,24 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 				return st, true
 			}
 
-		case *CompoundTerm, *String, *Char, *Integer, *Float:
+		case CompoundTerm, String, Char, Integer, Float:
 			return st, false
 
-		case *Atom:
+		case Atom:
 			return st, head.Value == goal.Value
 
 		default:
 			panic("unreacheable code reached")
 		}
 
-	case *CompoundTerm: // compound head
+	case CompoundTerm: // compound head
 
 		switch goal := goal.(type) {
-		case *Char, *String, *Float, *Integer, *Atom:
+		case Char, String, Float, Integer, Atom:
 			return st, false
-		case *Underscore:
+		case Underscore:
 			return st, true
-		case *Variable:
+		case Variable:
 			c := VarIsCompoundTerm{
 				V: goal, // prefer goal when it is the variable, switch order
 				T: head,
@@ -209,7 +209,7 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			} else {
 				return st, true
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			if goal.Functor != head.Functor || len(goal.Children) != len(head.Children) {
 				return st, false
 			}

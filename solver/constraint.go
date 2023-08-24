@@ -5,7 +5,7 @@ type Constraint interface {
 	// deep copy
 	Clone() Constraint
 	// simplify c, taking into account the calling constraint (unchanged).
-	// If a nil constraint is returned, it means c can be safely removed.
+	// If a nil constraint with the changed flag set is returned, it means c can be safely removed.
 	Simplify(c Constraint) (cc Constraint, changed bool, err error)
 }
 

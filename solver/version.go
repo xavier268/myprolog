@@ -1,4 +1,4 @@
 // Package solver contains solving, constraints and context logic.
 package solver
 
-const VERSION = "0.2.1"
+const VERSION = "0.3.0"

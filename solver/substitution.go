@@ -3,11 +3,11 @@ package solver
 // Find if Variable exists in Term
 func FindVar(v Variable, t Term) (found bool) {
 	switch t := t.(type) {
-	case *Variable:
+	case Variable:
 		return t.Name == v.Name && t.Nsp == v.Nsp
-	case *Float, *Integer, *String, *Char, *Atom, *Underscore:
+	case Float, Integer, String, Char, Atom, Underscore:
 		return false
-	case *CompoundTerm:
+	case CompoundTerm:
 		for _, c := range t.Children {
 			if FindVar(v, c) {
 				return true
@@ -29,7 +29,7 @@ func ReplaceVar(v Variable, t Term, w Variable) (tt Term, found bool) {
 		return t, false
 	}
 
-	tt = Clone(t)
+	tt = t.Clone()
 	replaceVarInPlace(v, tt, w)
 	return tt, true
 }
@@ -38,7 +38,7 @@ func ReplaceVar(v Variable, t Term, w Variable) (tt Term, found bool) {
 func replaceVarInPlace(v Variable, t Term, w Variable) {
 
 	switch t := t.(type) {
-	case *Variable:
+	case Variable:
 		if t.Name == v.Name && t.Nsp == v.Nsp {
 			t.Name = w.Name
 			t.Nsp = w.Nsp
@@ -46,9 +46,9 @@ func replaceVarInPlace(v Variable, t Term, w Variable) {
 		}
 		return
 
-	case *Float, *Integer, *String, *Char, *Atom, *Underscore:
+	case Float, Integer, String, Char, Atom, Underscore:
 		return
-	case *CompoundTerm:
+	case CompoundTerm:
 		for _, c := range t.Children {
 			replaceVarInPlace(v, c, w)
 		}

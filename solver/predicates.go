@@ -30,15 +30,15 @@ func DoPredicate(st *State) (*State, error) {
 		}
 		goal := st.Goals[0]
 		switch g := goal.(type) {
-		case *Underscore: // remove underscore.
+		case Underscore: // remove underscore.
 			st.Goals = st.Goals[1:]
 			st.NextRule = 0 // when goal change, reset the next rule pointer ...
 			continue
-		case *Variable: // Variables are not predicates. Leave as is.
+		case Variable: // Variables are not predicates. Leave as is.
 			return st, nil
-		case *Float, *Integer, *String, *Char: // keep number and constants
+		case Float, *Integer, *String, *Char: // keep number and constants
 			return st, nil
-		case *Atom:
+		case Atom:
 			if !AtomPredicate[g.Value] { // not a predicate, leave as is.
 				return st, nil
 			}
@@ -51,7 +51,7 @@ func DoPredicate(st *State) (*State, error) {
 			default: // should not happen
 				panic("internal error : unknown Atom predicate : " + g.Value)
 			}
-		case *CompoundTerm:
+		case CompoundTerm:
 			functor := g.Functor
 			arity, ok := CompPredicateMap[functor]
 			if !ok { // not in the predicate map, ignore it

@@ -8,14 +8,14 @@ import (
 
 // Set of rules that can be applied in a state
 type RuleSet struct {
-	rules []*CompoundTerm
+	rules []CompoundTerm
 }
 
 func (rs *RuleSet) AddRule(rule Term) {
 	if rule == nil {
 		panic("trying to add a nil rule")
 	}
-	r, ok := rule.(*CompoundTerm)
+	r, ok := rule.(CompoundTerm)
 	if !ok {
 		panic("Trying to add a Term as rule that is not a CompoundTerm")
 	}
@@ -63,7 +63,7 @@ func FindNextRule(st *State) (*State, Term) {
 
 	if count == 1 { // only one rule is applicable - do not fork state
 		st.Uid = st.Uid + 1
-		rule := CloneNsp(st.Rules.rules[selected], st.Uid)
+		rule := st.Rules.rules[selected].CloneNsp(st.Uid)
 		st.NextRule = selected + 1 // to ensure no loop
 		return st, rule
 	}
@@ -73,7 +73,7 @@ func FindNextRule(st *State) (*State, Term) {
 		nst := NewState(st)        // fork a new state to continue with
 		nst.NextRule = selected
 		nst.Uid = st.Uid + 1
-		rule := CloneNsp(st.Rules.rules[selected], nst.Uid)
+		rule := st.Rules.rules[selected].CloneNsp(nst.Uid)
 		return nst, rule
 	}
 	panic("internal error - code should be unreacheable")
@@ -88,7 +88,7 @@ func ApplyRule(st *State, rule Term) (*State, error) {
 	if rule == nil {
 		panic("Trying to apply a nil rule")
 	}
-	crule, ok := rule.(*CompoundTerm)
+	crule, ok := rule.(CompoundTerm)
 	if !ok || crule.Functor != "rule" {
 		panic("Trying to apply a rule that is not a valid rule")
 	}
@@ -124,85 +124,85 @@ func SameStructure(t1, t2 Term) bool {
 	}
 
 	// handle underscores
-	if _, ok := t1.(*Underscore); ok {
+	if _, ok := t1.(Underscore); ok {
 		return true
 	}
-	if _, ok := t2.(*Underscore); ok {
+	if _, ok := t2.(Underscore); ok {
 		return true
 	}
 
 	// handle variables
-	if _, ok := t1.(*Variable); ok {
+	if _, ok := t1.(Variable); ok {
 		return true
 	}
-	if _, ok := t2.(*Variable); ok {
+	if _, ok := t2.(Variable); ok {
 		return true
 	}
 
 	// handle other non nil, non variable, non underscore
 	switch t1 := t1.(type) {
 
-	case *Integer:
+	case Integer:
 		switch t2 := t2.(type) {
-		case *Integer:
+		case Integer:
 			return t1.Value == t2.Value
-		case *Float:
+		case Float:
 			return float64(t1.Value) == t2.Value
 		default:
 			return false
 		}
 
-	case *Float:
+	case Float:
 		switch t2 := t2.(type) {
-		case *Float:
+		case Float:
 			return t1.Value == t2.Value
-		case *Integer:
+		case Integer:
 			return t1.Value == float64(t2.Value)
 		default:
 			return false
 		}
 
-	case *String:
+	case String:
 		switch t2 := t2.(type) {
-		case *String:
+		case String:
 			return t1.Value == t2.Value
 		default:
 			return false
 		}
 
-	case *Char:
+	case Char:
 		switch t2 := t2.(type) {
-		case *Char:
+		case Char:
 			return t1.Char == t2.Char
 		default:
 			return false
 		}
 
-	case *Atom:
+	case Atom:
 		if AtomPredicate[t1.Value] {
 			return true // predicates may modify the structure and are not a reliable compare.
 		}
 		switch t2 := t2.(type) {
-		case *Atom:
+		case Atom:
 			if AtomPredicate[t1.Value] {
 				return true // predicates may modify the structure and are not a reliable compare.
 			}
 			return t1.Value == t2.Value
-		case *CompoundTerm:
+		case CompoundTerm:
 			_, ok := CompPredicateMap[t2.Functor]
 			return ok // predicates may modify the structure and are not a reliable compare.
 		default:
 			return false
 		}
 
-	case *CompoundTerm:
+	case CompoundTerm:
 		if _, ok := CompPredicateMap[t1.Functor]; ok {
 			return true // predicates may modify the structure and are not a reliable compare.
 		}
 		switch t2 := t2.(type) {
-		case *Atom:
+		case Atom:
 			return AtomPredicate[t2.Value] // predicates may modify the structure and are not a reliable compare.
-		case *CompoundTerm:
+		case CompoundTerm:
 			if _, ok := CompPredicateMap[t2.Functor]; ok {
 				return true // predicates may modify the structure and are not a reliable compare.
 			}
