@@ -2,8 +2,11 @@ package solver
 
 //a Constraint is immutable
 type Constraint interface {
-	Clone() Constraint                                              // deep copy
-	Simplify(c Constraint) (cc Constraint, changed bool, err error) // simplify c, taking into account the calling constraint (unchanged)
+	// deep copy
+	Clone() Constraint
+	// simplify c, taking into account the calling constraint (unchanged).
+	// If a nil constraint is returned, it means c can be safely removed.
+	Simplify(c Constraint) (cc Constraint, changed bool, err error)
 }
 
 var _ Constraint = VarIsCompoundTerm{}

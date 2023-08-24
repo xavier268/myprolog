@@ -132,7 +132,7 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 		case *Underscore:
 			return st, true
 		case *Variable:
-			if head.Name == goal.Name && head.Nsp == head.Nsp {
+			if head.Name == goal.Name && head.Nsp == goal.Nsp {
 				return st, true // X=X
 			}
 			c := VarIsVar{
