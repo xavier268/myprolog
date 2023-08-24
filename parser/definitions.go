@@ -48,15 +48,11 @@ func (u *Underscore) String() string {
 	return "_"
 }
 
-type AtomicTerm interface {
-	Term
-}
-
 type String struct {
 	Value string
 }
 
-var _ AtomicTerm = new(String)
+var _ Term = new(String)
 
 // Pretty implements AtomicTerm.
 func (t *String) Pretty() string {
@@ -71,7 +67,7 @@ type Atom struct {
 	Value string
 }
 
-var _ AtomicTerm = new(Atom)
+var _ Term = new(Atom)
 
 // Pretty implements AtomicTerm.
 func (t *Atom) Pretty() string {
@@ -86,7 +82,7 @@ type Integer struct {
 	Value int
 }
 
-var _ AtomicTerm = new(Integer)
+var _ Term = new(Integer)
 
 // Pretty implements AtomicTerm.
 func (t *Integer) Pretty() string {
@@ -101,7 +97,7 @@ type Float struct {
 	Value float64
 }
 
-var _ AtomicTerm = new(Float)
+var _ Term = new(Float)
 
 // Pretty implements AtomicTerm.
 func (t *Float) Pretty() string {
