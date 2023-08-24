@@ -29,7 +29,7 @@ state 2
 	'['  shift 10
 	OPQUERY  shift 4
 	ATOM  shift 7
-	.  reduce 1 (src line 47)
+	.  reduce 1 (src line 48)
 
 	phrase  goto 11
 	conjterm  goto 6
@@ -40,7 +40,7 @@ state 2
 state 3
 	phrases:  phrase.    (2)
 
-	.  reduce 2 (src line 54)
+	.  reduce 2 (src line 55)
 
 
 state 4
@@ -69,7 +69,7 @@ state 5
 state 6
 	head:  conjterm.    (8)
 
-	.  reduce 8 (src line 84)
+	.  reduce 8 (src line 85)
 
 
 state 7
@@ -78,19 +78,19 @@ state 7
 	compterm:  ATOM.'(' ')' 
 
 	'('  shift 17
-	.  reduce 13 (src line 104)
+	.  reduce 13 (src line 105)
 
 
 state 8
 	conjterm:  compterm.    (14)
 
-	.  reduce 14 (src line 106)
+	.  reduce 14 (src line 107)
 
 
 state 9
 	compterm:  list.    (17)
 
-	.  reduce 17 (src line 119)
+	.  reduce 17 (src line 120)
 
 
 state 10
@@ -118,7 +118,7 @@ state 10
 state 11
 	phrases:  phrases phrase.    (3)
 
-	.  reduce 3 (src line 56)
+	.  reduce 3 (src line 57)
 
 
 state 12
@@ -133,7 +133,7 @@ state 13
 	disjterms:  conjterms.';' disjterms 
 
 	';'  shift 30
-	.  reduce 9 (src line 88)
+	.  reduce 9 (src line 89)
 
 
 state 14
@@ -141,13 +141,13 @@ state 14
 	conjterms:  conjterm.',' conjterms 
 
 	','  shift 31
-	.  reduce 11 (src line 96)
+	.  reduce 11 (src line 97)
 
 
 state 15
 	phrase:  head '.'.    (5)
 
-	.  reduce 5 (src line 65)
+	.  reduce 5 (src line 66)
 
 
 state 16
@@ -188,7 +188,7 @@ state 17
 state 18
 	list:  '[' ']'.    (28)
 
-	.  reduce 28 (src line 142)
+	.  reduce 28 (src line 143)
 
 
 state 19
@@ -206,7 +206,7 @@ state 20
 
 	','  shift 38
 	'|'  shift 39
-	.  reduce 18 (src line 123)
+	.  reduce 18 (src line 124)
 
 
 state 21
@@ -215,55 +215,55 @@ state 21
 	param:  ATOM.    (20)
 
 	'('  shift 17
-	.  reduce 20 (src line 129)
+	.  reduce 20 (src line 130)
 
 
 state 22
 	param:  number.    (21)
 
-	.  reduce 21 (src line 131)
+	.  reduce 21 (src line 132)
 
 
 state 23
 	param:  STRING.    (22)
 
-	.  reduce 22 (src line 132)
+	.  reduce 22 (src line 133)
 
 
 state 24
 	param:  VARIABLE.    (23)
 
-	.  reduce 23 (src line 133)
+	.  reduce 23 (src line 134)
 
 
 state 25
 	param:  '_'.    (24)
 
-	.  reduce 24 (src line 134)
+	.  reduce 24 (src line 135)
 
 
 state 26
 	param:  compterm.    (25)
 
-	.  reduce 25 (src line 135)
+	.  reduce 25 (src line 136)
 
 
 state 27
 	number:  INTEGER.    (26)
 
-	.  reduce 26 (src line 137)
+	.  reduce 26 (src line 138)
 
 
 state 28
 	number:  FLOAT.    (27)
 
-	.  reduce 27 (src line 139)
+	.  reduce 27 (src line 140)
 
 
 state 29
 	phrase:  OPQUERY disjterms '.'.    (4)
 
-	.  reduce 4 (src line 58)
+	.  reduce 4 (src line 59)
 
 
 state 30
@@ -294,7 +294,7 @@ state 31
 state 32
 	phrase:  head OPRULE '.'.    (6)
 
-	.  reduce 6 (src line 71)
+	.  reduce 6 (src line 72)
 
 
 state 33
@@ -314,7 +314,7 @@ state 34
 state 35
 	compterm:  ATOM '(' ')'.    (16)
 
-	.  reduce 16 (src line 114)
+	.  reduce 16 (src line 115)
 
 
 state 36
@@ -322,13 +322,13 @@ state 36
 	params:  param.',' params 
 
 	','  shift 38
-	.  reduce 18 (src line 123)
+	.  reduce 18 (src line 124)
 
 
 state 37
 	list:  '[' params ']'.    (29)
 
-	.  reduce 29 (src line 148)
+	.  reduce 29 (src line 149)
 
 
 state 38
@@ -371,31 +371,31 @@ state 39
 state 40
 	disjterms:  conjterms ';' disjterms.    (10)
 
-	.  reduce 10 (src line 90)
+	.  reduce 10 (src line 91)
 
 
 state 41
 	conjterms:  conjterm ',' conjterms.    (12)
 
-	.  reduce 12 (src line 98)
+	.  reduce 12 (src line 99)
 
 
 state 42
 	phrase:  head OPRULE disjterms '.'.    (7)
 
-	.  reduce 7 (src line 77)
+	.  reduce 7 (src line 78)
 
 
 state 43
 	compterm:  ATOM '(' params ')'.    (15)
 
-	.  reduce 15 (src line 108)
+	.  reduce 15 (src line 109)
 
 
 state 44
 	params:  param ',' params.    (19)
 
-	.  reduce 19 (src line 125)
+	.  reduce 19 (src line 126)
 
 
 state 45
@@ -408,13 +408,13 @@ state 45
 state 46
 	list:  '[' param '|' ']'.    (31)
 
-	.  reduce 31 (src line 156)
+	.  reduce 31 (src line 157)
 
 
 state 47
 	list:  '[' param '|' param ']'.    (30)
 
-	.  reduce 30 (src line 151)
+	.  reduce 30 (src line 152)
 
 
 19 terminals, 13 nonterminals

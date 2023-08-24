@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-func Example() {
+func Example_lexer() {
 
 	lx := newLexerString(`hello world |
 		X23 _ , . 

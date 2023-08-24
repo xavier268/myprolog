@@ -51,11 +51,11 @@ func (lx *myLex) Lex(lval *mySymType) int {
 	case scanner.Ident:
 		txt := lx.s.TokenText()
 		if txt == "_" {
-			lval.value = &Underscore{}
+			lval.value = Underscore{}
 			return '_'
 		}
 		if txt[0] >= 'A' && txt[0] <= 'Z' {
-			lval.value = &Variable{
+			lval.value = Variable{
 				Name: txt,
 				Nsp:  0,
 			}
@@ -65,7 +65,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 			lx.Error(fmt.Sprintf("Identifier cannot begin with underscore : %v", txt))
 			return eof
 		}
-		lval.value = &Atom{
+		lval.value = Atom{
 			Value: txt,
 		}
 		return ATOM
@@ -74,13 +74,13 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		return lx.Lex(lval)
 
 	case scanner.RawString, scanner.String:
-		lval.value = &String{
+		lval.value = String{
 			Value: lx.s.TokenText()[1 : len(lx.s.TokenText())-1],
 		}
 		return STRING
 
 	case scanner.Char: // handled as a STRING with 1 char.
-		lval.value = &String{
+		lval.value = String{
 			Value: lx.s.TokenText()[1 : len(lx.s.TokenText())-1],
 		}
 		return STRING
@@ -88,7 +88,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 	case scanner.Float:
 		var z float64
 		fmt.Sscanf(lx.s.TokenText(), "%v", &z)
-		lval.value = &Float{
+		lval.value = Float{
 			Value: z,
 		}
 		return FLOAT
@@ -96,7 +96,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 	case scanner.Int:
 		var z int
 		fmt.Sscanf(lx.s.TokenText(), "%v", &z)
-		lval.value = &Integer{
+		lval.value = Integer{
 			Value: z,
 		}
 		return INTEGER
@@ -111,7 +111,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 			return OPRULE
 		}
 		// a single ':' is recognized as an atom.
-		lval.value = &Atom{
+		lval.value = Atom{
 			Value: ":",
 		}
 		return ATOM
@@ -122,7 +122,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 			return OPQUERY
 		}
 		// a single '?' is recognized as an atom.
-		lval.value = &Atom{
+		lval.value = Atom{
 			Value: "?",
 		}
 		return ATOM
