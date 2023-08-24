@@ -21,7 +21,7 @@ var AtomPredicate = map[string]bool{
 }
 
 // Execute predicates, if possible, using the functor of the first goal.
-// Includes removing obvious goals.
+// Includes removing underscore. Constant values (numbers, strings ...) are kept.
 // State MAY change, if  alternative must be considered.
 func DoPredicate(st *State) (*State, error) {
 	for {
@@ -30,11 +30,13 @@ func DoPredicate(st *State) (*State, error) {
 		}
 		goal := st.Goals[0]
 		switch g := goal.(type) {
-		case *Underscore, *Float, *Integer, *String, *Char: // just erase goals that are merely values or underscore.
+		case *Underscore: // remove underscore.
 			st.Goals = st.Goals[1:]
 			st.NextRule = 0 // when goal change, reset the next rule pointer ...
 			continue
 		case *Variable: // Variables are not predicates. Leave as is.
+			return st, nil
+		case *Float, *Integer, *String, *Char: // keep number and constants
 			return st, nil
 		case *Atom:
 			if !AtomPredicate[g.Value] { // not a predicate, leave as is.

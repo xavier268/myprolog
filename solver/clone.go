@@ -1,33 +1,31 @@
 package solver
 
-import "github.com/xavier268/myprolog/parser"
-
 // make a deep clone of Term
-func Clone(t parser.Term) parser.Term {
+func Clone(t Term) Term {
 	switch t := t.(type) {
 
-	case *parser.Variable:
-		return &parser.Variable{
+	case *Variable:
+		return &Variable{
 			Name: t.Name,
 			Nsp:  t.Nsp,
 		}
 
-	case *parser.Atom:
-		return &parser.Atom{
+	case *Atom:
+		return &Atom{
 			Value: t.Value,
 		}
 
-	case *parser.Underscore,
-		*parser.String,
-		*parser.Char,
-		*parser.Float,
-		*parser.Integer:
+	case *Underscore,
+		*String,
+		*Char,
+		*Float,
+		*Integer:
 		return t
 
-	case *parser.CompoundTerm:
-		tt := &parser.CompoundTerm{
+	case *CompoundTerm:
+		tt := &CompoundTerm{
 			Functor:  t.Functor,
-			Children: []parser.Term{},
+			Children: []Term{},
 		}
 		for _, c := range t.Children {
 			tt.Children = append(tt.Children, Clone(c))
@@ -40,31 +38,31 @@ func Clone(t parser.Term) parser.Term {
 }
 
 // clone and change the name space of all variables
-func CloneNsp(t parser.Term, nsp int) parser.Term {
+func CloneNsp(t Term, nsp int) Term {
 	switch t := t.(type) {
 
-	case *parser.Variable:
-		return &parser.Variable{
+	case *Variable:
+		return &Variable{
 			Name: t.Name,
 			Nsp:  nsp,
 		}
 
-	case *parser.Atom:
-		return &parser.Atom{
+	case *Atom:
+		return &Atom{
 			Value: t.Value,
 		}
 
-	case *parser.Underscore,
-		*parser.String,
-		*parser.Char,
-		*parser.Float,
-		*parser.Integer:
+	case *Underscore,
+		*String,
+		*Char,
+		*Float,
+		*Integer:
 		return t
 
-	case *parser.CompoundTerm:
-		tt := &parser.CompoundTerm{
+	case *CompoundTerm:
+		tt := &CompoundTerm{
 			Functor:  t.Functor,
-			Children: []parser.Term{},
+			Children: []Term{},
 		}
 		for _, c := range t.Children {
 			tt.Children = append(tt.Children, CloneNsp(c, nsp))

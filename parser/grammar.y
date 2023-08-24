@@ -34,7 +34,7 @@ var lastParseResult []Term
 }
 
 %type <list> top phrases params
-%type <value> phrase disjterms conjterms conjterm 
+%type <value> phrase disjterms conjterms conjterm head
 %type <value> compterm number list param
 
 
@@ -62,24 +62,28 @@ phrase:
                                                 Children: []Term{$2},
                                                 }                                                
                                         }
-    | conjterm '.'                      {  // implicit OPRULE
+    | head '.'                      {  // implicit OPRULE
                                         $$ = &CompoundTerm{
                                                 Functor : "rule", 
                                                 Children: []Term{ $1 } ,
                                                 };
                                         }
-    | conjterm OPRULE '.'               { 
+    | head OPRULE '.'               { 
                                         $$ = &CompoundTerm{
                                                 Functor : "rule",    
                                                 Children: []Term{ $1} ,
                                                 };
                                         }
-    | conjterm OPRULE disjterms '.'     { 
+    | head OPRULE disjterms '.'     { 
                                         $$ = &CompoundTerm{
                                                 Functor : "rule",    
                                                 Children: []Term{ $1, $3},
                                                 }
                                         }
+
+head: conjterm                          { $$ = $1 }
+    
+
 
 disjterms:
     conjterms                           { $$ = $1 }

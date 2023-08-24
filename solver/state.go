@@ -36,3 +36,10 @@ func NewState(parent *State) *State {
 	}
 	return st
 }
+
+// Add a constraint to state and simplify immediately.
+func (s *State) AddConstraint(c Constraint) (err error) {
+	s.Constraints = append(s.Constraints, c)
+	s.Constraints, err = SimplifyConstraints(s.Constraints)
+	return err
+}

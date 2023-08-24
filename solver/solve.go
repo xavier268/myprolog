@@ -6,6 +6,7 @@ import (
 
 // Aliases to parser types.
 type Term = parser.Term
+
 type CompoundTerm = parser.CompoundTerm
 type Variable = parser.Variable
 type Underscore = parser.Underscore
@@ -15,6 +16,8 @@ type Float = parser.Float
 type Integer = parser.Integer
 type Char = parser.Char
 
+// Solve for a given state.
+// Backtracking is managed only in this function.
 func Solve(st *State, sh SolutionHandler) *State {
 	var err error
 	for {
@@ -51,7 +54,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 		}
 
 		// Find next rule to apply.
-		// State is modified if a choice was necessary among more than one rule.
+		// State is modified if a choice was necessary among more than one rule (unlikely ?)
 		var rule Term
 		st, rule = FindNextRule(st)
 		if st == nil { // stop !

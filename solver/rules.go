@@ -30,8 +30,8 @@ func (rs *RuleSet) AddRule(rule Term) {
 }
 
 // Find the next rule applicable in the current context.
-// Retuns an alpha-transformed rule.
-// New State is created if many rules can be applied.
+// Returns an alpha-transformed rule.
+// New State is created if a choice was made between multiple applicable rules.
 // Return nil if no rule available.
 func FindNextRule(st *State) (*State, Term) {
 
@@ -64,6 +64,7 @@ func FindNextRule(st *State) (*State, Term) {
 	if count == 1 { // only one rule is applicable - do not fork state
 		st.Uid = st.Uid + 1
 		rule := CloneNsp(st.Rules.rules[selected], st.Uid)
+		st.NextRule = selected + 1 // to ensure no loop
 		return st, rule
 	}
 
@@ -72,21 +73,44 @@ func FindNextRule(st *State) (*State, Term) {
 		nst := NewState(st)        // fork a new state to continue with
 		nst.NextRule = selected
 		nst.Uid = st.Uid + 1
-		rule := CloneNsp(st.Rules.rules[selected], st.Uid)
-		return st, rule
+		rule := CloneNsp(st.Rules.rules[selected], nst.Uid)
+		return nst, rule
 	}
 	panic("internal error - code should be unreacheable")
 }
 
 // Apply a rule to the state.
-// No new state is created.
-// Returns nil if no rule is applicable.
+// No new state is created, no backtracking is performed here.
+// Goals and constraints are potentially updated.
+// Returns err!=nil if backtracking will be required.
 func ApplyRule(st *State, rule Term) (*State, error) {
-	panic("not implemented")
+
+	if rule == nil {
+		panic("Trying to apply a nil rule")
+	}
+	crule, ok := rule.(*CompoundTerm)
+	if !ok || crule.Functor != "rule" {
+		panic("Trying to apply a rule that is not a valid rule")
+	}
+	if len(crule.Children) == 0 {
+		panic("Trying to apply a rule with no head")
+	}
+	// Try to unify the head with the first goal, adding constraints to the state
+	st, ok = Unify(st, crule.Children[0], st.Goals[0])
+	if !ok {
+		return st, fmt.Errorf("cannot unify")
+	}
+	// Update goals after successfull unification.
+	st.Goals = append(crule.Children[1:], st.Goals[1:]...)
+	st.NextRule = 0 // reset next rule because goals changed
+	return st, nil
+
 }
 
-// Does the structure of both terms match and should be considered,
+// Does the structure of both terms seem to match and should be considered,
 // regardless of potential constraints . It may not be unifiable later.
+// Do not check too deep into the structure, since predicates or expressions
+// can be hidden inside that will disappear later.
 // The goal is to eliminate early non match.
 func SameStructure(t1, t2 Term) bool {
 
@@ -114,7 +138,7 @@ func SameStructure(t1, t2 Term) bool {
 		return true
 	}
 
-	// handle other term
+	// handle other non nil, non variable, non underscore
 	switch t1 := t1.(type) {
 
 	case *Integer:
@@ -150,21 +174,39 @@ func SameStructure(t1, t2 Term) bool {
 		}
 
 	case *Atom:
+		if AtomPredicate[t1.Value] {
+			return true // predicates may modify the structure and are not a reliable compare.
+		}
 		switch t2 := t2.(type) {
 		case *Atom:
+			if AtomPredicate[t1.Value] {
+				return true // predicates may modify the structure and are not a reliable compare.
+			}
 			return t1.Value == t2.Value
+		case *CompoundTerm:
+			_, ok := CompPredicateMap[t2.Functor]
+			return ok // predicates may modify the structure and are not a reliable compare.
 		default:
 			return false
 		}
 
 	case *CompoundTerm:
+		if _, ok := CompPredicateMap[t1.Functor]; ok {
+			return true // predicates may modify the structure and are not a reliable compare.
+		}
 		switch t2 := t2.(type) {
+		case *Atom:
+			return AtomPredicate[t2.Value] // predicates may modify the structure and are not a reliable compare.
 		case *CompoundTerm:
+			if _, ok := CompPredicateMap[t2.Functor]; ok {
+				return true // predicates may modify the structure and are not a reliable compare.
+			}
+
 			if (t1.Functor != t2.Functor) || len(t1.Children) != len(t2.Children) {
 				return false
 			}
-			for i, c1 := range t1.Children {
-				if !SameStructure(c1, t2.Children[i]) {
+			for i, c := range t1.Children {
+				if !SameStructure(c, t2.Children[i]) {
 					return false
 				}
 			}
