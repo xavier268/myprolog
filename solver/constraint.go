@@ -2,7 +2,8 @@ package solver
 
 //a Constraint is immutable
 type Constraint interface {
-	Clone() Constraint
+	Clone() Constraint                                              // deep copy
+	Simplify(c Constraint) (cc Constraint, changed bool, err error) // simplify c, taking into account the calling constraint (unchanged)
 }
 
 var _ Constraint = VarIsCompoundTerm{}
@@ -16,6 +17,11 @@ var _ Constraint = VarIsAtom{}
 type VarIsAtom struct {
 	V *Variable
 	A Atom
+}
+
+// Simplify implements Constraint.
+func (VarIsAtom) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
 }
 
 // Clone implements Constraint.
@@ -33,6 +39,11 @@ func (c VarIsAtom) Clone() Constraint {
 type VarIsCompoundTerm struct {
 	V *Variable
 	T Term
+}
+
+// Simplify implements Constraint.
+func (VarIsCompoundTerm) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
 }
 
 // Clone implements Constraint.
@@ -53,6 +64,11 @@ type VarIsInteger struct {
 	Max int // max acceptable value, included.
 }
 
+// Simplify implements Constraint.
+func (VarIsInteger) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
+}
+
 func (c VarIsInteger) Clone() Constraint {
 	return VarIsInteger{
 		V: &Variable{
@@ -64,16 +80,15 @@ func (c VarIsInteger) Clone() Constraint {
 	}
 }
 
-// Attempt to simplify constratint list.
-// Return error if an incompatibility was detected.
-func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
-	panic("unimplemented")
-}
-
 type VarIsFloat struct {
 	V   *Variable
 	Min float64
 	Max float64
+}
+
+// Simplify implements Constraint.
+func (VarIsFloat) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
 }
 
 // Clone implements Constraint.
@@ -93,6 +108,11 @@ type VarIsString struct {
 	S string
 }
 
+// Simplify implements Constraint.
+func (VarIsString) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
+}
+
 // Clone implements Constraint.
 func (c VarIsString) Clone() Constraint {
 	return VarIsString{
@@ -109,6 +129,11 @@ type VarIsChar struct {
 	C rune
 }
 
+// Simplify implements Constraint.
+func (VarIsChar) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
+}
+
 // Clone implements Constraint.
 func (c VarIsChar) Clone() Constraint {
 	return VarIsChar{
@@ -123,6 +148,11 @@ func (c VarIsChar) Clone() Constraint {
 type VarIsVar struct {
 	V *Variable
 	W *Variable
+}
+
+// Simplify implements Constraint.
+func (VarIsVar) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
 }
 
 // Clone implements Constraint.
