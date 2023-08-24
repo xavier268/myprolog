@@ -31,8 +31,8 @@ func Solve(st *State, sh SolutionHandler) *State {
 			}
 		}
 
-		// Apply predicate or handle obvious goals on the first top goal, if possible
-		// State MAY  change.
+		// Apply predicate or remove obvious goals on the first top goal, if possible
+		// State MAY change.
 		st, err = DoPredicate(st)
 		if st == nil { // stop !
 			return nil
@@ -42,7 +42,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 			continue // loop again
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
-			st := sh(st)
+			st = sh(st)
 			if st == nil { // stop !
 				return st
 			} else {
@@ -52,12 +52,13 @@ func Solve(st *State, sh SolutionHandler) *State {
 
 		// Find next rule to apply.
 		// State is modified if a choice was necessary among more than one rule.
-		st, rule := FindNextRule(st)
+		var rule Term
+		st, rule = FindNextRule(st)
 		if st == nil { // stop !
 			return nil
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
-			st := sh(st)
+			st = sh(st)
 			if st == nil { // stop !
 				return st
 			} else {
@@ -80,7 +81,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 			continue
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
-			st := sh(st)
+			st = sh(st)
 			if st == nil { // stop !
 				return st
 			} else {

@@ -34,5 +34,5 @@ func NewState(parent *State) *State {
 	for _, c := range parent.Constraints {
 		st.Constraints = append(st.Constraints, c.Clone())
 	}
-
+	return st
 }
