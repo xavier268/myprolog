@@ -1,136 +1,197 @@
 
 0 		<un(deux,trois).>
 0		err=<nil>
-0		(string)    :-(un(deux, trois))
-0		(pretty)    :-(un(deux, trois))
+0		(string)    rule(un(deux, trois))
+0		(pretty)    un(deux, trois) :-  
 
 1 		<un.>
 1		err=<nil>
-1		(string)    :-(un)
-1		(pretty)    :-(un)
+1		(string)    rule(un)
+1		(pretty)    un :-  
 
 2 		<un(deux).>
 2		err=<nil>
-2		(string)    :-(un(deux))
-2		(pretty)    :-(un(deux))
+2		(string)    rule(un(deux))
+2		(pretty)    un(deux) :-  
 
 3 		<un(2,3).>
 3		err=<nil>
-3		(string)    :-(un(2, 3))
-3		(pretty)    :-(un(2, 3))
+3		(string)    rule(un(2, 3))
+3		(pretty)    un(2, 3) :-  
 
 4 		<empty().>
 4		err=<nil>
-4		(string)    :-(empty())
-4		(pretty)    :-(empty())
+4		(string)    rule(empty())
+4		(pretty)    empty() :-  
 
 5 		<un(deux(),trois).>
 5		err=<nil>
-5		(string)    :-(un(deux(), trois))
-5		(pretty)    :-(un(deux(), trois))
+5		(string)    rule(un(deux(), trois))
+5		(pretty)    un(deux(), trois) :-  
 
 6 		<a(X):-un(X).>
 6		err=<nil>
-6		(string)    :-(a(X), un(X))
-6		(pretty)    :-(a(X), un(X))
+6		(string)    rule(a(X), un(X))
+6		(pretty)    a(X) :- un(X) 
 
 7 		<a(X):-un(X,Y).>
 7		err=<nil>
-7		(string)    :-(a(X), un(X, Y))
-7		(pretty)    :-(a(X), un(X, Y))
+7		(string)    rule(a(X), un(X, Y))
+7		(pretty)    a(X) :- un(X, Y) 
 
 8 		<a(X):-un(X,Y,Z);b(Y);c(X).>
 8		err=<nil>
-8		(string)    :-(a(X), or(un(X, Y, Z), or(b(Y), c(X))))
-8		(pretty)    :-(a(X), or(un(X, Y, Z), or(b(Y), c(X))))
+8		(string)    rule(a(X), or(un(X, Y, Z), or(b(Y), c(X))))
+8		(pretty)    a(X) :- or(un(X, Y, Z), or(b(Y), c(X))) 
 
-9 		<a(X):-.>
+9 		<a(X):-un(X,Y,Z),b(Y),c(X).>
 9		err=<nil>
-9		(string)    :-(a(X))
-9		(pretty)    :-(a(X))
+9		(string)    rule(a(X), and(un(X, Y, Z), and(b(Y), c(X))))
+9		(pretty)    a(X) :- and(un(X, Y, Z), and(b(Y), c(X))) 
 
-10 		<?- 3.>
-10		err=parse error : error in test # 10 <?- 3.>, line 1 : syntax error: unexpected FLOAT, expecting '[' or ATOM
+10 		<a(X):-un(X,Y,Z);b(Y),c(X).>
+10		err=<nil>
+10		(string)    rule(a(X), or(un(X, Y, Z), and(b(Y), c(X))))
+10		(pretty)    a(X) :- or(un(X, Y, Z), and(b(Y), c(X))) 
 
-11 		<?- test.>
+11 		<a(X):-un(X,Y,Z),b(Y);c(X).>
 11		err=<nil>
-11		(string)    ?-(test)
-11		(pretty)    ?-(test)
+11		(string)    rule(a(X), or(and(un(X, Y, Z), b(Y)), c(X)))
+11		(pretty)    a(X) :- or(and(un(X, Y, Z), b(Y)), c(X)) 
 
-12 		<?- un(deux,X).>
+12 		<a(X):-.>
 12		err=<nil>
-12		(string)    ?-(un(deux, X))
-12		(pretty)    ?-(un(deux, X))
+12		(string)    rule(a(X))
+12		(pretty)    a(X) :-  
 
-13 		<?- un(deux,X), trois(X).> // CHECK ??????????????!!
-13		err=parse error : error in test # 13 <?- un(deux,X), trois(X).>, line 1 : syntax error: unexpected ',', expecting '.'
+13 		<?- 3.>
+13		err=parse error : error in test # 13 <?- 3.>, line 1 : syntax error: unexpected FLOAT, expecting '[' or ATOM
 
-14 		<[].>
+14 		<?- test.>
 14		err=<nil>
-14		(string)    :-(dot())
-14		(pretty)    :-([])
+14		(string)    query(test)
+14		(pretty)    ?- test 
 
-15 		<[2].>
+15 		<?- un(deux,X).>
 15		err=<nil>
-15		(string)    :-(dot(2, dot()))
-15		(pretty)    :-([2])
+15		(string)    query(un(deux, X))
+15		(pretty)    ?- un(deux, X) 
 
-16 		<[2,3].>
+16 		<?- un(deux,X), trois(X).>
 16		err=<nil>
-16		(string)    :-(dot(2, dot(3, dot())))
-16		(pretty)    :-([2, 3])
+16		(string)    query(and(un(deux, X), trois(X)))
+16		(pretty)    ?- and(un(deux, X), trois(X)) 
 
-17 		<[2,3,4].>
+17 		<?- un(deux,X); trois(X).>
 17		err=<nil>
-17		(string)    :-(dot(2, dot(3, dot(4, dot()))))
-17		(pretty)    :-([2, 3, 4])
+17		(string)    query(or(un(deux, X), trois(X)))
+17		(pretty)    ?- or(un(deux, X), trois(X)) 
 
-18 		<[[2,3],4].>
+18 		<?- un(deux,X); trois(X),quatre(Y,_).>
 18		err=<nil>
-18		(string)    :-(dot(dot(2, dot(3, dot())), dot(4, dot())))
-18		(pretty)    :-([[2, 3], 4])
+18		(string)    query(or(un(deux, X), and(trois(X), quatre(Y, _))))
+18		(pretty)    ?- or(un(deux, X), and(trois(X), quatre(Y, _))) 
 
-19 		<[2,[3,4]].>
+19 		<?- un(deux,X), trois(X);quatre(Y,_).>
 19		err=<nil>
-19		(string)    :-(dot(2, dot(dot(3, dot(4, dot())), dot())))
-19		(pretty)    :-([2, [3, 4]])
+19		(string)    query(or(and(un(deux, X), trois(X)), quatre(Y, _)))
+19		(pretty)    ?- or(and(un(deux, X), trois(X)), quatre(Y, _)) 
 
-20 		<[2|3].>
+20 		<[].>
 20		err=<nil>
-20		(string)    :-(dot(2, 3))
-20		(pretty)    :-([2|3])
+20		(string)    rule(dot())
+20		(pretty)    [] :-  
 
-21 		<[4|].>
+21 		<[2].>
 21		err=<nil>
-21		(string)    :-(dot(4))
-21		(pretty)    :-([4|])
+21		(string)    rule(dot(2, dot()))
+21		(pretty)    [2] :-  
 
-22 		<[4|X].>
+22 		<[2,3].>
 22		err=<nil>
-22		(string)    :-(dot(4, X))
-22		(pretty)    :-([4|X])
+22		(string)    rule(dot(2, dot(3, dot())))
+22		(pretty)    [2, 3] :-  
 
-23 		<dot(1,dot(2,3)).>
+23 		<[2,3,4].>
 23		err=<nil>
-23		(string)    :-(dot(1, dot(2, 3)))
-23		(pretty)    :-([1|[2|3]])
+23		(string)    rule(dot(2, dot(3, dot(4, dot()))))
+23		(pretty)    [2, 3, 4] :-  
 
-24 		<dot(1,dot(dot(4,dot(5,dot())),3)).>
+24 		<[[2,3],4].>
 24		err=<nil>
-24		(string)    :-(dot(1, dot(dot(4, dot(5, dot())), 3)))
-24		(pretty)    :-([1|[[4, 5]|3]])
+24		(string)    rule(dot(dot(2, dot(3, dot())), dot(4, dot())))
+24		(pretty)    [[2, 3], 4] :-  
 
-25 		<un,deux.>
-25		err=parse error : error in test # 25 <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
+25 		<[2,[3,4]].>
+25		err=<nil>
+25		(string)    rule(dot(2, dot(dot(3, dot(4, dot())), dot())))
+25		(pretty)    [2, [3, 4]] :-  
 
-26 		<2(a).>
-26		err=parse error : error in test # 26 <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
+26 		<[2|3].>
+26		err=<nil>
+26		(string)    rule(dot(2, 3))
+26		(pretty)    [2|3] :-  
 
-27 		< [|2].>
-27		err=parse error : error in test # 27 < [|2].>, line 1 : syntax error: unexpected '|'
+27 		<[4|].>
+27		err=<nil>
+27		(string)    rule(dot(4))
+27		(pretty)    [4|] :-  
 
-28 		<[|]>
-28		err=parse error : error in test # 28 <[|]>, line 1 : syntax error: unexpected '|'
+28 		<[4|X].>
+28		err=<nil>
+28		(string)    rule(dot(4, X))
+28		(pretty)    [4|X] :-  
 
-29 		<a(b,,).>
-29		err=parse error : error in test # 29 <a(b,,).>, line 1 : syntax error: unexpected ','
+29 		<dot(1,dot(2,3)).>
+29		err=<nil>
+29		(string)    rule(dot(1, dot(2, 3)))
+29		(pretty)    [1|[2|3]] :-  
+
+30 		<dot(1,dot(dot(4,dot(5,dot())),3)).>
+30		err=<nil>
+30		(string)    rule(dot(1, dot(dot(4, dot(5, dot())), 3)))
+30		(pretty)    [1|[[4, 5]|3]] :-  
+
+31 		<un(_,_,X,2).>
+31		err=<nil>
+31		(string)    rule(un(_, _, X, 2))
+31		(pretty)    un(_, _, X, 2) :-  
+
+32 		<un(_,_,X,2,3).>
+32		err=<nil>
+32		(string)    rule(un(_, _, X, 2, 3))
+32		(pretty)    un(_, _, X, 2, 3) :-  
+
+33 		<un(_,_,X,2):-deux(X,_,5.).>
+33		err=<nil>
+33		(string)    rule(un(_, _, X, 2), deux(X, _, 5.000e+00))
+33		(pretty)    un(_, _, X, 2) :- deux(X, _, 5.000e+00) 
+
+34 		<?-un(_,_,X,2,3),deux(X,_,5.).>
+34		err=<nil>
+34		(string)    query(and(un(_, _, X, 2, 3), deux(X, _, 5.000e+00)))
+34		(pretty)    ?- and(un(_, _, X, 2, 3), deux(X, _, 5.000e+00)) 
+
+35 		<?- _.>
+35		err=parse error : error in test # 35 <?- _.>, line 1 : syntax error: unexpected '_', expecting '[' or ATOM
+
+36 		<_ .>
+36		err=parse error : error in test # 36 <_ .>, line 1 : syntax error: unexpected '_', expecting '[' or OPQUERY or ATOM
+
+37 		<un,deux.>
+37		err=parse error : error in test # 37 <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
+
+38 		<2(a).>
+38		err=parse error : error in test # 38 <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
+
+39 		< [|2].>
+39		err=parse error : error in test # 39 < [|2].>, line 1 : syntax error: unexpected '|'
+
+40 		<[|]>
+40		err=parse error : error in test # 40 <[|]>, line 1 : syntax error: unexpected '|'
+
+41 		<a(b,,).>
+41		err=parse error : error in test # 41 <a(b,,).>, line 1 : syntax error: unexpected ','
+
+42 		<:-.>
+42		err=parse error : error in test # 42 <:-.>, line 1 : syntax error: unexpected OPRULE, expecting '[' or OPQUERY or ATOM

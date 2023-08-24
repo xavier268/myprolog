@@ -126,6 +126,43 @@ func (c *CompoundTerm) Pretty() string {
 	switch c.Functor {
 	case "dot":
 		return prettyList(c)
+	case "query":
+		var sb strings.Builder
+		fmt.Fprintf(&sb, "?- ")
+		for i, child := range c.Children {
+			if child == nil {
+				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+			} else {
+				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
+			}
+			if i < len(c.Children)-1 {
+				fmt.Fprintf(&sb, ", ")
+			}
+		}
+		fmt.Fprint(&sb, " ")
+		return sb.String()
+	case "rule":
+		var sb strings.Builder
+		if len(c.Children) == 0 {
+			fmt.Println(START_RED, "WARNING : unexpected rule without head", END_RED)
+		}
+		for i, child := range c.Children {
+			if child == nil {
+				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+			} else {
+				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
+			}
+			if i == 0 {
+				fmt.Fprintf(&sb, " :- ")
+			} else {
+				if i < len(c.Children)-1 {
+					fmt.Fprintf(&sb, ", ")
+				}
+			}
+		}
+		fmt.Fprint(&sb, " ")
+		return sb.String()
+
 	default:
 		var sb strings.Builder
 		fmt.Fprintf(&sb, "%s(", c.Functor)

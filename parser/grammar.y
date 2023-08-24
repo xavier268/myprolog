@@ -56,27 +56,27 @@ phrases:
     | phrases phrase                    { $$ = append( $1 , $2 )}
 
 phrase: 
-    OPQUERY conjterm '.'                { 
+    OPQUERY disjterms '.'                { 
                                         $$ = &CompoundTerm{  
-                                                Functor : "?-", 
+                                                Functor : "query", 
                                                 Children: []Term{$2},
                                                 }                                                
                                         }
     | conjterm '.'                      {  // implicit OPRULE
                                         $$ = &CompoundTerm{
-                                                Functor : ":-", 
+                                                Functor : "rule", 
                                                 Children: []Term{ $1 } ,
                                                 };
                                         }
     | conjterm OPRULE '.'               { 
                                         $$ = &CompoundTerm{
-                                                Functor : ":-",    
+                                                Functor : "rule",    
                                                 Children: []Term{ $1} ,
                                                 };
                                         }
     | conjterm OPRULE disjterms '.'     { 
                                         $$ = &CompoundTerm{
-                                                Functor : ":-",    
+                                                Functor : "rule",    
                                                 Children: []Term{ $1, $3},
                                                 }
                                         }

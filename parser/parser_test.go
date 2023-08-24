@@ -24,6 +24,9 @@ func TestParser(t *testing.T) {
 		"a(X):-un(X).",
 		"a(X):-un(X,Y).",
 		"a(X):-un(X,Y,Z);b(Y);c(X).",
+		"a(X):-un(X,Y,Z),b(Y),c(X).",
+		"a(X):-un(X,Y,Z);b(Y),c(X).",
+		"a(X):-un(X,Y,Z),b(Y);c(X).",
 		"a(X):-.",
 
 		// queries
@@ -31,6 +34,9 @@ func TestParser(t *testing.T) {
 		"?- test.",
 		"?- un(deux,X).",
 		"?- un(deux,X), trois(X).",
+		"?- un(deux,X); trois(X).",
+		"?- un(deux,X); trois(X),quatre(Y,_).",
+		"?- un(deux,X), trois(X);quatre(Y,_).",
 
 		// list
 		"[].",
@@ -51,12 +57,21 @@ func TestParser(t *testing.T) {
 		"dot(1,dot(2,3)).",                   // not a list
 		"dot(1,dot(dot(4,dot(5,dot())),3)).", // not a list, but contains a list
 
+		// underscore
+		"un(_,_,X,2).",
+		"un(_,_,X,2,3).",
+		"un(_,_,X,2):-deux(X,_,5.).",
+		"?-un(_,_,X,2,3),deux(X,_,5.).",
+		"?- _.",
+		"_ .",
+
 		// invalid
 		"un,deux.",
 		"2(a).",
 		" [|2].",
 		"[|]",
 		"a(b,,).",
+		":-.",
 	}
 
 	res := run(tdata)
