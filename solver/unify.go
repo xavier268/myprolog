@@ -27,9 +27,10 @@ func Unify(st *State, head Term, goal Term) (newstate *State, ok bool) {
 			return st, false
 		case Variable: // goal is a variable
 			c := VarIsNumber{
-				V:   goal,
-				Min: head,
-				Max: head,
+				V:           goal,
+				Min:         head,
+				Max:         head,
+				IntegerOnly: false,
 			}
 			err := st.AddConstraint(c)
 			if err != nil {

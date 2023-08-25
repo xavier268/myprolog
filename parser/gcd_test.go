@@ -17,6 +17,6 @@ func TestGcd(t *testing.T) {
 		p := Gcd(a, b)
 		fmt.Fprintf(sb, "%d\t%d\t\t--> \t%d\n", a, b, p)
 	}
-	verify(t, sb.String(), "gcd_test.want")
+	verifyTest(t, sb.String(), "gcd_test.want")
 
 }

@@ -1,6 +1,10 @@
 package solver
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/xavier268/myprolog/parser"
+)
 
 // Known compound predicates with their imperative arity.
 // A compund predicate MUST be a CompoundTerm.
@@ -8,17 +12,21 @@ import "fmt"
 // Assumes only canonical form.
 // Constant values are eliminated (numbers, strings ...) as well as underscore.
 var CompPredicateMap = map[string]int{
-	"rule":  -1, // rule definition
-	"query": -1, // query definition
-	"dot":   -1, // actually, between 0 and 2 - special check enforced in code
-	"and":   2,  // both children must erase
-	"or":    2,  // at least one child must erase
+	"rule":    -1, // rule definition
+	"query":   -1, // query definition
+	"dot":     -1, // actually, between 0 and 2 - special check enforced in code
+	"and":     2,  // both children must erase
+	"or":      2,  // at least one child must erase
+	"number":  1,  // children must be a number or unify to a number
+	"integer": 1,  // children must be an integer or unify to an integer
 }
 
 // Known atomic predicates.
 var AtomPredicate = map[string]bool{
 	"!": true, // the 'cut' predicate will prevent backtracking from now on.
 }
+
+var ErrPred = fmt.Errorf("predicate cannot apply")
 
 // Execute predicates, if possible, using the functor of the first goal.
 // Includes removing underscore. Constant values (numbers, strings ...) are kept.
@@ -88,7 +96,68 @@ func DoPredicate(st *State) (*State, error) {
 				nst.NextRule = 0
 				return nst, nil
 
-			default: // should be unreacheable ...
+			case "number": // force a number
+				switch child := (g.Children[0]).(type) {
+				case Number, Underscore: // all fine already !
+					st.Goals = st.Goals[1:] // eat the goal
+					st.NextRule = 0         // when goal change, reset the next rule pointer ...
+					return st, nil
+				case Variable: // create a constraint on the variable
+					c := VarIsNumber{
+						V:           child.Clone().(Variable),
+						Min:         parser.MinNumber,
+						Max:         parser.MaxNumber,
+						IntegerOnly: false,
+					}
+					err := st.AddConstraint(c)
+					if err != nil {
+						return st, err
+					}
+					st.Goals = st.Goals[1:] // eat the goal
+					st.NextRule = 0         // when goal change, reset the next rule pointer ...
+					return st, nil
+				case String, CompoundTerm, Atom:
+					return st, ErrPred
+				default:
+					panic("code should be unreacheable")
+				}
+
+			case "integer": // integer predicate force integer values only.
+				switch child := (g.Children[0]).(type) {
+				case Underscore: // all fine already !
+					st.Goals = st.Goals[1:] // eat the goal
+					st.NextRule = 0         // when goal change, reset the next rule pointer ...
+					return st, nil
+				case Number: // ok, a number -but an Integer ?
+					if child.IsInteger() {
+						st.Goals = st.Goals[1:] // eat the goal
+						st.NextRule = 0         // when goal change, reset the next rule pointer ...
+						return st, nil
+						// if not, error
+					}
+					return st, ErrPred
+
+				case Variable: // create a constraint on the variable
+					c := VarIsNumber{
+						V:           child.Clone().(Variable),
+						Min:         parser.MinNumber,
+						Max:         parser.MaxNumber,
+						IntegerOnly: true,
+					}
+					err := st.AddConstraint(c)
+					if err != nil {
+						return st, err
+					}
+					st.Goals = st.Goals[1:] // eat the goal
+					st.NextRule = 0         // when goal change, reset the next rule pointer ...
+					return st, nil
+				case String, CompoundTerm, Atom:
+					return st, ErrPred
+				default:
+					panic("code should be unreacheable")
+				}
+
+			default:
 				panic("internal error for predicate : " + g.String())
 			}
 

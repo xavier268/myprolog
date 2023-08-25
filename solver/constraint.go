@@ -18,12 +18,13 @@ var _ Constraint = VarIsString{}
 var _ Constraint = VarIsNumber{}
 var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
-var _ Constraint = VarIsNumber{}
+var _ Constraint = VarIsInteger{}
 
 type VarIsNumber struct {
-	V   Variable
-	Min Number // minimum acceptable Number
-	Max Number // maximum acceptable Number
+	V           Variable
+	Min         Number // minimum acceptable Number
+	Max         Number // maximum acceptable Number
+	IntegerOnly bool   // accept only integers
 }
 
 // Check implements Constraint.

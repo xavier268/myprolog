@@ -2,6 +2,7 @@ package parser
 
 import (
 	"fmt"
+	"math"
 	"strings"
 )
 
@@ -23,6 +24,23 @@ var _ Term = String{}
 var _ Term = Variable{}
 var _ Term = Underscore{}
 var _ Term = CompoundTerm{}
+
+var (
+	// Min Number value
+	MinNumber = Number{
+		Num: int(math.MinInt64),
+		Den: 1,
+	}
+	// Max Number value
+	MaxNumber = Number{
+		Num: int(math.MaxInt64),
+		Den: 1,
+	}
+	ZeroNumber = Number{
+		Num: 0,
+		Den: 1,
+	}
+)
 
 type Number struct { // numbers are representented as rational  Num/Den
 	Num int
@@ -51,10 +69,27 @@ func (n Number) Normalize() Number {
 			Den: 0}
 	}
 	p := Gcd(n.Num, n.Den)
-	return Number{
-		Num: n.Num / p,
-		Den: n.Den / p,
+	if n.Den > 0 {
+		return Number{
+			Num: n.Num / p,
+			Den: n.Den / p,
+		}
 	}
+	if n.Den < 0 {
+		return Number{
+			Num: -n.Num / p,
+			Den: -n.Den / p,
+		}
+	}
+	panic("code should be unreacheable")
+}
+
+func (n Number) IsInteger() bool {
+	return n.Normalize().Den == 1
+}
+
+func (n Number) IsZero() bool {
+	return n.Num == 0 && n.Den != 0
 }
 
 // Clone implements Term.
