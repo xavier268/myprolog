@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	FLOATFORMAT = "%f"
+	FLOATFORMAT = "%.2f"
 )
 
 type Term interface { // Term is the most general form of a term
@@ -27,6 +27,34 @@ var _ Term = CompoundTerm{}
 type Number struct { // numbers are representented as rational  Num/Den
 	Num int
 	Den int
+}
+
+// Check if 2 numbers are equals.
+// Prior simplification is not required, ie 2/3 == 4/6.
+func (n Number) Eq(t Term) bool {
+	if nt, ok := t.(Number); ok {
+		return n.Num*nt.Den == n.Den*nt.Num
+	}
+	return false
+}
+
+// Normalize the internal representation of a number.
+func (n Number) Normalize() Number {
+	if n.Num == 0 {
+		return Number{
+			Num: 0,
+			Den: 1}
+	}
+	if n.Den == 0 {
+		return Number{
+			Num: 1,
+			Den: 0}
+	}
+	p := Gcd(n.Num, n.Den)
+	return Number{
+		Num: n.Num / p,
+		Den: n.Den / p,
+	}
 }
 
 // Clone implements Term.

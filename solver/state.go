@@ -26,14 +26,8 @@ func NewState(parent *State) *State {
 	st.Rules = parent.Rules // default is to point to the same ruleset
 	st.Parent = parent
 	st.Uid = parent.Uid
-	st.Constraints = make([]Constraint, 0, len(parent.Constraints))
-	st.Goals = make([]Term, 0, len(parent.Goals))
-	for _, g := range parent.Goals {
-		st.Goals = append(st.Goals, g.Clone())
-	}
-	for _, c := range parent.Constraints {
-		st.Constraints = append(st.Constraints, c.Clone())
-	}
+	st.Constraints = append(st.Constraints, parent.Constraints...)
+	st.Goals = append(st.Goals, parent.Goals...)
 	return st
 }
 
@@ -42,12 +36,12 @@ func (s *State) AddConstraint(c Constraint) (err error) {
 	if c == nil {
 		return nil // ignore
 	}
-	c, error = c.Check() // check and clean constraint
+	c, err = c.Check() // check and clean constraint
 	if err != nil {
 		return err
 	}
 	if c == nil {
-		return nil // ignopre
+		return nil // ignore constraint
 	}
 
 	s.Constraints = append(s.Constraints, c)

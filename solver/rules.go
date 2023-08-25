@@ -142,22 +142,11 @@ func SameStructure(t1, t2 Term) bool {
 	// handle other non nil, non variable, non underscore
 	switch t1 := t1.(type) {
 
-	case Integer:
+	case Number:
 		switch t2 := t2.(type) {
-		case Integer:
-			return t1.Value == t2.Value
-		case Float:
-			return float64(t1.Value) == t2.Value
-		default:
-			return false
-		}
+		case Number:
+			return t1.Eq(t2)
 
-	case Float:
-		switch t2 := t2.(type) {
-		case Float:
-			return t1.Value == t2.Value
-		case Integer:
-			return t1.Value == float64(t2.Value)
 		default:
 			return false
 		}
@@ -166,14 +155,6 @@ func SameStructure(t1, t2 Term) bool {
 		switch t2 := t2.(type) {
 		case String:
 			return t1.Value == t2.Value
-		default:
-			return false
-		}
-
-	case Char:
-		switch t2 := t2.(type) {
-		case Char:
-			return t1.Char == t2.Char
 		default:
 			return false
 		}
@@ -210,6 +191,9 @@ func SameStructure(t1, t2 Term) bool {
 			if (t1.Functor != t2.Functor) || len(t1.Children) != len(t2.Children) {
 				return false
 			}
+			// If there are nested predicates, they should match to be considered unifiable.
+			// The thinking here is that predicates only produce an effct as a top level goal,
+			// otherwise, they behave as a usual Atom/CompoundTerm.
 			for i, c := range t1.Children {
 				if !SameStructure(c, t2.Children[i]) {
 					return false

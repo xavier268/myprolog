@@ -12,9 +12,7 @@ type Variable = parser.Variable
 type Underscore = parser.Underscore
 type Atom = parser.Atom
 type String = parser.String
-type Float = parser.Float
-type Integer = parser.Integer
-type Char = parser.Char
+type Number = parser.Number
 
 // Solve for a given state.
 // Backtracking is managed only in this function.

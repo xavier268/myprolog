@@ -87,10 +87,14 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		}
 		return STRING
 
-	case scanner.Float: // float are only accepeted in the %f format. They are converted to rationales.
+	case scanner.Float: // float are only accepted in the %f format. They are converted to rationales.
 		var num, den int
 		var z float64
-		txt := lx.s.TokenText()
+		txt := strings.ToUpper(lx.s.TokenText())
+		if strings.Contains(txt, "E") {
+			lx.Error(fmt.Sprintf("Exponents are not allowed in numbers : %v", txt))
+			return LEXERROR
+		}
 		_, err := fmt.Sscanf(txt, "%f", &z)
 		if err != nil {
 			lx.Error(fmt.Sprintf("Expected an decimal number like %f but got %v instead", 10.455, txt))
@@ -108,13 +112,23 @@ func (lx *myLex) Lex(lval *mySymType) int {
 
 	case scanner.Int: // Rational CAN be represented as 4/3. We need to check for this.
 		var num, den int
-		fmt.Sscanf(lx.s.TokenText(), "%d", &num)
+		txt := strings.ToUpper(lx.s.TokenText())
+		if strings.Contains(txt, "E") {
+			lx.Error(fmt.Sprintf("Exponents are not allowed in integers : %v", txt))
+			return LEXERROR
+		}
+		fmt.Sscanf(txt, "%d", &num)
 		if lx.s.Peek() == '/' {
 			_ = lx.s.Scan()                 // eat /
 			peek := lx.s.Peek()             // look for the denominator
 			if peek >= '0' && peek <= '9' { // peek gets the next unicode, not the next token !
 				lx.s.Scan() // get the denominator
-				fmt.Sscanf(lx.s.TokenText(), "%d", &den)
+				txt = strings.ToUpper(lx.s.TokenText())
+				if strings.Contains(txt, "E") {
+					lx.Error(fmt.Sprintf("Exponents are not allowed in integers : %v", txt))
+					return LEXERROR
+				}
+				fmt.Sscanf(txt, "%d", &den)
 				lval.value = Number{
 					Num: num,
 					Den: den,
@@ -160,7 +174,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 
 	default:
 		lx.Error(fmt.Sprintf("Unknown token type %v :  %v", tk, lx.s.TokenText()))
-		return eof
+		return LEXERROR
 	}
 
 }

@@ -16,8 +16,10 @@ func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 					if err != nil {
 						return constraints, err // will trigger backtracking ...
 					}
+					if ch { // update if requested to do so. Could be nil.
+						constraints[j] = dd
+					}
 					changed = changed || ch
-					constraints[j] = dd
 				}
 			}
 		}

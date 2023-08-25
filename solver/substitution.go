@@ -5,7 +5,7 @@ func FindVar(v Variable, t Term) (found bool) {
 	switch t := t.(type) {
 	case Variable:
 		return t.Name == v.Name && t.Nsp == v.Nsp
-	case Float, Integer, String, Char, Atom, Underscore:
+	case Number, String, Atom, Underscore:
 		return false
 	case CompoundTerm:
 		for _, c := range t.Children {
@@ -21,36 +21,35 @@ func FindVar(v Variable, t Term) (found bool) {
 
 // Replace Variable v in Term with w.
 // If replacement occurs, Term is cloned.
-func ReplaceVar(v Variable, t Term, w Variable) (tt Term, found bool) {
+func ReplaceVar(oldVar Variable, t Term, newVar Variable) (tt Term, found bool) {
 
-	found = FindVar(v, t)
-
+	found = FindVar(oldVar, t)
 	if !found {
 		return t, false
 	}
 
 	tt = t.Clone()
-	replaceVarInPlace(v, tt, w)
+	replaceVarInPlace(oldVar, tt, newVar)
 	return tt, true
 }
 
 // replace in place. No cloning.
-func replaceVarInPlace(v Variable, t Term, w Variable) {
+func replaceVarInPlace(oldVar Variable, t Term, newVar Variable) {
 
 	switch t := t.(type) {
 	case Variable:
-		if t.Name == v.Name && t.Nsp == v.Nsp {
-			t.Name = w.Name
-			t.Nsp = w.Nsp
+		if t.Name == oldVar.Name && t.Nsp == oldVar.Nsp {
+			t.Name = newVar.Name
+			t.Nsp = newVar.Nsp
 			return
 		}
 		return
 
-	case Float, Integer, String, Char, Atom, Underscore:
+	case Number, String, Atom, Underscore:
 		return
 	case CompoundTerm:
 		for _, c := range t.Children {
-			replaceVarInPlace(v, c, w)
+			replaceVarInPlace(oldVar, c, newVar)
 		}
 		return
 	default:

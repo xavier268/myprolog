@@ -2,13 +2,37 @@
 
 Lexer test for :
 (quoted)-------
+"12e3"
+(unquoted)--------
+12e3
+--------
+token type: 57352, ( '\ue008' )
+	lvalue is nil
+
+Lexer errors 0	: error in string, line 1 : Exponents are not allowed in numbers : 12E3
+
+
+Lexer test for :
+(quoted)-------
+"1.2e3"
+(unquoted)--------
+1.2e3
+--------
+token type: 57352, ( '\ue008' )
+	lvalue is nil
+
+Lexer errors 0	: error in string, line 1 : Exponents are not allowed in numbers : 1.2E3
+
+
+Lexer test for :
+(quoted)-------
 "13/4"
 (unquoted)--------
 13/4
 --------
 token type: 57350, ( '\ue006' )
 	string representation: 13/4
-	pretty representation: 3.250000
+	pretty representation: 3.25
 
 
 Lexer test for :
@@ -18,21 +42,40 @@ Lexer test for :
 -12
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00
 
 
 Lexer test for :
 (quoted)-------
-"12e3"
+"-3/4"
 (unquoted)--------
-12e3
+-3/4
 --------
+token type: 45, ( '-' )
+	lvalue is nil
 token type: 57350, ( '\ue006' )
-	string representation: 12/1
-	pretty representation: 12.000000
+	string representation: 3/4
+	pretty representation: 0.75
+
+
+Lexer test for :
+(quoted)-------
+"3/-4"
+(unquoted)--------
+3/-4
+--------
+token type: 57352, ( '\ue008' )
+	lvalue is nil
+token type: 45, ( '-' )
+	lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 4/1
+	pretty representation: 4.00
+
+Lexer errors 0	: error in string, line 1 : Expected an number in the form of a rational, like 2/3 but got / instead
 
 
 Lexer test for :
@@ -55,7 +98,7 @@ token type: 57348, ( '\ue004' )
 	string representation: world
 	pretty representation: world
 token type: 124, ( '|' )
-lvalue is nil
+	lvalue is nil
 token type: 57351, ( '\ue007' )
 	string representation: X23
 	pretty representation: X23
@@ -63,28 +106,27 @@ token type: 95, ( '_' )
 	string representation: _
 	pretty representation: _
 token type: 44, ( ',' )
-lvalue is nil
+	lvalue is nil
 token type: 46, ( '.' )
-lvalue is nil
+	lvalue is nil
 token type: 57346, ( '\ue002' )
-lvalue is nil
+	lvalue is nil
 token type: 57347, ( '\ue003' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00
 token type: 57350, ( '\ue006' )
 	string representation: 0/1
-	pretty representation: 0.000000
+	pretty representation: 0.00
 token type: 57350, ( '\ue006' )
 	string representation: 0/1
-	pretty representation: 0.000000
-token type: 57350, ( '\ue006' )
-	string representation: 1001/1
-	pretty representation: 1001.000000
+	pretty representation: 0.00
+token type: 57352, ( '\ue008' )
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 314/100
-	pretty representation: 3.140000
+	pretty representation: 3.14
 token type: 57349, ( '\ue005' )
 	string representation: "a normal string"
 	pretty representation: "a normal string"
@@ -93,7 +135,9 @@ token type: 57349, ( '\ue005' )
 	pretty representation: "&"
 token type: 57350, ( '\ue006' )
 	string representation: 55555/100
-	pretty representation: 555.550000
+	pretty representation: 555.55
+
+Lexer errors 0	: error in string, line 5 : Exponents are not allowed in numbers : 1001E-3
 
 
 Lexer test for :
@@ -118,39 +162,39 @@ token type: 57348, ( '\ue004' )
 	string representation: a
 	pretty representation: a
 token type: 40, ( '(' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: b
 	pretty representation: b
 token type: 44, ( ',' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: c
 	pretty representation: c
 token type: 40, ( '(' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: d
 	pretty representation: d
 token type: 44, ( ',' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: e
 	pretty representation: e
 token type: 44, ( ',' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: f
 	pretty representation: f
 token type: 44, ( ',' )
-lvalue is nil
+	lvalue is nil
 token type: 57348, ( '\ue004' )
 	string representation: g
 	pretty representation: g
 token type: 41, ( ')' )
-lvalue is nil
+	lvalue is nil
 token type: 41, ( ')' )
-lvalue is nil
+	lvalue is nil
 
 
 Lexer test for :
@@ -161,7 +205,7 @@ Lexer test for :
 --------
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00
 
 
 Lexer test for :
@@ -172,7 +216,7 @@ Lexer test for :
 --------
 token type: 57350, ( '\ue006' )
 	string representation: 123/10
-	pretty representation: 12.300000
+	pretty representation: 12.30
 
 
 Lexer test for :
@@ -183,7 +227,7 @@ Lexer test for :
 --------
 token type: 57350, ( '\ue006' )
 	string representation: 12/4
-	pretty representation: 3.000000
+	pretty representation: 3.00
 
 
 Lexer test for :
@@ -192,9 +236,10 @@ Lexer test for :
 (unquoted)--------
  12e4
 --------
-token type: 57350, ( '\ue006' )
-	string representation: 12/1
-	pretty representation: 12.000000
+token type: 57352, ( '\ue008' )
+	lvalue is nil
+
+Lexer errors 0	: error in string, line 1 : Exponents are not allowed in numbers : 12E4
 
 
 Lexer test for :
@@ -206,7 +251,7 @@ Lexer test for :
 --------
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00
 
 
 Lexer test for :
@@ -216,10 +261,10 @@ Lexer test for :
  -12
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00
 
 
 Lexer test for :
@@ -229,10 +274,10 @@ Lexer test for :
  -12.3
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 123/10
-	pretty representation: 12.300000
+	pretty representation: 12.30
 
 
 Lexer test for :
@@ -242,10 +287,10 @@ Lexer test for :
  -12.2 
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 122/10
-	pretty representation: 12.200000
+	pretty representation: 12.20
 
 
 Lexer test for :
@@ -255,10 +300,10 @@ Lexer test for :
 -12/4
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 12/4
-	pretty representation: 3.000000
+	pretty representation: 3.00
 
 
 Lexer test for :
@@ -268,10 +313,11 @@ Lexer test for :
  -12e4
 --------
 token type: 45, ( '-' )
-lvalue is nil
-token type: 57350, ( '\ue006' )
-	string representation: 12/1
-	pretty representation: 12.000000
+	lvalue is nil
+token type: 57352, ( '\ue008' )
+	lvalue is nil
+
+Lexer errors 0	: error in string, line 1 : Exponents are not allowed in numbers : 12E4
 
 
 Lexer test for :
@@ -282,7 +328,7 @@ Lexer test for :
 
 --------
 token type: 45, ( '-' )
-lvalue is nil
+	lvalue is nil
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
-	pretty representation: 12.000000
+	pretty representation: 12.00

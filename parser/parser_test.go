@@ -28,7 +28,8 @@ func TestParser(t *testing.T) {
 		"a(X):-.",
 
 		// queries
-		"?- 3.", // invalid syntax
+		"?- 3 .", // invalid syntax
+		"?- 3.",  // invalid syntax
 		"?- test.",
 		"?- un(deux,X).",
 		"?- un(deux,X), trois(X).",
@@ -70,6 +71,15 @@ func TestParser(t *testing.T) {
 		"[|]",
 		"a(b,,).",
 		":-.",
+
+		// numbers
+		"3.",
+		"3.0.",
+		"3/4.",
+		"3/4000.",
+		"3/4.0.",
+		"-3/4.",
+		"-3/-4.",
 	}
 
 	res := run(tdata)

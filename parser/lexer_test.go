@@ -11,9 +11,12 @@ func TestLexer(t *testing.T) {
 	sb := new(strings.Builder)
 
 	dataset := []string{
+		"12e3",
+		"1.2e3",
 		"13/4",
 		"-12",
-		"12e3",
+		"-3/4",
+		"3/-4",
 		`hello world |
 	X23 _ , . 
 	:- ?- 
@@ -39,7 +42,7 @@ func TestLexer(t *testing.T) {
 			}
 			fmt.Fprintf(sb, "token type: %d, ( %q )\n", tk, tk)
 			if vtok.value == nil {
-				fmt.Fprintf(sb, "lvalue is nil\n")
+				fmt.Fprintf(sb, "\tlvalue is nil\n")
 			} else {
 				fmt.Fprintf(sb, "\tstring representation: %s\n", vtok.value.String())
 				fmt.Fprintf(sb, "\tpretty representation: %s\n", vtok.value.Pretty())

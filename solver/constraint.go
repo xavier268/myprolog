@@ -15,11 +15,31 @@ type Constraint interface {
 
 var _ Constraint = VarIsCompoundTerm{}
 var _ Constraint = VarIsString{}
-var _ Constraint = VarIsChar{}
-var _ Constraint = VarIsInteger{}
-var _ Constraint = VarIsFloat{}
+var _ Constraint = VarIsNumber{}
 var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
+var _ Constraint = VarIsNumber{}
+
+type VarIsNumber struct {
+	V   Variable
+	Min Number // minimum acceptable Number
+	Max Number // maximum acceptable Number
+}
+
+// Check implements Constraint.
+func (VarIsNumber) Check() (Constraint, error) {
+	panic("unimplemented")
+}
+
+// Clone implements Constraint.
+func (VarIsNumber) Clone() Constraint {
+	panic("unimplemented")
+}
+
+// Simplify implements Constraint.
+func (VarIsNumber) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+	panic("unimplemented")
+}
 
 type VarIsAtom struct {
 	V Variable
@@ -153,32 +173,6 @@ func (c VarIsString) Clone() Constraint {
 			Nsp:  c.V.Nsp,
 		},
 		S: c.S,
-	}
-}
-
-type VarIsChar struct {
-	V Variable
-	C rune
-}
-
-// Check implements Constraint.
-func (VarIsChar) Check() (Constraint, error) {
-	panic("unimplemented")
-}
-
-// Simplify implements Constraint.
-func (VarIsChar) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
-	panic("unimplemented")
-}
-
-// Clone implements Constraint.
-func (c VarIsChar) Clone() Constraint {
-	return VarIsChar{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		C: c.C,
 	}
 }
 

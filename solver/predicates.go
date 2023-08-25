@@ -36,7 +36,7 @@ func DoPredicate(st *State) (*State, error) {
 			continue
 		case Variable: // Variables are not predicates. Leave as is.
 			return st, nil
-		case Float, *Integer, *String, *Char: // keep number and constants
+		case Number, String: // keep number and constants
 			return st, nil
 		case Atom:
 			if !AtomPredicate[g.Value] { // not a predicate, leave as is.
