@@ -36,12 +36,12 @@ var lastParseResult []Term
 
 %type <list> top phrases params
 %type <value> phrase disjterms conjterms conjterm head
-%type <value> compterm list param
+%type <value> compterm list param number
 
 
 %token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_'
 %token <value> OPRULE OPQUERY // :-  and ?-
-%token <value> ATOM STRING NUMBER VARIABLE
+%token <value> ATOM STRING NUMBER VARIABLE LEXERROR
 
 %% 
 
@@ -129,7 +129,7 @@ params:
 
 param:
     ATOM                                { $$ = $1 }
-    | NUMBER                            { $$ = $1 }
+    | number                            { $$ = $1 }
     | STRING                            { $$ = $1 }
     | VARIABLE                          { $$ = $1 }
     | '_'                               { $$ = $1 }
@@ -157,6 +157,14 @@ list:
                                             } 
                                         }
 
+                                        
+number :        NUMBER                  { $$ = $1 }
+    |   '-' NUMBER                      { 
+                                            $$ = Number {
+                                                Num : -$2.(Number).Num, 
+                                                Den: $2.(Number).Den,
+                                                }
+                                        }
 
 %%
 

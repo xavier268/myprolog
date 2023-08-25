@@ -3,6 +3,8 @@ package parser
 import (
 	"fmt"
 	"io"
+	"math"
+	"strings"
 	"text/scanner"
 )
 
@@ -16,12 +18,12 @@ const eof = 0
 // the methods Lex(*<prefix>SymType) int and Error(string).
 type myLex struct {
 	s       scanner.Scanner // golang scanner
-	LastErr error           // last error emitted
+	LastErr []error         // errors emitted
 }
 
 // Required to satisfy interface.
 func (lx *myLex) Error(s string) {
-	lx.LastErr = fmt.Errorf("error in %s, line %d : %v", lx.s.Filename, lx.s.Line, s)
+	lx.LastErr = append(lx.LastErr, fmt.Errorf("error in %s, line %d : %v", lx.s.Filename, lx.s.Line, s))
 	fmt.Println(lx.LastErr)
 }
 
@@ -85,23 +87,52 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		}
 		return STRING
 
-	case scanner.Float:
+	case scanner.Float: // float are only accepeted in the %f format. They are converted to rationales.
+		var num, den int
 		var z float64
-		fmt.Sscanf(lx.s.TokenText(), "%v", &z)
-		lval.value = Float{
-			Value: z,
+		txt := lx.s.TokenText()
+		_, err := fmt.Sscanf(txt, "%f", &z)
+		if err != nil {
+			lx.Error(fmt.Sprintf("Expected an decimal number like %f but got %v instead", 10.455, txt))
+			return LEXERROR
+		}
+		before, after, _ := strings.Cut(txt, ".")
+		fmt.Sscanf(before+after, "%d", &num)
+		pow := len(after) // always > 0
+		den = int(math.Pow10(pow) + 0.001)
+		lval.value = Number{
+			Num: num,
+			Den: den,
 		}
 		return NUMBER
 
-	case scanner.Int: // Rational CAN be represented as 4/3 We need to check for this.
-		var z int
-		fmt.Sscanf(lx.s.TokenText(), "%v", &z)
-		lval.value = Integer{
-			Value: z,
+	case scanner.Int: // Rational CAN be represented as 4/3. We need to check for this.
+		var num, den int
+		fmt.Sscanf(lx.s.TokenText(), "%d", &num)
+		if lx.s.Peek() == '/' {
+			_ = lx.s.Scan()                 // eat /
+			peek := lx.s.Peek()             // look for the denominator
+			if peek >= '0' && peek <= '9' { // peek gets the next unicode, not the next token !
+				lx.s.Scan() // get the denominator
+				fmt.Sscanf(lx.s.TokenText(), "%d", &den)
+				lval.value = Number{
+					Num: num,
+					Den: den,
+				}
+				return NUMBER
+			} else {
+				lx.Error(fmt.Sprintf("Expected an number in the form of a rational, like 2/3 but got %v instead", lx.s.TokenText()))
+				return LEXERROR
+			}
+		}
+		// no / available, it is a normal integer
+		lval.value = Number{
+			Num: num,
+			Den: 1,
 		}
 		return NUMBER
 
-	case '(', ')', '[', ']', ',', ';', '.', '|': // single char tokens recognized by parser, cannot begin a multichar operaotor.
+	case '(', ')', '[', ']', ',', ';', '.', '|', '-': // single char tokens recognized by parser, cannot begin a multichar operator.
 		// yylval is not set for these.
 		return int(tk)
 

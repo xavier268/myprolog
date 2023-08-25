@@ -1,6 +1,43 @@
+
+
 Lexer test for :
 (quoted)-------
-"hello world |\n\tX23 _ , . \n\t:- ?- \n\t12 0x12 0b111 \n\t1001e-3 3.14\n\t\"a normal string\" '&'  /* a comment */\n\t// another comment\n\t555.55   `a raw \"string`   a(b,c(d,e,f,g))"
+"13/4"
+(unquoted)--------
+13/4
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 13/4
+	pretty representation: 3.250000
+
+
+Lexer test for :
+(quoted)-------
+"-12"
+(unquoted)--------
+-12
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+"12e3"
+(unquoted)--------
+12e3
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+"hello world |\n\tX23 _ , . \n\t:- ?- \n\t12 0x12 0b111 \n\t1001e-3 3.14\n\t\"a normal string\" '&'  /* a comment */\n\t// another comment\n\t555.55  "
 (unquoted)--------
 hello world |
 	X23 _ , . 
@@ -9,38 +46,243 @@ hello world |
 	1001e-3 3.14
 	"a normal string" '&'  /* a comment */
 	// another comment
-	555.55   `a raw "string`   a(b,c(d,e,f,g))
+	555.55  
 --------
-token type: 57348, ( '\ue004' ), string representation: hello
-token type: 57348, ( '\ue004' ), string representation: world
-token type: 124, ( '|' ), lvalue is nil
-token type: 57351, ( '\ue007' ), string representation: X23
-token type: 95, ( '_' ), string representation: _
-token type: 44, ( ',' ), lvalue is nil
-token type: 46, ( '.' ), lvalue is nil
-token type: 57346, ( '\ue002' ), lvalue is nil
-token type: 57347, ( '\ue003' ), lvalue is nil
-token type: 57350, ( '\ue006' ), string representation: 12
-token type: 57350, ( '\ue006' ), string representation: 18
-token type: 57350, ( '\ue006' ), string representation: 7
-token type: 57350, ( '\ue006' ), string representation: 1.001e+00
-token type: 57350, ( '\ue006' ), string representation: 3.140e+00
-token type: 57349, ( '\ue005' ), string representation: "a normal string"
-token type: 57349, ( '\ue005' ), string representation: "&"
-token type: 57350, ( '\ue006' ), string representation: 5.555e+02
-token type: 57349, ( '\ue005' ), string representation: "a raw \"string"
-token type: 57348, ( '\ue004' ), string representation: a
-token type: 40, ( '(' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: b
-token type: 44, ( ',' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: c
-token type: 40, ( '(' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: d
-token type: 44, ( ',' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: e
-token type: 44, ( ',' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: f
-token type: 44, ( ',' ), lvalue is nil
-token type: 57348, ( '\ue004' ), string representation: g
-token type: 41, ( ')' ), lvalue is nil
-token type: 41, ( ')' ), lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: hello
+	pretty representation: hello
+token type: 57348, ( '\ue004' )
+	string representation: world
+	pretty representation: world
+token type: 124, ( '|' )
+lvalue is nil
+token type: 57351, ( '\ue007' )
+	string representation: X23
+	pretty representation: X23
+token type: 95, ( '_' )
+	string representation: _
+	pretty representation: _
+token type: 44, ( ',' )
+lvalue is nil
+token type: 46, ( '.' )
+lvalue is nil
+token type: 57346, ( '\ue002' )
+lvalue is nil
+token type: 57347, ( '\ue003' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+token type: 57350, ( '\ue006' )
+	string representation: 0/1
+	pretty representation: 0.000000
+token type: 57350, ( '\ue006' )
+	string representation: 0/1
+	pretty representation: 0.000000
+token type: 57350, ( '\ue006' )
+	string representation: 1001/1
+	pretty representation: 1001.000000
+token type: 57350, ( '\ue006' )
+	string representation: 314/100
+	pretty representation: 3.140000
+token type: 57349, ( '\ue005' )
+	string representation: "a normal string"
+	pretty representation: "a normal string"
+token type: 57349, ( '\ue005' )
+	string representation: "&"
+	pretty representation: "&"
+token type: 57350, ( '\ue006' )
+	string representation: 55555/100
+	pretty representation: 555.550000
+
+
+Lexer test for :
+(quoted)-------
+" `a raw \"string`  "
+(unquoted)--------
+ `a raw "string`  
+--------
+token type: 57349, ( '\ue005' )
+	string representation: "a raw \"string"
+	pretty representation: "a raw \"string"
+
+
+Lexer test for :
+(quoted)-------
+" a(b,c(d,e,f,g))\n"
+(unquoted)--------
+ a(b,c(d,e,f,g))
+
+--------
+token type: 57348, ( '\ue004' )
+	string representation: a
+	pretty representation: a
+token type: 40, ( '(' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: b
+	pretty representation: b
+token type: 44, ( ',' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: c
+	pretty representation: c
+token type: 40, ( '(' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: d
+	pretty representation: d
+token type: 44, ( ',' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: e
+	pretty representation: e
+token type: 44, ( ',' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: f
+	pretty representation: f
+token type: 44, ( ',' )
+lvalue is nil
+token type: 57348, ( '\ue004' )
+	string representation: g
+	pretty representation: g
+token type: 41, ( ')' )
+lvalue is nil
+token type: 41, ( ')' )
+lvalue is nil
+
+
+Lexer test for :
+(quoted)-------
+" 12"
+(unquoted)--------
+ 12
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+" 12.3"
+(unquoted)--------
+ 12.3
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 123/10
+	pretty representation: 12.300000
+
+
+Lexer test for :
+(quoted)-------
+" 12/4 "
+(unquoted)--------
+ 12/4 
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 12/4
+	pretty representation: 3.000000
+
+
+Lexer test for :
+(quoted)-------
+" 12e4"
+(unquoted)--------
+ 12e4
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+" 12\n"
+(unquoted)--------
+ 12
+
+--------
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+" -12"
+(unquoted)--------
+ -12
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+" -12.3"
+(unquoted)--------
+ -12.3
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 123/10
+	pretty representation: 12.300000
+
+
+Lexer test for :
+(quoted)-------
+" -12.2 "
+(unquoted)--------
+ -12.2 
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 122/10
+	pretty representation: 12.200000
+
+
+Lexer test for :
+(quoted)-------
+"-12/4"
+(unquoted)--------
+-12/4
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/4
+	pretty representation: 3.000000
+
+
+Lexer test for :
+(quoted)-------
+" -12e4"
+(unquoted)--------
+ -12e4
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000
+
+
+Lexer test for :
+(quoted)-------
+" -12\n"
+(unquoted)--------
+ -12
+
+--------
+token type: 45, ( '-' )
+lvalue is nil
+token type: 57350, ( '\ue006' )
+	string representation: 12/1
+	pretty representation: 12.000000

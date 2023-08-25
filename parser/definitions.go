@@ -6,8 +6,7 @@ import (
 )
 
 var (
-	INTFORMAT   = "%d"
-	FLOATFORMAT = "%.3e"
+	FLOATFORMAT = "%f"
 )
 
 type Term interface { // Term is the most general form of a term
@@ -20,7 +19,6 @@ type Term interface { // Term is the most general form of a term
 
 var _ Term = Atom{}
 var _ Term = Number{}
-var _ Term = Float{}
 var _ Term = String{}
 var _ Term = Variable{}
 var _ Term = Underscore{}
