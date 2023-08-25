@@ -108,12 +108,19 @@ func (n Number) CloneNsp(nsp int) Term {
 	}
 }
 
-// Pretty implements Term.
+// Pretty implements Term. Tries to be clever ...
 func (n Number) Pretty() string {
-	return fmt.Sprintf(FLOATFORMAT, float64(n.Num)/float64(n.Den))
+	i := n.Normalize()
+	if i.Den == 1 {
+		return fmt.Sprintf("%d", i.Num)
+	}
+	if i.Den == 0 {
+		return "<infinite>"
+	}
+	return fmt.Sprintf("%d/%d", i.Num, i.Den)
 }
 
-// String implements Term.
+// String implements Term. Dump internal data.
 func (n Number) String() string {
 	return fmt.Sprintf("%d/%d", n.Num, n.Den)
 }

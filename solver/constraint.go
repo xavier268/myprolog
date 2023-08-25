@@ -11,6 +11,7 @@ type Constraint interface {
 	// simplify c, taking into account the calling constraint (unchanged).
 	// If a nil constraint with the changed flag set is returned, it means c can be safely removed.
 	Simplify(c Constraint) (cc Constraint, changed bool, err error)
+	String() string
 }
 
 var _ Constraint = VarIsCompoundTerm{}
@@ -25,6 +26,11 @@ type VarIsNumber struct {
 	Min         Number // minimum acceptable Number
 	Max         Number // maximum acceptable Number
 	IntegerOnly bool   // accept only integers
+}
+
+// String implements Constraint.
+func (v VarIsNumber) String() string {
+	panic("unimplemented")
 }
 
 // Check implements Constraint.
@@ -45,6 +51,11 @@ func (VarIsNumber) Simplify(c Constraint) (cc Constraint, changed bool, err erro
 type VarIsAtom struct {
 	V Variable
 	A Atom
+}
+
+// String implements Constraint.
+func (VarIsAtom) String() string {
+	panic("unimplemented")
 }
 
 // Check implements Constraint.
@@ -72,6 +83,11 @@ func (c VarIsAtom) Clone() Constraint {
 type VarIsCompoundTerm struct {
 	V Variable
 	T Term
+}
+
+// String implements Constraint.
+func (VarIsCompoundTerm) String() string {
+	panic("unimplemented")
 }
 
 // Check implements Constraint.
@@ -102,6 +118,11 @@ type VarIsInteger struct {
 	Max int // max acceptable value, included.
 }
 
+// String implements Constraint.
+func (VarIsInteger) String() string {
+	panic("unimplemented")
+}
+
 // Check implements Constraint.
 func (VarIsInteger) Check() (Constraint, error) {
 	panic("unimplemented")
@@ -123,37 +144,14 @@ func (c VarIsInteger) Clone() Constraint {
 	}
 }
 
-type VarIsFloat struct {
-	V   Variable
-	Min float64
-	Max float64
-}
-
-// Check implements Constraint.
-func (VarIsFloat) Check() (Constraint, error) {
-	panic("unimplemented")
-}
-
-// Simplify implements Constraint.
-func (VarIsFloat) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
-	panic("unimplemented")
-}
-
-// Clone implements Constraint.
-func (c VarIsFloat) Clone() Constraint {
-	return VarIsFloat{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		Min: c.Min,
-		Max: c.Max,
-	}
-}
-
 type VarIsString struct {
 	V Variable
 	S string
+}
+
+// String implements Constraint.
+func (VarIsString) String() string {
+	panic("unimplemented")
 }
 
 // Check implements Constraint.
@@ -180,6 +178,11 @@ func (c VarIsString) Clone() Constraint {
 type VarIsVar struct {
 	V Variable
 	W Variable
+}
+
+// String implements Constraint.
+func (VarIsVar) String() string {
+	panic("unimplemented")
 }
 
 // Check implements Constraint.

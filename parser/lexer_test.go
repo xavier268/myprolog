@@ -17,6 +17,11 @@ func TestLexer(t *testing.T) {
 		"-12",
 		"-3/4",
 		"3/-4",
+		"12/4",
+		"-12/4",
+		"5/0",
+		"0/0",
+		"0/8",
 		`hello world |
 	X23 _ , . 
 	:- ?- 
@@ -53,7 +58,7 @@ func TestLexer(t *testing.T) {
 		}
 	}
 
-	verifyTest(t, sb.String(), "lexer_test.wanted")
+	verifyTest(t, sb.String(), "lexer_test.want")
 
 }
 
