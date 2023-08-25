@@ -4,6 +4,10 @@ package solver
 type Constraint interface {
 	// deep copy
 	Clone() Constraint
+	// Check will check validity of constraint, clean it or simplify it.
+	// It will return the constraint itself,  nil if constraint should not be added.
+	// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
+	Check() (Constraint, error)
 	// simplify c, taking into account the calling constraint (unchanged).
 	// If a nil constraint with the changed flag set is returned, it means c can be safely removed.
 	Simplify(c Constraint) (cc Constraint, changed bool, err error)
@@ -20,6 +24,11 @@ var _ Constraint = VarIsAtom{}
 type VarIsAtom struct {
 	V Variable
 	A Atom
+}
+
+// Check implements Constraint.
+func (VarIsAtom) Check() (Constraint, error) {
+	panic("unimplemented")
 }
 
 // Simplify implements Constraint.
@@ -42,6 +51,11 @@ func (c VarIsAtom) Clone() Constraint {
 type VarIsCompoundTerm struct {
 	V Variable
 	T Term
+}
+
+// Check implements Constraint.
+func (VarIsCompoundTerm) Check() (Constraint, error) {
+	panic("unimplemented")
 }
 
 // Simplify implements Constraint.
@@ -67,6 +81,11 @@ type VarIsInteger struct {
 	Max int // max acceptable value, included.
 }
 
+// Check implements Constraint.
+func (VarIsInteger) Check() (Constraint, error) {
+	panic("unimplemented")
+}
+
 // Simplify implements Constraint.
 func (VarIsInteger) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
 	panic("unimplemented")
@@ -87,6 +106,11 @@ type VarIsFloat struct {
 	V   Variable
 	Min float64
 	Max float64
+}
+
+// Check implements Constraint.
+func (VarIsFloat) Check() (Constraint, error) {
+	panic("unimplemented")
 }
 
 // Simplify implements Constraint.
@@ -111,6 +135,11 @@ type VarIsString struct {
 	S string
 }
 
+// Check implements Constraint.
+func (VarIsString) Check() (Constraint, error) {
+	panic("unimplemented")
+}
+
 // Simplify implements Constraint.
 func (VarIsString) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
 	panic("unimplemented")
@@ -132,6 +161,11 @@ type VarIsChar struct {
 	C rune
 }
 
+// Check implements Constraint.
+func (VarIsChar) Check() (Constraint, error) {
+	panic("unimplemented")
+}
+
 // Simplify implements Constraint.
 func (VarIsChar) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
 	panic("unimplemented")
@@ -151,6 +185,11 @@ func (c VarIsChar) Clone() Constraint {
 type VarIsVar struct {
 	V Variable
 	W Variable
+}
+
+// Check implements Constraint.
+func (VarIsVar) Check() (Constraint, error) {
+	panic("unimplemented")
 }
 
 // Simplify implements Constraint.
