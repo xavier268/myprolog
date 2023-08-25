@@ -14,7 +14,7 @@ hello world |
 token type: 57348, ( '\ue004' ), string representation: hello
 token type: 57348, ( '\ue004' ), string representation: world
 token type: 124, ( '|' ), lvalue is nil
-token type: 57352, ( '\ue008' ), string representation: X23
+token type: 57351, ( '\ue007' ), string representation: X23
 token type: 95, ( '_' ), string representation: _
 token type: 44, ( ',' ), lvalue is nil
 token type: 46, ( '.' ), lvalue is nil
@@ -23,11 +23,11 @@ token type: 57347, ( '\ue003' ), lvalue is nil
 token type: 57350, ( '\ue006' ), string representation: 12
 token type: 57350, ( '\ue006' ), string representation: 18
 token type: 57350, ( '\ue006' ), string representation: 7
-token type: 57351, ( '\ue007' ), string representation: 1.001e+00
-token type: 57351, ( '\ue007' ), string representation: 3.140e+00
+token type: 57350, ( '\ue006' ), string representation: 1.001e+00
+token type: 57350, ( '\ue006' ), string representation: 3.140e+00
 token type: 57349, ( '\ue005' ), string representation: "a normal string"
 token type: 57349, ( '\ue005' ), string representation: "&"
-token type: 57351, ( '\ue007' ), string representation: 5.555e+02
+token type: 57350, ( '\ue006' ), string representation: 5.555e+02
 token type: 57349, ( '\ue005' ), string representation: "a raw \"string"
 token type: 57348, ( '\ue004' ), string representation: a
 token type: 40, ( '(' ), lvalue is nil

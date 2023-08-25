@@ -65,7 +65,7 @@
 12		(pretty)    a(X) :-  
 
 13 		<?- 3.>
-13		err=parse error : error in test # 13 <?- 3.>, line 1 : syntax error: unexpected FLOAT, expecting '[' or ATOM
+13		err=parse error : error in test # 13 <?- 3.>, line 1 : syntax error: unexpected NUMBER, expecting '[' or ATOM
 
 14 		<?- test.>
 14		err=<nil>
@@ -182,7 +182,7 @@
 37		err=parse error : error in test # 37 <un,deux.>, line 1 : syntax error: unexpected ',', expecting '.' or OPRULE
 
 38 		<2(a).>
-38		err=parse error : error in test # 38 <2(a).>, line 1 : syntax error: unexpected INTEGER, expecting '[' or OPQUERY or ATOM
+38		err=parse error : error in test # 38 <2(a).>, line 1 : syntax error: unexpected NUMBER, expecting '[' or OPQUERY or ATOM
 
 39 		< [|2].>
 39		err=parse error : error in test # 39 < [|2].>, line 1 : syntax error: unexpected '|'

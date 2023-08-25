@@ -36,12 +36,12 @@ var lastParseResult []Term
 
 %type <list> top phrases params
 %type <value> phrase disjterms conjterms conjterm head
-%type <value> compterm number list param
+%type <value> compterm list param
 
 
 %token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_'
 %token <value> OPRULE OPQUERY // :-  and ?-
-%token <value> ATOM STRING INTEGER FLOAT VARIABLE
+%token <value> ATOM STRING NUMBER VARIABLE
 
 %% 
 
@@ -129,15 +129,11 @@ params:
 
 param:
     ATOM                                { $$ = $1 }
-    | number                            { $$ = $1 }
+    | NUMBER                            { $$ = $1 }
     | STRING                            { $$ = $1 }
     | VARIABLE                          { $$ = $1 }
     | '_'                               { $$ = $1 }
     | compterm                          { $$ = $1 }
-
-number:
-    INTEGER                             { $$ = $1 }
-    | FLOAT                             { $$ = $1 }
 
 
 list: 

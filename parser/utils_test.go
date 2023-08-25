@@ -30,7 +30,8 @@ func verify(t *testing.T, content string, filename string) {
 				if i2 > len(content) {
 					i2 = len(content)
 				}
-				fmt.Printf("Parser result differ from reference file\n")
+
+				fmt.Printf("\n===============================================================\n%s : Result differ from reference file", t.Name())
 				fmt.Printf("\n============================ got ==============================\n%s%s%s%s\n",
 					content[i1:i], START_RED, content[i:i2], END_RED)
 				if i2 >= len([]rune(sc)) {
@@ -39,7 +40,7 @@ func verify(t *testing.T, content string, filename string) {
 				fmt.Printf("\n============================ want==============================\n%s%s%s%s\n",
 					sc[i1:i], START_RED, sc[i:i2], END_RED)
 
-				t.Fatalf("parser result differs from reference file")
+				t.Fatalf("Result differs from reference file in %s", t.Name())
 			}
 		}
 	}

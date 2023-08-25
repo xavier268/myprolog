@@ -91,15 +91,15 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		lval.value = Float{
 			Value: z,
 		}
-		return FLOAT
+		return NUMBER
 
-	case scanner.Int:
+	case scanner.Int: // Rational CAN be represented as 4/3 We need to check for this.
 		var z int
 		fmt.Sscanf(lx.s.TokenText(), "%v", &z)
 		lval.value = Integer{
 			Value: z,
 		}
-		return INTEGER
+		return NUMBER
 
 	case '(', ')', '[', ']', ',', ';', '.', '|': // single char tokens recognized by parser, cannot begin a multichar operaotor.
 		// yylval is not set for these.

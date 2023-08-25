@@ -19,13 +19,43 @@ type Term interface { // Term is the most general form of a term
 }
 
 var _ Term = Atom{}
-var _ Term = Integer{}
+var _ Term = Number{}
 var _ Term = Float{}
 var _ Term = String{}
 var _ Term = Variable{}
 var _ Term = Underscore{}
 var _ Term = CompoundTerm{}
-var _ Term = Char{}
+
+type Number struct { // numbers are representented as rational  Num/Den
+	Num int
+	Den int
+}
+
+// Clone implements Term.
+func (n Number) Clone() Term {
+	return Number{
+		Num: n.Num,
+		Den: n.Den,
+	}
+}
+
+// CloneNsp implements Term.
+func (n Number) CloneNsp(nsp int) Term {
+	return Number{
+		Num: n.Num,
+		Den: n.Den,
+	}
+}
+
+// Pretty implements Term.
+func (n Number) Pretty() string {
+	return fmt.Sprintf(FLOATFORMAT, float64(n.Num)/float64(n.Den))
+}
+
+// String implements Term.
+func (n Number) String() string {
+	return fmt.Sprintf("%d/%d", n.Num, n.Den)
+}
 
 type Variable struct { // a named variable
 	Name string
@@ -135,60 +165,6 @@ func (s Atom) String() string {
 	return s.Value // do NOT quote the name of an Atom
 }
 
-type Integer struct {
-	Value int
-}
-
-// CloneNsp implements Term.
-func (t Integer) CloneNsp(nsp int) Term {
-	return Integer{
-		Value: t.Value,
-	}
-}
-
-// Clone implements Term.
-func (t Integer) Clone() Term {
-	return Integer{
-		Value: t.Value,
-	}
-}
-
-// Pretty implements AtomicTerm.
-func (t Integer) Pretty() string {
-	return t.String()
-}
-
-func (i Integer) String() string {
-	return fmt.Sprintf(INTFORMAT, i.Value)
-}
-
-type Float struct {
-	Value float64
-}
-
-// CloneNsp implements Term.
-func (t Float) CloneNsp(nsp int) Term {
-	return Float{
-		Value: t.Value,
-	}
-}
-
-// Clone implements Term.
-func (t Float) Clone() Term {
-	return Float{
-		Value: t.Value,
-	}
-}
-
-// Pretty implements AtomicTerm.
-func (t Float) Pretty() string {
-	return t.String()
-}
-
-func (f Float) String() string {
-	return fmt.Sprintf(FLOATFORMAT, f.Value)
-}
-
 // a compound term is a Term with children.
 // A compound term withoutout children remains a compound term, different from an Atom.
 type CompoundTerm struct {
@@ -291,34 +267,6 @@ func (c CompoundTerm) String() string {
 	}
 	fmt.Fprint(&sb, ")")
 	return sb.String()
-}
-
-type Char struct {
-	Char rune
-}
-
-// CloneNsp implements Term.
-func (t Char) CloneNsp(nsp int) Term {
-	return Char{
-		Char: t.Char,
-	}
-}
-
-// Clone implements Term.
-func (t Char) Clone() Term {
-	return Char{
-		Char: t.Char,
-	}
-}
-
-// Pretty implements Term.
-func (c Char) Pretty() string {
-	return c.String()
-}
-
-// Char implements Term.
-func (c Char) String() string {
-	return fmt.Sprintf("%q", c.Char)
 }
 
 // ---------------------------
