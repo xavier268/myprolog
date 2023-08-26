@@ -80,11 +80,11 @@ func FindNextRule(st *State) (*State, Term) {
 }
 
 // Apply a rule to the state.
-// No new state is created, no backtracking is performed here.
+// No new state is created, no backtracking is performed here, an error is returned instead.
 // Goals and constraints are potentially updated.
 // Returns err!=nil if backtracking will be required.
 func ApplyRule(st *State, rule Term) (*State, error) {
-
+	var err error
 	if rule == nil {
 		panic("Trying to apply a nil rule")
 	}
@@ -96,11 +96,11 @@ func ApplyRule(st *State, rule Term) (*State, error) {
 		panic("Trying to apply a rule with no head")
 	}
 	// Try to unify the head with the first goal, adding constraints to the state
-	st, ok = Unify(st, crule.Children[0], st.Goals[0])
-	if !ok {
-		return st, fmt.Errorf("cannot unify")
+	st, err = Unify(st, crule.Children[0], st.Goals[0])
+	if err != nil {
+		return st, err
 	}
-	// Update goals after successfull unification.
+	// Update goals after successfull unification with the rule rhs.
 	st.Goals = append(crule.Children[1:], st.Goals[1:]...)
 	st.NextRule = 0 // reset next rule because goals changed
 	return st, nil

@@ -23,14 +23,16 @@ var CompPredicateMap = map[string]int{
 
 // Known atomic predicates.
 var AtomPredicate = map[string]bool{
-	"!": true, // the 'cut' predicate will prevent backtracking from now on.
+	"!":    true, // the 'cut' predicate will prevent backtracking from now on.
+	"fail": true, // always fail
 }
 
 var ErrPred = fmt.Errorf("predicate cannot apply")
 
-// Execute predicates, if possible, using the functor of the first goal.
+// Execute predicates (recursively if needed) using the functor of the first goal.
 // Includes removing underscore. Constant values (numbers, strings ...) are kept.
-// State MAY change, if  alternative must be considered.
+// State MAY change, if  alternative must be considered (eg : 'or'), but only by forking.
+// No backtracking is performed at this level, error is returned instead.
 func DoPredicate(st *State) (*State, error) {
 	for {
 		if len(st.Goals) == 0 {
@@ -56,6 +58,8 @@ func DoPredicate(st *State) (*State, error) {
 				st.Goals = st.Goals[1:]
 				st.NextRule = 0 // when goal change, reset the next rule pointer ...
 				continue
+			case "fail": // always fail
+				return st, ErrPred
 			default: // should not happen
 				panic("internal error : unknown Atom predicate : " + g.Value)
 			}
@@ -92,7 +96,7 @@ func DoPredicate(st *State) (*State, error) {
 				st.Goals = append(g.Children[1:2], st.Goals[1:]...)
 				nst.Goals = append(g.Children[0:1], st.Goals[1:]...)
 
-				st.NextRule = 0 // when goal change, reset the next rule pointer ...
+				st.NextRule = 0 // since goals changed, reset the next rule pointer ...
 				nst.NextRule = 0
 				return nst, nil
 
@@ -100,7 +104,7 @@ func DoPredicate(st *State) (*State, error) {
 				switch child := (g.Children[0]).(type) {
 				case Number, Underscore: // all fine already !
 					st.Goals = st.Goals[1:] // eat the goal
-					st.NextRule = 0         // when goal change, reset the next rule pointer ...
+					st.NextRule = 0         //since goals changed, reset the next rule pointer ...
 					return st, nil
 				case Variable: // create a constraint on the variable
 					c := VarIsNumber{
@@ -128,7 +132,7 @@ func DoPredicate(st *State) (*State, error) {
 					st.Goals = st.Goals[1:] // eat the goal
 					st.NextRule = 0         // when goal change, reset the next rule pointer ...
 					return st, nil
-				case Number: // ok, a number -but an Integer ?
+				case Number: // ok, a number -but is it an Integer ?
 					if child.IsInteger() {
 						st.Goals = st.Goals[1:] // eat the goal
 						st.NextRule = 0         // when goal change, reset the next rule pointer ...
