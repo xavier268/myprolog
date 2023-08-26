@@ -64,4 +64,16 @@
 
 15	(original)	X$2 = Z$2
 15	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:2}}
-15	(checked)	X$2 = Z$2
+15	(checked)	Z$2 = X$2
+
+16	(original)	Z$2 = X$2
+16	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
+16	(checked)	Z$2 = X$2
+
+17	(original)	X$2 = Z$1
+17	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:1}}
+17	(checked)	X$2 = Z$1
+
+18	(original)	Z$1 = X$2
+18	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:1}, W:parser.Variable{Name:"X", Nsp:2}}
+18	(checked)	X$2 = Z$1

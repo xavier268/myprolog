@@ -96,13 +96,45 @@ var cData = []Constraint{
 		},
 	},
 
-	VarIsVar{
+	VarIsVar{ // The checked version will show a different order
 		V: Variable{
 			Name: "X",
 			Nsp:  2,
 		},
 		W: Variable{
 			Name: "Z",
+			Nsp:  2,
+		},
+	},
+
+	VarIsVar{
+		V: Variable{
+			Name: "Z",
+			Nsp:  2,
+		},
+		W: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+	},
+	VarIsVar{ // The checked version will show a different order
+		V: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+		W: Variable{
+			Name: "Z",
+			Nsp:  1,
+		},
+	},
+
+	VarIsVar{
+		V: Variable{
+			Name: "Z",
+			Nsp:  1,
+		},
+		W: Variable{
+			Name: "X",
 			Nsp:  2,
 		},
 	},

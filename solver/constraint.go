@@ -29,6 +29,7 @@ var _ Constraint = VarIsAtom{}
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
 var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detectted when simplifying")
+var ErrPositiveOccur = fmt.Errorf("positive occur check")
 
 type VarIsNumber struct {
 	V           Variable
@@ -126,30 +127,33 @@ func (c VarIsAtom) Check() (Constraint, error) {
 	return c, nil
 }
 
-// Simplify implements Constraint.
+// Simplify by replacing c2 with the set, possibly empty, of cc.
+// c1 remains unchanged, and is never part of cc.
 // Assume check was performed on both c1 and c2.
+// If changed is false, ignore cc, keep c2 as is.
+// If changed is true, remove c2 and replace it by all of cc (possibly empty, to just suppress c2).
 func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
 	case VarIsAtom:
 		if c1.V.Name == c2.V.Name && c1.V.Nsp == c2.V.Nsp { // same variable
 			if c1.A.Value == c2.A.Value { // same atom
-				return nil, false, nil // remove, duplicated.
+				return nil, true, nil // remove, duplicated.
 			} else {
 				return nil, false, ErrInvalidConstraintSimplify
 			}
 		} else { // different variables
-			return []Constraint{c2}, false, nil // no change, keep all
+			return nil, false, nil // no change, keep all
 		}
 	case VarIsString, VarIsNumber, VarIsVar:
-		return []Constraint{c2}, false, nil // no change, keep all
+		return nil, false, nil // no change, keep all
 	case VarIsCompoundTerm:
 		if !FindVar(c1.V, c2.T) {
-			return []Constraint{c2}, false, nil // no change, keep all
+			return nil, false, nil // no change, keep all
 		}
-		// here, we must substitute c2/Atom in c1/Term ?
+		// here, we try to substitute c2/Atom in c1/Term ?
 		t3, found := ReplaceVar(c1.V, c2.T, c1.A)
 		if !found {
-			return []Constraint{c2}, false, nil // no change, keep all
+			return nil, false, nil // no change, keep all
 		}
 		c3 := VarIsCompoundTerm{
 			V: c2.V,
@@ -157,21 +161,9 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 
 		return []Constraint{c3}, true, nil // no change, keep all
 
-		// Need to implement other cases are review logic carefully
-		// TODO
-		// *******************************************************
-		// *******************************************************
-		// Need to complete and review
-		// *******************************************************
-		// *******************************************************
-
-		panic("code not fully implemented - missing cases ")
-
 	default:
 		panic("unreacheable code")
 	}
-
-	panic("unimplemented")
 }
 
 // Clone implements Constraint.
@@ -195,7 +187,10 @@ func (c VarIsCompoundTerm) Check() (Constraint, error) {
 	if c.V.Name == "" {
 		return nil, nil // ignore silently
 	}
-	panic("unimplemented")
+	if FindVar(c.V, c.T) {
+		return nil, ErrPositiveOccur
+	}
+	return c, nil
 }
 
 // Simplify implements Constraint.
@@ -253,6 +248,7 @@ func (c VarIsVar) String() string {
 }
 
 // Check implements Constraint.
+// There is a cannonical order of variables, with Y = Y means Y is latest (highest Nsp)
 func (c VarIsVar) Check() (Constraint, error) {
 	if c.V.Name == "" || c.W.Name == "" {
 		return nil, nil // silently ignore, no effect
@@ -263,9 +259,10 @@ func (c VarIsVar) Check() (Constraint, error) {
 		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)
 		if c.V.Nsp < c.W.Nsp || (c.V.Nsp == c.W.Nsp && c.V.Name < c.W.Name) {
 			return VarIsVar{c.W, c.V}, nil
+		} else {
+			return c, nil
 		}
 	}
-	panic("not fully implemented")
 }
 
 // Simplify implements Constraint.
