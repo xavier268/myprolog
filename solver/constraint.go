@@ -28,6 +28,7 @@ var _ Constraint = VarIsAtom{}
 
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
+var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detectted when simplifying")
 
 type VarIsNumber struct {
 	V           Variable
@@ -126,7 +127,50 @@ func (c VarIsAtom) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsAtom) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
+// Assume check was performed on both c1 and c2.
+func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+	switch c2 := c2.(type) {
+	case VarIsAtom:
+		if c1.V.Name == c2.V.Name && c1.V.Nsp == c2.V.Nsp { // same variable
+			if c1.A.Value == c2.A.Value { // same atom
+				return nil, false, nil // remove, duplicated.
+			} else {
+				return nil, false, ErrInvalidConstraintSimplify
+			}
+		} else { // different variables
+			return []Constraint{c2}, false, nil // no change, keep all
+		}
+	case VarIsString, VarIsNumber, VarIsVar:
+		return []Constraint{c2}, false, nil // no change, keep all
+	case VarIsCompoundTerm:
+		if !FindVar(c1.V, c2.T) {
+			return []Constraint{c2}, false, nil // no change, keep all
+		}
+		// here, we must substitute c2/Atom in c1/Term ?
+		t3, found := ReplaceVar(c1.V, c2.T, c1.A)
+		if !found {
+			return []Constraint{c2}, false, nil // no change, keep all
+		}
+		c3 := VarIsCompoundTerm{
+			V: c2.V,
+			T: t3}
+
+		return []Constraint{c3}, true, nil // no change, keep all
+
+		// Need to implement other cases are review logic carefully
+		// TODO
+		// *******************************************************
+		// *******************************************************
+		// Need to complete and review
+		// *******************************************************
+		// *******************************************************
+
+		panic("code not fully implemented - missing cases ")
+
+	default:
+		panic("unreacheable code")
+	}
+
 	panic("unimplemented")
 }
 
@@ -216,8 +260,12 @@ func (c VarIsVar) Check() (Constraint, error) {
 	if c.V.Name == c.W.Name && c.V.Nsp == c.W.Nsp { // Ignore X=X silently
 		return nil, nil
 	} else {
-		return c, nil
+		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)
+		if c.V.Nsp < c.W.Nsp || (c.V.Nsp == c.W.Nsp && c.V.Name < c.W.Name) {
+			return VarIsVar{c.W, c.V}, nil
+		}
 	}
+	panic("not fully implemented")
 }
 
 // Simplify implements Constraint.

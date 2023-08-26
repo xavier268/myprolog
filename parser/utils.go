@@ -40,3 +40,11 @@ func ParseFile(filename string) ([]Term, error) {
 func ParseString(input string, sourcename string) ([]Term, error) {
 	return Parse(strings.NewReader(input), sourcename)
 }
+
+func MustParseString(input string, sourcename string) []Term {
+	r, err := ParseString(input, sourcename)
+	if err != nil {
+		panic(err)
+	}
+	return r
+}

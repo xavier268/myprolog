@@ -19,40 +19,34 @@ func FindVar(v Variable, t Term) (found bool) {
 	}
 }
 
-// Replace Variable v in Term with w.
-// If replacement occurs, Term is cloned.
-func ReplaceVar(oldVar Variable, t Term, newVar Variable) (tt Term, found bool) {
+// Replace Variable v with the term w in  t.
+// If replacement occurs, Term is cloned and found flag is set.
+func ReplaceVar(v Variable, t Term, w Term) (res Term, found bool) {
 
-	found = FindVar(oldVar, t)
-	if !found {
-		return t, false
-	}
-
-	tt = t.Clone()
-	replaceVarInPlace(oldVar, tt, newVar)
-	return tt, true
-}
-
-// replace in place. No cloning.
-func replaceVarInPlace(oldVar Variable, t Term, newVar Variable) {
-
-	switch t := t.(type) {
+	switch tt := t.(type) {
 	case Variable:
-		if t.Name == oldVar.Name && t.Nsp == oldVar.Nsp {
-			t.Name = newVar.Name
-			t.Nsp = newVar.Nsp
-			return
+		if v.Name == tt.Name && v.Nsp == tt.Nsp { // match !
+			return w, true
 		}
-		return
-
+		return t, false
 	case Number, String, Atom, Underscore:
-		return
+		return tt, false
 	case CompoundTerm:
-		for _, c := range t.Children {
-			replaceVarInPlace(oldVar, c, newVar)
+		var f bool
+		res := CompoundTerm{
+			Functor:  tt.Functor,
+			Children: make([]Term, len(tt.Children)),
 		}
-		return
+		for i, c := range tt.Children {
+			res.Children[i], f = ReplaceVar(v, c, w)
+			found = found || f
+		}
+		if found {
+			return res, true
+		} else {
+			return t, false
+		}
 	default:
-		panic("code should have been unreacheable")
+		panic("code unreacheable")
 	}
 }

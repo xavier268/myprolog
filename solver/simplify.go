@@ -1,6 +1,6 @@
 package solver
 
-// Attempt to simplify constratint list.
+// Attempt to simplify constraint list.
 // Return error if an incompatibility was detected.
 func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 
@@ -25,9 +25,8 @@ hasChangedLoop: // loop again for each changed constraint ...
 		}
 	}
 
-	// Now, we went through the previous loops without changing anything.
-
-	// clean/remove nil constraints
+	// Now, that we went through the previous loop once without changing anything,
+	// we should clean/remove remaining nil constraints
 	cc := make([]Constraint, 0, len(constraints))
 	for _, c := range constraints {
 		if c != nil {

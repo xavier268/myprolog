@@ -30,23 +30,3 @@ func NewState(parent *State) *State {
 	st.Goals = append(st.Goals, parent.Goals...)
 	return st
 }
-
-/*
-// Check, Add and Simplify the resulting constraints.
-func (s *State) CheckAndAddConstraint(c Constraint) (err error) {
-	if c == nil {
-		return nil // ignore
-	}
-	c, err = c.Check() // check and clean constraint
-	if err != nil {
-		return err
-	}
-	if c == nil {
-		return nil // ignore constraint
-	}
-
-	s.Constraints = append(s.Constraints, c)
-	s.Constraints, err = SimplifyConstraints(s.Constraints)
-	return err
-}
-*/
