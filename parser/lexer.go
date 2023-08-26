@@ -105,9 +105,10 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		pow := len(after) // always > 0
 		den = int(math.Pow10(pow) + 0.001)
 		lval.value = Number{
-			Num: num,
-			Den: den,
-		}
+			Num:        num,
+			Den:        den,
+			normalized: false,
+		}.Normalize()
 		return NUMBER
 
 	case scanner.Int: // Rational CAN be represented as 4/3. We need to check for this.
@@ -130,19 +131,21 @@ func (lx *myLex) Lex(lval *mySymType) int {
 				}
 				fmt.Sscanf(txt, "%d", &den)
 				lval.value = Number{
-					Num: num,
-					Den: den,
-				}
+					Num:        num,
+					Den:        den,
+					normalized: false,
+				}.Normalize()
 				return NUMBER
 			} else {
-				lx.Error(fmt.Sprintf("Expected an number in the form of a rational, like 2/3 but got %v instead", lx.s.TokenText()))
+				lx.Error("Expected an number in the form of a rational, like a/b but got a/ instead")
 				return LEXERROR
 			}
 		}
 		// no / available, it is a normal integer
 		lval.value = Number{
-			Num: num,
-			Den: 1,
+			Num:        num,
+			Den:        1,
+			normalized: true,
 		}
 		return NUMBER
 

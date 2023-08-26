@@ -28,27 +28,31 @@ var _ Term = CompoundTerm{}
 var (
 	// Min Number value
 	MinNumber = Number{
-		Num: int(math.MinInt64),
-		Den: 1,
+		Num:        int(math.MinInt64),
+		Den:        1,
+		normalized: true,
 	}
 	// Max Number value
 	MaxNumber = Number{
-		Num: int(math.MaxInt64),
-		Den: 1,
+		Num:        int(math.MaxInt64),
+		Den:        1,
+		normalized: true,
 	}
 	ZeroNumber = Number{
-		Num: 0,
-		Den: 1,
+		Num:        0,
+		Den:        1,
+		normalized: true,
 	}
 )
 
+// Number are immutable
 type Number struct { // numbers are representented as rational  Num/Den
-	Num int
-	Den int
+	Num        int
+	Den        int
+	normalized bool
 }
 
 // Check if 2 numbers are equals.
-// Prior simplification is not required, ie 2/3 == 4/6.
 func (n Number) Eq(t Term) bool {
 	if nt, ok := t.(Number); ok {
 		return n.Num*nt.Den == n.Den*nt.Num
@@ -56,29 +60,42 @@ func (n Number) Eq(t Term) bool {
 	return false
 }
 
+// Check if n is strictly less than r
+func (n Number) Less(r Number) bool {
+	panic("not implemented")
+}
+
 // Normalize the internal representation of a number.
 func (n Number) Normalize() Number {
+	if n.normalized {
+		return n
+	}
 	if n.Num == 0 {
 		return Number{
-			Num: 0,
-			Den: 1}
+			Num:        0,
+			Den:        1,
+			normalized: true}
 	}
 	if n.Den == 0 {
 		return Number{
-			Num: 1,
-			Den: 0}
+			Num:        1,
+			Den:        0,
+			normalized: true,
+		}
 	}
 	p := Gcd(n.Num, n.Den)
 	if n.Den > 0 {
 		return Number{
-			Num: n.Num / p,
-			Den: n.Den / p,
+			Num:        n.Num / p,
+			Den:        n.Den / p,
+			normalized: true,
 		}
 	}
 	if n.Den < 0 {
 		return Number{
-			Num: -n.Num / p,
-			Den: -n.Den / p,
+			Num:        -n.Num / p,
+			Den:        -n.Den / p,
+			normalized: true,
 		}
 	}
 	panic("code should be unreacheable")
@@ -89,23 +106,29 @@ func (n Number) IsInteger() bool {
 }
 
 func (n Number) IsZero() bool {
-	return n.Num == 0 && n.Den != 0
+	return n.Num == 0 // note, 0/0 will normalized to 0/1, ie 0
+}
+
+func (n Number) Minus() Number {
+	n = n.Normalize()
+	if n.Den == 0 {
+		return n
+	}
+	return Number{
+		Num:        -n.Num,
+		Den:        n.Den,
+		normalized: true,
+	}
 }
 
 // Clone implements Term.
 func (n Number) Clone() Term {
-	return Number{
-		Num: n.Num,
-		Den: n.Den,
-	}
+	return n
 }
 
 // CloneNsp implements Term.
 func (n Number) CloneNsp(nsp int) Term {
-	return Number{
-		Num: n.Num,
-		Den: n.Den,
-	}
+	return n
 }
 
 // Pretty implements Term. Tries to be clever ...
@@ -114,8 +137,11 @@ func (n Number) Pretty() string {
 	if i.Den == 1 {
 		return fmt.Sprintf("%d", i.Num)
 	}
+	if i.Num == 0 { // ensure 0/0, default zero value,  is 0
+		return "0"
+	}
 	if i.Den == 0 {
-		return "<infinite>"
+		return "NaN"
 	}
 	return fmt.Sprintf("%d/%d", i.Num, i.Den)
 }
@@ -125,6 +151,7 @@ func (n Number) String() string {
 	return fmt.Sprintf("%d/%d", n.Num, n.Den)
 }
 
+// Variable are immutable
 type Variable struct { // a named variable
 	Name string
 	Nsp  int // name space
@@ -140,10 +167,7 @@ func (t Variable) CloneNsp(nsp int) Term {
 
 // Clone implements Term.
 func (t Variable) Clone() Term {
-	return Variable{
-		Name: t.Name,
-		Nsp:  t.Nsp,
-	}
+	return t
 }
 
 // Pretty implements Term.
@@ -172,13 +196,14 @@ func (Underscore) Clone() Term {
 
 // Pretty implements Term.
 func (u Underscore) Pretty() string {
-	return u.String()
+	return "_"
 }
 
 func (u Underscore) String() string {
 	return "_"
 }
 
+// String is immutable
 type String struct {
 	Value string
 }
@@ -192,9 +217,7 @@ func (t String) CloneNsp(nsp int) Term {
 
 // Clone implements Term.
 func (t String) Clone() Term {
-	return String{
-		Value: t.Value,
-	}
+	return t
 }
 
 // Pretty implements AtomicTerm.
@@ -206,27 +229,24 @@ func (s String) String() string {
 	return fmt.Sprintf("%q", s.Value) // quote the string
 }
 
+// Atom is immutable
 type Atom struct {
 	Value string
 }
 
 // CloneNsp implements Term.
 func (t Atom) CloneNsp(nsp int) Term {
-	return Atom{
-		Value: t.Value,
-	}
+	return t
 }
 
 // Clone implements Term.
 func (t Atom) Clone() Term {
-	return Atom{
-		Value: t.Value,
-	}
+	return t
 }
 
 // Pretty implements AtomicTerm.
-func (t Atom) Pretty() string {
-	return t.String()
+func (s Atom) Pretty() string {
+	return s.Value
 }
 
 func (s Atom) String() string {

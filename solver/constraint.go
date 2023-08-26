@@ -29,13 +29,15 @@ type VarIsNumber struct {
 }
 
 // String implements Constraint.
+// Constraints has been supposedly checked and normalized.
 func (v VarIsNumber) String() string {
-	panic("unimplemented")
+	panic("not implemented")
 }
 
 // Check implements Constraint.
-func (VarIsNumber) Check() (Constraint, error) {
-	panic("unimplemented")
+func (v VarIsNumber) Check() (Constraint, error) {
+	v.Min = v.Min.Normalize()
+	v.Max = v.Max.Normalize()
 }
 
 // Clone implements Constraint.
