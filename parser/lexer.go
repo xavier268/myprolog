@@ -107,7 +107,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		lval.value = Number{
 			Num:        num,
 			Den:        den,
-			normalized: false,
+			Normalized: false,
 		}.Normalize()
 		return NUMBER
 
@@ -133,7 +133,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 				lval.value = Number{
 					Num:        num,
 					Den:        den,
-					normalized: false,
+					Normalized: false,
 				}.Normalize()
 				return NUMBER
 			} else {
@@ -145,7 +145,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		lval.value = Number{
 			Num:        num,
 			Den:        1,
-			normalized: true,
+			Normalized: true,
 		}
 		return NUMBER
 

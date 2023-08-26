@@ -26,61 +26,72 @@ var _ Term = Underscore{}
 var _ Term = CompoundTerm{}
 
 var (
+	// Not a Number, normalized.
+	NaN = Number{
+		Num:        1,
+		Den:        0,
+		Normalized: true,
+	}
 	// Min Number value
 	MinNumber = Number{
-		Num:        int(math.MinInt64),
+		Num:        int(math.MinInt64) + 1, // to ensure its opposite in MaxNumber
 		Den:        1,
-		normalized: true,
+		Normalized: true,
 	}
 	// Max Number value
 	MaxNumber = Number{
 		Num:        int(math.MaxInt64),
 		Den:        1,
-		normalized: true,
+		Normalized: true,
 	}
 	ZeroNumber = Number{
 		Num:        0,
 		Den:        1,
-		normalized: true,
+		Normalized: true,
 	}
 )
 
 // Number are immutable
+// Number can silently overflow, when exceeding int64 capacity.
 type Number struct { // numbers are representented as rational  Num/Den
 	Num        int
 	Den        int
-	normalized bool
+	Normalized bool
 }
 
-// Check if 2 numbers are equals.
+// Check if the provided Term is a Number and is Equal to n.
+// No unification, no variable, no underscore accepted here.
 func (n Number) Eq(t Term) bool {
+	n = n.Normalize()
 	if nt, ok := t.(Number); ok {
-		return n.Num*nt.Den == n.Den*nt.Num
+		nt = nt.Normalize()
+		return n.Num == nt.Num && n.Den == nt.Den // since we just normalized both ;-)
 	}
 	return false
 }
 
 // Check if n is strictly less than r
 func (n Number) Less(r Number) bool {
-	panic("not implemented")
+	return n.Minus(r).Num < 0
 }
 
 // Normalize the internal representation of a number.
+// 0/0 is normalized as 0/1.
 func (n Number) Normalize() Number {
-	if n.normalized {
+	if n.Normalized {
 		return n
 	}
 	if n.Num == 0 {
 		return Number{
 			Num:        0,
 			Den:        1,
-			normalized: true}
+			Normalized: true}
 	}
 	if n.Den == 0 {
 		return Number{
 			Num:        1,
 			Den:        0,
-			normalized: true,
+			Normalized: true,
 		}
 	}
 	p := Gcd(n.Num, n.Den)
@@ -88,14 +99,14 @@ func (n Number) Normalize() Number {
 		return Number{
 			Num:        n.Num / p,
 			Den:        n.Den / p,
-			normalized: true,
+			Normalized: true,
 		}
 	}
 	if n.Den < 0 {
 		return Number{
 			Num:        -n.Num / p,
 			Den:        -n.Den / p,
-			normalized: true,
+			Normalized: true,
 		}
 	}
 	panic("code should be unreacheable")
@@ -105,11 +116,62 @@ func (n Number) IsInteger() bool {
 	return n.Normalize().Den == 1
 }
 
-func (n Number) IsZero() bool {
-	return n.Num == 0 // note, 0/0 will normalized to 0/1, ie 0
+// Check if Nan.
+// Notice that 0/0 is valid, as it would normalize to 0/1, ie 0.
+func (n Number) IsNaN() bool {
+	return n.Normalize().Den == 0
 }
 
-func (n Number) Minus() Number {
+func (n Number) IsZero() bool {
+	return n.Normalize().Num == 0 // note, 0/0 will normalized to 0/1, ie 0
+}
+
+// result = n - r
+func (n Number) Minus(r Number) Number {
+	if r.IsNaN() || n.IsNaN() {
+		return NaN
+	}
+	n = n.Normalize()
+	r = r.Normalize()
+
+	return Number{
+		Num:        r.Den*n.Num - n.Den*r.Num,
+		Den:        r.Den * n.Den,
+		Normalized: false,
+	}.Normalize()
+}
+
+// result = n + r
+func (n Number) Plus(r Number) Number {
+	if r.IsNaN() || n.IsNaN() {
+		return NaN
+	}
+	n = n.Normalize()
+	r = r.Normalize()
+
+	return Number{
+		Num:        n.Num*r.Den + r.Num*n.Den,
+		Den:        n.Den * r.Den,
+		Normalized: false,
+	}.Normalize()
+}
+
+// result = n * r
+func (n Number) Times(r Number) Number {
+	if r.IsNaN() || n.IsNaN() {
+		return NaN
+	}
+	n = n.Normalize()
+	r = r.Normalize()
+
+	return Number{
+		Num:        n.Num * r.Num,
+		Den:        r.Den * n.Den,
+		Normalized: false,
+	}.Normalize()
+}
+
+func (n Number) ChSign() Number {
 	n = n.Normalize()
 	if n.Den == 0 {
 		return n
@@ -117,8 +179,38 @@ func (n Number) Minus() Number {
 	return Number{
 		Num:        -n.Num,
 		Den:        n.Den,
-		normalized: true,
+		Normalized: true,
 	}
+}
+
+// Return the largest integer Number that is less than n.
+// n can be negative or positive.
+func (n Number) Floor() Number {
+	n = n.Normalize()
+	if n.Den == 0 || n.Den == 1 { // integer, or NaN, unchanged
+		return n
+	}
+	if n.Num < 0 {
+		return Number{
+			Num:        n.Num/n.Den - 1,
+			Den:        1,
+			Normalized: true,
+		}
+	}
+	return Number{
+		Num:        n.Num / n.Den,
+		Den:        1,
+		Normalized: true,
+	}
+}
+
+// Return the integer immediately below n if n >= 0 or immediatly GREATER than n if n < 0.
+// Integer are left unchanged.
+// Same behavior as in : i = int(float64(x))
+// Panic if n is NaN.
+func (n Number) ToInt() int {
+	n = n.Normalize()
+	return n.Num / n.Den
 }
 
 // Clone implements Term.

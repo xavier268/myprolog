@@ -1,6 +1,12 @@
 package solver
 
-//a Constraint is immutable
+import (
+	"fmt"
+
+	"github.com/xavier268/myprolog/parser"
+)
+
+// a Constraint is immutable
 type Constraint interface {
 	// deep copy
 	Clone() Constraint
@@ -21,6 +27,9 @@ var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
 var _ Constraint = VarIsInteger{}
 
+var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
+var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
+
 type VarIsNumber struct {
 	V           Variable
 	Min         Number // minimum acceptable Number
@@ -29,15 +38,59 @@ type VarIsNumber struct {
 }
 
 // String implements Constraint.
-// Constraints has been supposedly checked and normalized.
-func (v VarIsNumber) String() string {
-	panic("not implemented")
+// Constraints are assumed already checked and normalized.
+func (c VarIsNumber) String() string {
+	if c.Min.Eq(c.Max) {
+		return c.V.Pretty() + " = " + c.Min.Pretty()
+	}
+	if c.IntegerOnly { // only integer
+		if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
+			return c.V.Pretty() + " is an integer"
+		}
+		if c.Min.Eq(parser.MinNumber) {
+			return c.V.Pretty() + " is an integer and " + c.V.Pretty() + " <= " + c.Max.Pretty()
+		}
+		if c.Max.Eq(parser.MaxNumber) {
+			return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty()
+		}
+		return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
+	}
+	// Now, not necessarily an integer ...
+	if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
+		return c.V.Pretty() + " is an integer"
+	}
+	if c.Min.Eq(parser.MinNumber) {
+		return c.V.Pretty() + " is an integer and " + c.V.Pretty() + " <= " + c.Max.Pretty()
+	}
+	if c.Max.Eq(parser.MaxNumber) {
+		return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty()
+	}
+	return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
 }
 
 // Check implements Constraint.
 func (v VarIsNumber) Check() (Constraint, error) {
-	v.Min = v.Min.Normalize()
-	v.Max = v.Max.Normalize()
+	if v.Min.Den == 0 || v.Max.Den == 0 { // ensure numbers are not NaN
+		return nil, ErrInvalidConstraintNaN
+	}
+	if v.Max.Less(v.Min) { // ensure range is not empty because of limits relative positions
+		return nil, ErrInvalidConstraintEmptyRange
+	}
+	if v.IntegerOnly { // Special case for integers only
+
+		if v.Max.Eq(v.Min) && !v.Max.IsInteger() { // range contains a single, non integer value
+			return nil, ErrInvalidConstraintEmptyRange
+		}
+
+		if v.Max.IsInteger() || v.Min.IsInteger() { // range contains at least one integer value as a limit
+			return v, nil
+		}
+		// TODO - avoid using float64 ?
+		if int(float64(v.Max.Num)/float64(v.Max.Den))-int(float64(v.Min.Num)/float64(v.Min.Den)) <= 0 { // range contains only non integer value
+			return nil, ErrInvalidConstraintEmptyRange
+		}
+	}
+	return v, nil
 }
 
 // Clone implements Constraint.
