@@ -5,12 +5,12 @@ type Constraint interface {
 	// deep copy
 	Clone() Constraint
 	// Check will check validity of constraint, clean it or simplify it.
-	// It will return the constraint itself,  nil if constraint should not be added.
+	// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored.
 	// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 	Check() (Constraint, error)
 	// simplify c, taking into account the calling constraint (unchanged).
-	// If a nil constraint with the changed flag set is returned, it means c can be safely removed.
-	Simplify(c Constraint) (cc Constraint, changed bool, err error)
+	// If changed, replace c by all of cc (possibly empty, to just suppress c).
+	Simplify(c Constraint) (cc []Constraint, changed bool, err error)
 	String() string
 }
 
@@ -44,7 +44,7 @@ func (VarIsNumber) Clone() Constraint {
 }
 
 // Simplify implements Constraint.
-func (VarIsNumber) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsNumber) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
@@ -64,7 +64,7 @@ func (VarIsAtom) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsAtom) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsAtom) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
@@ -96,7 +96,7 @@ func (VarIsCompoundTerm) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsCompoundTerm) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
@@ -129,7 +129,7 @@ func (VarIsInteger) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsInteger) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsInteger) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
@@ -160,7 +160,7 @@ func (VarIsString) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsString) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsString) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
@@ -191,7 +191,7 @@ func (VarIsVar) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsVar) Simplify(c Constraint) (cc Constraint, changed bool, err error) {
+func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	panic("unimplemented")
 }
 
