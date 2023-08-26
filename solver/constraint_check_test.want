@@ -1,0 +1,35 @@
+
+========= Single constraint test =========
+
+
+0	(original)	5/2 <= X <= 5
+0	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:2, Normalized:false}, Max:parser.Number{Num:10, Den:2, Normalized:false}, IntegerOnly:false}
+0	(checked)	5/2 <= X <= 5
+
+1	(original)	X is an integer and 5/2 <= X <= 5
+1	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:2, Normalized:false}, Max:parser.Number{Num:10, Den:2, Normalized:false}, IntegerOnly:true}
+1	(checked)	X is an integer and 3 <= X <= 5
+
+2	(original)	5 <= Y$4 <= 3/2
+2	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"Y", Nsp:4}, Min:parser.Number{Num:10, Den:2, Normalized:false}, Max:parser.Number{Num:3, Den:2, Normalized:false}, IntegerOnly:false}
+2	(checked)	<nil>, error : invalid constraint, specified range is empty
+
+3	(original)	Y$4 is an integer and 5 <= Y$4 <= 3/2
+3	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"Y", Nsp:4}, Min:parser.Number{Num:10, Den:2, Normalized:false}, Max:parser.Number{Num:3, Den:2, Normalized:false}, IntegerOnly:true}
+3	(checked)	<nil>, error : invalid constraint, specified range is empty
+
+4	(original)	5/6 <= X <= 7/6
+4	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:7, Den:6, Normalized:false}, IntegerOnly:false}
+4	(checked)	5/6 <= X <= 7/6
+
+5	(original)	X is an integer and 5/6 <= X <= 7/6
+5	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:7, Den:6, Normalized:false}, IntegerOnly:true}
+5	(checked)	X = 1
+
+6	(original)	-4/3 <= X <= -7/6
+6	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:-8, Den:6, Normalized:false}, Max:parser.Number{Num:-7, Den:6, Normalized:false}, IntegerOnly:false}
+6	(checked)	-4/3 <= X <= -7/6
+
+7	(original)	X is an integer and -4/3 <= X <= -7/6
+7	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:-8, Den:6, Normalized:false}, Max:parser.Number{Num:-7, Den:6, Normalized:false}, IntegerOnly:true}
+7	(checked)	<nil>, error : invalid constraint, specified range is empty

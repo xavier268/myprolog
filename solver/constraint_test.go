@@ -15,21 +15,71 @@ var cData = []Constraint{
 		Max:         Number{Num: 10, Den: 2, Normalized: false},
 		IntegerOnly: false,
 	},
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: 5, Den: 2, Normalized: false},
+		Max:         Number{Num: 10, Den: 2, Normalized: false},
+		IntegerOnly: true,
+	},
+
+	VarIsNumber{
+		V:           Variable{Name: "Y", Nsp: 4},
+		Min:         Number{Num: 10, Den: 2, Normalized: false},
+		Max:         Number{Num: 3, Den: 2, Normalized: false},
+		IntegerOnly: false,
+	},
+
+	VarIsNumber{
+		V:           Variable{Name: "Y", Nsp: 4},
+		Min:         Number{Num: 10, Den: 2, Normalized: false},
+		Max:         Number{Num: 3, Den: 2, Normalized: false},
+		IntegerOnly: true,
+	},
+
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: 5, Den: 6, Normalized: false},
+		Max:         Number{Num: 7, Den: 6, Normalized: false},
+		IntegerOnly: false,
+	},
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: 5, Den: 6, Normalized: false},
+		Max:         Number{Num: 7, Den: 6, Normalized: false},
+		IntegerOnly: true,
+	},
+
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: -8, Den: 6, Normalized: false},
+		Max:         Number{Num: -7, Den: 6, Normalized: false},
+		IntegerOnly: false,
+	}, VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: -8, Den: 6, Normalized: false},
+		Max:         Number{Num: -7, Den: 6, Normalized: false},
+		IntegerOnly: true,
+	},
 }
 
 func TestConstraintsCheck(t *testing.T) {
 	var err error
 	sb := new(strings.Builder)
 
-	fmt.Fprintf(sb, "========= %s =========\n", t.Name())
+	fmt.Fprintf(sb, "\n========= Single constraint test =========\n")
 
 	for i, c := range cData {
-		fmt.Fprintf(sb, "\n\n%d\t(original\t%v\n", i, c.String())
+
+		fmt.Fprintln(sb)
+
+		fmt.Fprintf(sb, "\n%d\t(original)\t%v", i, c.String())
+		fmt.Fprintf(sb, "\n%d\t(raw form)\t%#v", i, c)
+
 		c, err = c.Check()
+		fmt.Fprintf(sb, "\n%d\t(checked)\t%v", i, c)
 		if err != nil {
-			fmt.Fprintf(sb, "%d\t%v\n", i, err)
+			fmt.Fprintf(sb, ", error : %v", err)
 		}
-		fmt.Fprintf(sb, "%d\t(checked)\t%v\n", i, c)
 	}
 
 	verifyTest(t, sb.String(), "constraint_check_test.want")

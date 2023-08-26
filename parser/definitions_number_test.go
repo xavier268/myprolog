@@ -13,9 +13,9 @@ var testNumberData = []Number{
 	MaxNumber,
 	MinNumber,
 	{Num: 5, Den: 1},
+	{Num: 2, Den: 3},
 	{Num: -6, Den: -1}, // denormalized
 	{Num: -2, Den: 6},
-	{Num: -2, Den: 5},
 	{Num: 10, Den: -6},
 }
 
@@ -37,6 +37,7 @@ func TestNumber(t *testing.T) {
 		fmt.Fprintf(sb, "%d\t\t(IsNaN)         n: %v\n", i, n.IsNaN())
 		fmt.Fprintf(sb, "%d\t\t(IsInteger)     n: %v\n", i, n.IsInteger())
 		fmt.Fprintf(sb, "%d\t\t(Floor)         n: %v\n", i, n.Floor().Pretty())
+		fmt.Fprintf(sb, "%d\t\t(Ceil)          n: %v\n", i, n.Ceil().Pretty())
 		if !n.IsNaN() { // avoid panic on NaN
 			fmt.Fprintf(sb, "%d\t\t(ToInt)         n: %v\n", i, n.ToInt())
 		}

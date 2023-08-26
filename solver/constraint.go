@@ -54,18 +54,18 @@ func (c VarIsNumber) String() string {
 			return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty()
 		}
 		return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
+	} else { //  not necessarily an integer ...
+		if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
+			return c.V.Pretty() // that should have been cleaned before !
+		}
+		if c.Min.Eq(parser.MinNumber) {
+			return c.V.Pretty() + " <= " + c.Max.Pretty()
+		}
+		if c.Max.Eq(parser.MaxNumber) {
+			return c.Min.Pretty() + " <= " + c.V.Pretty()
+		}
+		return c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
 	}
-	// Now, not necessarily an integer ...
-	if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
-		return c.V.Pretty() + " is an integer"
-	}
-	if c.Min.Eq(parser.MinNumber) {
-		return c.V.Pretty() + " is an integer and " + c.V.Pretty() + " <= " + c.Max.Pretty()
-	}
-	if c.Max.Eq(parser.MaxNumber) {
-		return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty()
-	}
-	return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
 }
 
 // Check implements Constraint.
@@ -78,15 +78,14 @@ func (v VarIsNumber) Check() (Constraint, error) {
 	}
 	if v.IntegerOnly { // Special case for integers only
 
-		if v.Max.Eq(v.Min) && !v.Max.IsInteger() { // range contains a single, non integer value
-			return nil, ErrInvalidConstraintEmptyRange
-		}
+		v.Max = v.Max.Floor() // convert limits to nearest integer
+		v.Min = v.Min.Ceil()  // convert limits to nearest integer
 
-		if v.Max.IsInteger() || v.Min.IsInteger() { // range contains at least one integer value as a limit
+		if v.Max.Eq(v.Min) { // range contains a single,  integer value
 			return v, nil
 		}
-		// TODO - avoid using float64 ?
-		if int(float64(v.Max.Num)/float64(v.Max.Den))-int(float64(v.Min.Num)/float64(v.Min.Den)) <= 0 { // range contains only non integer value
+
+		if v.Max.Less(v.Min) { // range is empty
 			return nil, ErrInvalidConstraintEmptyRange
 		}
 	}

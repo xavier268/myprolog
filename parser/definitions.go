@@ -183,7 +183,7 @@ func (n Number) ChSign() Number {
 	}
 }
 
-// Return the largest integer Number that is less than n.
+// Return the largest integer Number that is less or equal to n.
 // n can be negative or positive.
 func (n Number) Floor() Number {
 	n = n.Normalize()
@@ -199,6 +199,27 @@ func (n Number) Floor() Number {
 	}
 	return Number{
 		Num:        n.Num / n.Den,
+		Den:        1,
+		Normalized: true,
+	}
+}
+
+// Return the smallest integer Number that is greater or equal to n.
+// n can be negative or positive.
+func (n Number) Ceil() Number {
+	n = n.Normalize()
+	if n.Den == 0 || n.Den == 1 { // integer, or NaN, unchanged
+		return n
+	}
+	if n.Num < 0 {
+		return Number{
+			Num:        n.Num / n.Den,
+			Den:        1,
+			Normalized: true,
+		}
+	}
+	return Number{
+		Num:        n.Num/n.Den + 1,
 		Den:        1,
 		Normalized: true,
 	}
