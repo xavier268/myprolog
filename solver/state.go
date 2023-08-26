@@ -31,8 +31,9 @@ func NewState(parent *State) *State {
 	return st
 }
 
-// Add a constraint to state and simplify immediately.
-func (s *State) AddConstraint(c Constraint) (err error) {
+/*
+// Check, Add and Simplify the resulting constraints.
+func (s *State) CheckAndAddConstraint(c Constraint) (err error) {
 	if c == nil {
 		return nil // ignore
 	}
@@ -48,3 +49,4 @@ func (s *State) AddConstraint(c Constraint) (err error) {
 	s.Constraints, err = SimplifyConstraints(s.Constraints)
 	return err
 }
+*/

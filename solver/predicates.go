@@ -113,10 +113,16 @@ func DoPredicate(st *State) (*State, error) {
 						Max:         parser.MaxNumber,
 						IntegerOnly: false,
 					}
-					err := st.AddConstraint(c)
+					cc, err := CheckAddConstraint(st.Constraints, c)
 					if err != nil {
 						return st, err
 					}
+					cc, err = SimplifyConstraints(cc)
+					if err != nil {
+						return st, err
+					}
+					// update state, since everything is fine
+					st.Constraints = cc     // new constraints
 					st.Goals = st.Goals[1:] // eat the goal
 					st.NextRule = 0         // when goal change, reset the next rule pointer ...
 					return st, nil
@@ -148,10 +154,16 @@ func DoPredicate(st *State) (*State, error) {
 						Max:         parser.MaxNumber,
 						IntegerOnly: true,
 					}
-					err := st.AddConstraint(c)
+					cc, err := CheckAddConstraint(st.Constraints, c)
 					if err != nil {
 						return st, err
 					}
+					cc, err = SimplifyConstraints(cc)
+					if err != nil {
+						return st, err
+					}
+					// update state, since everything is fine
+					st.Constraints = cc     // new constraints
 					st.Goals = st.Goals[1:] // eat the goal
 					st.NextRule = 0         // when goal change, reset the next rule pointer ...
 					return st, nil

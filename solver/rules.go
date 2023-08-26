@@ -96,10 +96,20 @@ func ApplyRule(st *State, rule Term) (*State, error) {
 		panic("Trying to apply a rule with no head")
 	}
 	// Try to unify the head with the first goal, adding constraints to the state
-	st, err = Unify(st, crule.Children[0], st.Goals[0])
+	newCons, err := Unify(st.Constraints, crule.Children[0], st.Goals[0])
 	if err != nil {
 		return st, err
 	}
+
+	// Actually add the new constraints to the state, after simplification.
+	// There were already check individually, don't do it again.
+	newCons = append(st.Constraints, newCons...)
+	newCons, err = SimplifyConstraints(newCons)
+	if err != nil {
+		return st, err
+	}
+	st.Constraints = newCons
+
 	// Update goals after successfull unification with the rule rhs.
 	st.Goals = append(crule.Children[1:], st.Goals[1:]...)
 	st.NextRule = 0 // reset next rule because goals changed

@@ -2,20 +2,23 @@ package solver
 
 import "fmt"
 
-var ErrUnificationImpossible = fmt.Errorf("Unification impossible")
+var ErrUnificationImpossible = fmt.Errorf("unification impossible")
 
 // Unify recursively unifies rule head and goal.
-// State is modified during unification, because constraints and/or goals are added as we unify.
+// We avoid state directly, by just appending to a list of constraints.
+// Check and simplifcation will occur later.
+// No predicates are handled here.
 // No backtracking is done.
-func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
+func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
+	var err error
 
 	// special nil cases - do nothing if both are nil
 	if head == nil && goal == nil {
-		return st, nil
+		return cList, nil
 	}
 	// cannot unify nil with non nil
 	if head == nil || goal == nil {
-		return st, ErrUnificationImpossible
+		return cList, ErrUnificationImpossible
 	}
 
 	// handle other non nil & non underscore cases
@@ -25,15 +28,15 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 
 		switch goal := goal.(type) {
 		case Underscore:
-			return st, nil
+			return cList, nil
 		case Number: // numbers can  unify with themselves
 			if head.Eq(goal) {
-				return st, nil
+				return cList, nil
 			} else {
-				return st, ErrUnificationImpossible
+				return cList, ErrUnificationImpossible
 			}
 		case String, Atom: //  do not unify
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		case Variable: // goal is a variable
 			c := VarIsNumber{
 				V:           goal,
@@ -41,10 +44,9 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 				Max:         head,
 				IntegerOnly: false,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		default:
 			panic("unreacheable code reached")
 		}
@@ -53,25 +55,23 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 
 		switch goal := goal.(type) {
 		case Underscore:
-			return st, nil
+			return cList, nil
 		case String:
 			if head.Value == goal.Value {
-				return st, nil
+				return cList, nil
 			} else {
-				return st, ErrUnificationImpossible
+				return cList, ErrUnificationImpossible
 			}
 		case Number, Atom: //  do not unify
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		case Variable: // goal is a variable
 			c := VarIsString{
 				V: goal,
 				S: head.Value,
 			}
-			err := st.AddConstraint(c)
-			return st, err
-
+			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		default:
 			panic("unreacheable code reached")
 		}
@@ -80,22 +80,19 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 
 		switch goal := goal.(type) {
 		case Underscore:
-			return st, nil
+			return cList, nil
 		case Variable:
 			c := VarIsVar{
 				V: goal,
 				W: head,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
 			c := VarIsCompoundTerm{
 				V: head, // head is the variable
 				T: goal, // goal not a variable anymore
 			}
-			err := st.AddConstraint(c)
-
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case Number:
 			c := VarIsNumber{
 				V:           head,
@@ -103,47 +100,43 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 				Max:         goal,
 				IntegerOnly: false,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case String:
 			c := VarIsString{
 				V: head, // head is the variable
 				S: goal.Value,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case Atom:
 			c := VarIsAtom{
 				V: head, // head is the variable
 				A: goal,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		default:
 			panic("unreacheable code reached")
 		}
 
 	case Underscore: // do nothing
-		return st, nil
+		return cList, nil
 
 	case Atom:
 		switch goal := goal.(type) {
 		case Underscore:
-			return st, nil
+			return cList, nil
 		case Variable:
 			c := VarIsAtom{
 				V: goal, // prefer goal when it is the variable, switch order
 				A: head,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case CompoundTerm, String, Number:
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		case Atom:
 			if head.Value == goal.Value {
-				return st, nil
+				return cList, nil
 			} else {
-				return st, ErrUnificationImpossible
+				return cList, ErrUnificationImpossible
 			}
 		default:
 			panic("unreacheable code reached")
@@ -152,30 +145,41 @@ func Unify(st *State, head Term, goal Term) (newstate *State, err error) {
 	case CompoundTerm: // compound head
 		switch goal := goal.(type) {
 		case String, Number, Atom:
-			return st, ErrUnificationImpossible
+			return cList, ErrUnificationImpossible
 		case Underscore:
-			return st, nil
+			return cList, nil
 		case Variable:
 			c := VarIsCompoundTerm{
 				V: goal,
 				T: head,
 			}
-			err := st.AddConstraint(c)
-			return st, err
+			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
 			if goal.Functor != head.Functor || len(goal.Children) != len(head.Children) {
-				return st, ErrUnificationImpossible
+				return cList, ErrUnificationImpossible
 			}
 			for i, h := range head.Children {
-				if st, err = Unify(st, h, goal.Children[i]); err != nil {
-					return st, ErrUnificationImpossible
+				if cList, err = Unify(cList, h, goal.Children[i]); err != nil {
+					return cList, ErrUnificationImpossible
 				}
 			}
-			return st, nil
+			return cList, nil
 		default:
 			panic("unreacheable code reached")
 		}
 	default:
 		panic("unreacheable code reached")
+	}
+}
+
+// Check (individual), and Add a constraint to the list, return error for backtracking.
+// Simplification not performed.
+// Avoid later workload, avoid adding nil constraints.
+func CheckAddConstraint(cc []Constraint, c Constraint) ([]Constraint, error) {
+	clean, err := c.Check()
+	if err == nil && clean != nil {
+		return append(cc, clean), nil
+	} else {
+		return cc, err
 	}
 }
