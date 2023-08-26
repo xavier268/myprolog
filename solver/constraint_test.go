@@ -9,6 +9,13 @@ import (
 // Data set of constraints to test
 var cData = []Constraint{
 
+	// Testing all zero values
+	VarIsNumber{},
+	VarIsAtom{},
+	VarIsString{},
+	VarIsVar{},
+	// VarIsCompoundTerm{},
+
 	VarIsNumber{
 		V:           Variable{Name: "X", Nsp: 0},
 		Min:         Number{Num: 5, Den: 2, Normalized: false},
@@ -54,11 +61,50 @@ var cData = []Constraint{
 		Min:         Number{Num: -8, Den: 6, Normalized: false},
 		Max:         Number{Num: -7, Den: 6, Normalized: false},
 		IntegerOnly: false,
-	}, VarIsNumber{
+	},
+
+	VarIsNumber{
 		V:           Variable{Name: "X", Nsp: 0},
 		Min:         Number{Num: -8, Den: 6, Normalized: false},
 		Max:         Number{Num: -7, Den: 6, Normalized: false},
 		IntegerOnly: true,
+	},
+
+	VarIsAtom{
+		V: Variable{Name: "X", Nsp: 2},
+		A: Atom{
+			Value: "foo",
+		},
+	},
+
+	VarIsString{
+		V: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+		S: "hello world",
+	},
+
+	VarIsVar{
+		V: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+		W: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+	},
+
+	VarIsVar{
+		V: Variable{
+			Name: "X",
+			Nsp:  2,
+		},
+		W: Variable{
+			Name: "Z",
+			Nsp:  2,
+		},
 	},
 }
 

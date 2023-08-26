@@ -25,7 +25,6 @@ var _ Constraint = VarIsString{}
 var _ Constraint = VarIsNumber{}
 var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
-var _ Constraint = VarIsInteger{}
 
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
@@ -70,6 +69,9 @@ func (c VarIsNumber) String() string {
 
 // Check implements Constraint.
 func (v VarIsNumber) Check() (Constraint, error) {
+	if v.V.Name == "" {
+		return nil, nil // ignore silently
+	}
 	if v.Min.Den == 0 || v.Max.Den == 0 { // ensure numbers are not NaN
 		return nil, ErrInvalidConstraintNaN
 	}
@@ -93,8 +95,8 @@ func (v VarIsNumber) Check() (Constraint, error) {
 }
 
 // Clone implements Constraint.
-func (VarIsNumber) Clone() Constraint {
-	panic("unimplemented")
+func (c VarIsNumber) Clone() Constraint {
+	return c
 }
 
 // Simplify implements Constraint.
@@ -108,13 +110,19 @@ type VarIsAtom struct {
 }
 
 // String implements Constraint.
-func (VarIsAtom) String() string {
-	panic("unimplemented")
+func (c VarIsAtom) String() string {
+	return c.V.Pretty() + " =" + c.A.Pretty()
 }
 
 // Check implements Constraint.
-func (VarIsAtom) Check() (Constraint, error) {
-	panic("unimplemented")
+func (c VarIsAtom) Check() (Constraint, error) {
+	if c.V.Name == "" {
+		return nil, nil // ignore silently
+	}
+	if c.A.Value == "" {
+		panic("invalid atom constraint, atom value should not be the empty string")
+	}
+	return c, nil
 }
 
 // Simplify implements Constraint.
@@ -124,13 +132,7 @@ func (VarIsAtom) Simplify(c Constraint) (cc []Constraint, changed bool, err erro
 
 // Clone implements Constraint.
 func (c VarIsAtom) Clone() Constraint {
-	return VarIsAtom{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		A: c.A,
-	}
+	return c
 }
 
 // Constraint for X = term
@@ -145,7 +147,10 @@ func (VarIsCompoundTerm) String() string {
 }
 
 // Check implements Constraint.
-func (VarIsCompoundTerm) Check() (Constraint, error) {
+func (c VarIsCompoundTerm) Check() (Constraint, error) {
+	if c.V.Name == "" {
+		return nil, nil // ignore silently
+	}
 	panic("unimplemented")
 }
 
@@ -165,52 +170,22 @@ func (c VarIsCompoundTerm) Clone() Constraint {
 	}
 }
 
-// Constraint for var that should resolve to an Integer in the given range
-type VarIsInteger struct {
-	V   Variable
-	Min int // minimum acceptable value, included.
-	Max int // max acceptable value, included.
-}
-
-// String implements Constraint.
-func (VarIsInteger) String() string {
-	panic("unimplemented")
-}
-
-// Check implements Constraint.
-func (VarIsInteger) Check() (Constraint, error) {
-	panic("unimplemented")
-}
-
-// Simplify implements Constraint.
-func (VarIsInteger) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
-}
-
-func (c VarIsInteger) Clone() Constraint {
-	return VarIsInteger{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		Min: c.Min,
-		Max: c.Max,
-	}
-}
-
 type VarIsString struct {
 	V Variable
 	S string
 }
 
 // String implements Constraint.
-func (VarIsString) String() string {
-	panic("unimplemented")
+func (c VarIsString) String() string {
+	return fmt.Sprintf("%s = %q", c.V.Pretty(), c.S)
 }
 
 // Check implements Constraint.
-func (VarIsString) Check() (Constraint, error) {
-	panic("unimplemented")
+func (c VarIsString) Check() (Constraint, error) {
+	if c.V.Name == "" {
+		return nil, nil // silently ignore
+	}
+	return c, nil
 }
 
 // Simplify implements Constraint.
@@ -220,13 +195,7 @@ func (VarIsString) Simplify(c Constraint) (cc []Constraint, changed bool, err er
 
 // Clone implements Constraint.
 func (c VarIsString) Clone() Constraint {
-	return VarIsString{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		S: c.S,
-	}
+	return c
 }
 
 type VarIsVar struct {
@@ -235,13 +204,20 @@ type VarIsVar struct {
 }
 
 // String implements Constraint.
-func (VarIsVar) String() string {
-	panic("unimplemented")
+func (c VarIsVar) String() string {
+	return c.V.Pretty() + " = " + c.W.Pretty()
 }
 
 // Check implements Constraint.
-func (VarIsVar) Check() (Constraint, error) {
-	panic("unimplemented")
+func (c VarIsVar) Check() (Constraint, error) {
+	if c.V.Name == "" || c.W.Name == "" {
+		return nil, nil // silently ignore, no effect
+	}
+	if c.V.Name == c.W.Name && c.V.Nsp == c.W.Nsp { // Ignore X=X silently
+		return nil, nil
+	} else {
+		return c, nil
+	}
 }
 
 // Simplify implements Constraint.
@@ -251,14 +227,5 @@ func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error
 
 // Clone implements Constraint.
 func (c VarIsVar) Clone() Constraint {
-	return VarIsVar{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		W: Variable{
-			Name: c.W.Name,
-			Nsp:  c.W.Nsp,
-		},
-	}
+	return c
 }
