@@ -100,6 +100,6 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		}
 		return nil, false, nil // no change, keep all
 	default:
-		panic("unreachable code")
+		panic("case not implemented")
 	}
 }

@@ -24,20 +24,20 @@
 
 2	using : Y = Z
 2-0		 to simplify : X = toto    --> 
-2-0			ERROR   : [31mnot implemented[0m
+2-0			NO CHANGE, KEEP AS IS
 2-1		 to simplify : Y = tata    --> 
-2-1			ERROR   : [31mnot implemented[0m
+2-1			NO CHANGE, KEEP AS IS
 2-2		 to simplify : Y = Z    --> 
-2-2			ERROR   : [31mnot implemented[0m
+2-2			REMOVE
 2-3		 to simplify : X = Z    --> 
-2-3			ERROR   : [31mnot implemented[0m
+2-3			NO CHANGE, KEEP AS IS
 
 3	using : X = Z
 3-0		 to simplify : X = toto    --> 
-3-0			ERROR   : [31mnot implemented[0m
+3-0			NO CHANGE, KEEP AS IS
 3-1		 to simplify : Y = tata    --> 
-3-1			ERROR   : [31mnot implemented[0m
+3-1			NO CHANGE, KEEP AS IS
 3-2		 to simplify : Y = Z    --> 
-3-2			ERROR   : [31mnot implemented[0m
+3-2			NO CHANGE, KEEP AS IS
 3-3		 to simplify : X = Z    --> 
-3-3			ERROR   : [31mnot implemented[0m
+3-3			REMOVE

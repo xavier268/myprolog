@@ -1,7 +1,5 @@
 package solver
 
-import "fmt"
-
 type VarIsVar struct {
 	V Variable
 	W Variable
@@ -37,8 +35,40 @@ func (c VarIsVar) Check() (Constraint, error) {
 	}
 }
 
-// Simplify implements Constraint.
-func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	fmt.Println("VarIsVar.Simplify error :", ErrNotImplemented)
-	return nil, false, ErrNotImplemented
+// simplify c2, taking into account the calling constraint c1 (unchanged).
+// if error, other results are not significant and should not be used.
+// If changed, replace c by all of cc (possibly empty, to just suppress c).
+// If changed is false, cc has no meaning.
+// Input constraints MUST BE checked
+// Output constraints are checked
+func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+
+	switch c2 := c2.(type) {
+	case VarIsAtom, VarIsString, VarIsNumber:
+		// no action
+		return nil, false, nil // no change
+	case VarIsVar:
+		if c1.V.Eq(c2.V) && c1.W.Eq(c2.W) {
+			return nil, true, nil // duplicate
+		}
+		if c1.V.Eq(c2.W) && c1.W.Eq(c2.V) {
+			return nil, true, nil // duplicate
+		}
+		return nil, false, nil // no change
+	case VarIsCompoundTerm:
+		tt, found := ReplaceVar(c1.V, c2.T, c1.W)
+		if !found {
+			return nil, false, nil // no change
+		}
+		c3 := VarIsCompoundTerm{c2.V, tt}
+		c4, err := c3.Check()
+		if err != nil {
+			return nil, false, err
+		}
+		return []Constraint{c4}, true, nil
+
+	default:
+		panic("case not implemented")
+
+	}
 }

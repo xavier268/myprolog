@@ -32,31 +32,31 @@
 
 2	using : Y = Z
 2-0		 to simplify : X = toto    --> 
-2-0			ERROR   : [31mnot implemented[0m
+2-0			NO CHANGE, KEEP AS IS
 2-1		 to simplify : Y = tata    --> 
-2-1			ERROR   : [31mnot implemented[0m
+2-1			NO CHANGE, KEEP AS IS
 2-2		 to simplify : Y = Z    --> 
-2-2			ERROR   : [31mnot implemented[0m
+2-2			REMOVE
 2-3		 to simplify : X = Z    --> 
-2-3			ERROR   : [31mnot implemented[0m
+2-3			NO CHANGE, KEEP AS IS
 2-4		 to simplify : 3/2 <= X <= 7/2    --> 
-2-4			ERROR   : [31mnot implemented[0m
+2-4			NO CHANGE, KEEP AS IS
 2-5		 to simplify : Z is an integer and -3/2 <= Z <= 1/2    --> 
-2-5			ERROR   : [31mnot implemented[0m
+2-5			NO CHANGE, KEEP AS IS
 
 3	using : X = Z
 3-0		 to simplify : X = toto    --> 
-3-0			ERROR   : [31mnot implemented[0m
+3-0			NO CHANGE, KEEP AS IS
 3-1		 to simplify : Y = tata    --> 
-3-1			ERROR   : [31mnot implemented[0m
+3-1			NO CHANGE, KEEP AS IS
 3-2		 to simplify : Y = Z    --> 
-3-2			ERROR   : [31mnot implemented[0m
+3-2			NO CHANGE, KEEP AS IS
 3-3		 to simplify : X = Z    --> 
-3-3			ERROR   : [31mnot implemented[0m
+3-3			REMOVE
 3-4		 to simplify : 3/2 <= X <= 7/2    --> 
-3-4			ERROR   : [31mnot implemented[0m
+3-4			NO CHANGE, KEEP AS IS
 3-5		 to simplify : Z is an integer and -3/2 <= Z <= 1/2    --> 
-3-5			ERROR   : [31mnot implemented[0m
+3-5			NO CHANGE, KEEP AS IS
 
 4	using : 3/2 <= X <= 7/2
 4-0		 to simplify : X = toto    --> 
