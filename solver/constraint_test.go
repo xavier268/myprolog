@@ -57,6 +57,18 @@ var cData = []Constraint{
 		Max:         Number{Num: 7, Den: 6, Normalized: false},
 		IntegerOnly: true,
 	},
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: 5, Den: 6, Normalized: false},
+		Max:         Number{Num: 13, Den: 6, Normalized: false},
+		IntegerOnly: false,
+	},
+	VarIsNumber{
+		V:           Variable{Name: "X", Nsp: 0},
+		Min:         Number{Num: 5, Den: 6, Normalized: false},
+		Max:         Number{Num: 13, Den: 6, Normalized: false},
+		IntegerOnly: true,
+	},
 
 	VarIsNumber{
 		V:           Variable{Name: "X", Nsp: 0},
