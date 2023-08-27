@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/xavier268/myprolog/mytest"
 )
 
 func TestLexer(t *testing.T) {
@@ -59,7 +61,7 @@ func TestLexer(t *testing.T) {
 		}
 	}
 
-	verifyTest(t, sb.String(), "lexer_test.want")
+	mytest.Verify(t, sb.String(), "lexer_test.want")
 
 }
 

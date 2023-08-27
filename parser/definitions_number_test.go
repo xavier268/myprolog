@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/xavier268/myprolog/mytest"
 )
 
 var testNumberData = []Number{
@@ -56,6 +58,6 @@ func TestNumber(t *testing.T) {
 		}
 	}
 
-	verifyTest(t, sb.String(), "definitions_number_test.want")
+	mytest.Verify(t, sb.String(), "definitions_number_test.want")
 
 }

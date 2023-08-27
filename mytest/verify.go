@@ -1,4 +1,4 @@
-package parser
+package mytest
 
 import (
 	"fmt"
@@ -9,7 +9,7 @@ import (
 
 // Verify content against reference file.
 // If no reference file found, creates it.
-func verifyTest(t *testing.T, content string, filename string) {
+func Verify(t *testing.T, content string, filename string) {
 	filename, _ = filepath.Abs(filename)
 	fmt.Println("Verifying test results against file : ", filename)
 	check, err := os.ReadFile(filename)
@@ -33,12 +33,12 @@ func verifyTest(t *testing.T, content string, filename string) {
 
 				fmt.Printf("\n===============================================================\n%s : Results differ from reference file", t.Name())
 				fmt.Printf("\n============================ got ==============================\n%s%s%s%s\n",
-					content[i1:i], START_RED, content[i:i2], END_RED)
+					content[i1:i], RED, content[i:i2], RESET)
 				if i2 >= len([]rune(sc)) {
 					i2 = len([]rune(sc))
 				}
 				fmt.Printf("\n============================ want==============================\n%s%s%s%s\n",
-					sc[i1:i], START_RED, sc[i:i2], END_RED)
+					sc[i1:i], RED, sc[i:i2], RESET)
 
 				t.Fatalf("Result differs from reference file in %s", t.Name())
 			}

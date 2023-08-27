@@ -23,7 +23,7 @@ func (rs *RuleSet) AddRule(rule Term) {
 		panic("Trying to add a Term that is not a rule")
 	}
 	if len(r.Children) == 0 {
-		fmt.Println(parser.START_RED, "WARNING : trying to add a rule with no children - ignored", parser.END_RED)
+		fmt.Println(parser.RED, "WARNING : trying to add a rule with no children - ignored", parser.RESET)
 		return
 	}
 	rs.rules = append(rs.rules, r)

@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/xavier268/myprolog/mytest"
 )
 
 func TestGcd(t *testing.T) {
@@ -17,6 +19,6 @@ func TestGcd(t *testing.T) {
 		p := Gcd(a, b)
 		fmt.Fprintf(sb, "%d\t%d\t\t--> \t%d\n", a, b, p)
 	}
-	verifyTest(t, sb.String(), "gcd_test.want")
+	mytest.Verify(t, sb.String(), "gcd_test.want")
 
 }

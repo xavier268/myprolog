@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/xavier268/myprolog/mytest"
 )
 
 func TestParser(t *testing.T) {
@@ -87,7 +89,7 @@ func TestParser(t *testing.T) {
 
 	res := run(tdata)
 
-	verifyTest(t, res, "parser_test.want")
+	mytest.Verify(t, res, "parser_test.want")
 
 }
 

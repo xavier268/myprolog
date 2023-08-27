@@ -406,7 +406,7 @@ func (c CompoundTerm) Pretty() string {
 		fmt.Fprintf(&sb, "?- ")
 		for i, child := range c.Children {
 			if child == nil {
-				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+				fmt.Println(RED, "WARNING : unexpected nil children", RESET)
 			} else {
 				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
 			}
@@ -419,11 +419,11 @@ func (c CompoundTerm) Pretty() string {
 	case "rule":
 		var sb strings.Builder
 		if len(c.Children) == 0 {
-			fmt.Println(START_RED, "WARNING : unexpected rule without head", END_RED)
+			fmt.Println(RED, "WARNING : unexpected rule without head", RESET)
 		}
 		for i, child := range c.Children {
 			if child == nil {
-				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+				fmt.Println(RED, "WARNING : unexpected nil children", RESET)
 			} else {
 				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
 			}
@@ -443,7 +443,7 @@ func (c CompoundTerm) Pretty() string {
 		fmt.Fprintf(&sb, "%s(", c.Functor)
 		for i, child := range c.Children {
 			if child == nil {
-				fmt.Println(START_RED, "WARNING : unexpected nil children", END_RED)
+				fmt.Println(RED, "WARNING : unexpected nil children", RESET)
 			} else {
 				fmt.Fprintf(&sb, "%s", child.Pretty()) // caution ! Need to pretty inside the tree also !
 			}

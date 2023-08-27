@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 	"testing"
+
+	"github.com/xavier268/myprolog/mytest"
 )
 
 // Data set of constraints to test
@@ -160,5 +162,5 @@ func TestConstraintsCheck(t *testing.T) {
 		}
 	}
 
-	verifyTest(t, sb.String(), "constraint_check_test.want")
+	mytest.Verify(t, sb.String(), "constraint_check_test.want")
 }

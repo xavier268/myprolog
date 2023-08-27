@@ -1,6 +1,8 @@
-package solver
+package mytest
 
+// ANSI color codes for text color
 const (
+	// ANSI color codes for text color
 	RED    = "\x1b[31m"
 	GREEN  = "\x1b[32m"
 	BLUE   = "\x1b[34m"

@@ -5,6 +5,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/xavier268/myprolog/mytest"
 	"github.com/xavier268/myprolog/parser"
 )
 
@@ -64,5 +65,5 @@ func TestReplace(t *testing.T) {
 		fmt.Fprintf(sb, "\n%d\t\t\tfound: %t", i, found)
 
 	}
-	verifyTest(t, sb.String(), "substitution_test.want")
+	mytest.Verify(t, sb.String(), "substitution_test.want")
 }
