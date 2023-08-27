@@ -270,6 +270,15 @@ type Variable struct { // a named variable
 	Nsp  int // name space
 }
 
+// True if and only if t is a Variable and t Name and Nsp are identical to V
+func (v Variable) Eq(t Term) bool {
+	tt, ok := t.(Variable)
+	if !ok {
+		return false
+	}
+	return v.Name == tt.Name && v.Nsp == tt.Nsp
+}
+
 // CloneNsp implements Term.
 func (t Variable) CloneNsp(nsp int) Term {
 	return Variable{

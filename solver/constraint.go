@@ -135,7 +135,7 @@ func (c VarIsAtom) Check() (Constraint, error) {
 func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
 	case VarIsAtom:
-		if c1.V.Name == c2.V.Name && c1.V.Nsp == c2.V.Nsp { // same variable
+		if c1.V.Eq(c2.V) { // same variable
 			if c1.A.Value == c2.A.Value { // same atom
 				return nil, true, nil // remove, duplicated.
 			} else {
@@ -250,10 +250,7 @@ func (c VarIsVar) String() string {
 // Check implements Constraint.
 // There is a cannonical order of variables, with Y = Y means Y is latest (highest Nsp)
 func (c VarIsVar) Check() (Constraint, error) {
-	if c.V.Name == "" || c.W.Name == "" {
-		return nil, nil // silently ignore, no effect
-	}
-	if c.V.Name == c.W.Name && c.V.Nsp == c.W.Nsp { // Ignore X=X silently
+	if c.V.Eq(c.W) { // Ignore X=X silently
 		return nil, nil
 	} else {
 		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)

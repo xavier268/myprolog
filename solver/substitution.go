@@ -4,7 +4,7 @@ package solver
 func FindVar(v Variable, t Term) (found bool) {
 	switch t := t.(type) {
 	case Variable:
-		return t.Name == v.Name && t.Nsp == v.Nsp
+		return v.Eq(t)
 	case Number, String, Atom, Underscore:
 		return false
 	case CompoundTerm:
@@ -25,7 +25,7 @@ func ReplaceVar(v Variable, t Term, w Term) (res Term, found bool) {
 
 	switch tt := t.(type) {
 	case Variable:
-		if v.Name == tt.Name && v.Nsp == tt.Nsp { // match !
+		if v.Eq(tt) { // match !
 			return w, true
 		}
 		return t, false
