@@ -5,9 +5,16 @@ type VarIsAtom struct {
 	A Atom
 }
 
+var _ Constraint = VarIsAtom{}
+
 // String implements Constraint.
 func (c VarIsAtom) String() string {
 	return c.V.Pretty() + " = " + c.A.Pretty()
+}
+
+// Clone implements Constraint.
+func (c VarIsAtom) Clone() Constraint {
+	return c
 }
 
 // Check implements Constraint.
@@ -49,10 +56,13 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		}
 		return nil, false, nil // no change, keep all
 	case VarIsCompoundTerm:
+		if c1.V.Eq(c2.V) { // same variable {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
 		if !FindVar(c1.V, c2.T) {
 			return nil, false, nil // no change, keep all
 		}
-		// here, we try to substitute c2/Atom in c1/Term ?
+		// here, we try to substitute c1.V by c1.A in c2.T
 		t3, found := ReplaceVar(c1.V, c2.T, c1.A)
 		if !found {
 			return nil, false, nil // no change, keep all
@@ -60,8 +70,13 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		c3 := VarIsCompoundTerm{
 			V: c2.V,
 			T: t3}
+		c4, err := c3.Check() // verify, possible positive occur check ?
+		if err == nil {
+			return []Constraint{c4}, true, nil
+		} else {
+			return nil, false, err
+		}
 
-		return []Constraint{c3}, true, nil // no change, keep all
 	case VarIsVar:
 		if c1.V.Eq(c2.V) { // same variable
 			c3 := VarIsAtom{
@@ -79,9 +94,4 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 	default:
 		panic("unreachable code")
 	}
-}
-
-// Clone implements Constraint.
-func (c VarIsAtom) Clone() Constraint {
-	return c
 }

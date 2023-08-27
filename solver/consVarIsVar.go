@@ -7,9 +7,16 @@ type VarIsVar struct {
 	W Variable
 }
 
+var _ Constraint = VarIsVar{}
+
 // String implements Constraint.
 func (c VarIsVar) String() string {
 	return c.V.Pretty() + " = " + c.W.Pretty()
+}
+
+// Clone implements Constraint.
+func (c VarIsVar) Clone() Constraint {
+	return c
 }
 
 // Check implements Constraint.
@@ -31,9 +38,4 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	fmt.Println("VarIsVar.Simplify error :", ErrNotImplemented)
 	return nil, false, ErrNotImplemented
-}
-
-// Clone implements Constraint.
-func (c VarIsVar) Clone() Constraint {
-	return c
 }

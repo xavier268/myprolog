@@ -1,8 +1,6 @@
 package solver
 
 import (
-	"fmt"
-
 	"github.com/xavier268/myprolog/parser"
 )
 
@@ -12,6 +10,8 @@ type VarIsNumber struct {
 	Max         Number // maximum acceptable Number
 	IntegerOnly bool   // accept only integers
 }
+
+var _ Constraint = VarIsNumber{}
 
 // String implements Constraint.
 // Constraints are assumed already checked and normalized.
@@ -44,6 +44,11 @@ func (c VarIsNumber) String() string {
 	}
 }
 
+// Clone implements Constraint.
+func (c VarIsNumber) Clone() Constraint {
+	return c
+}
+
 // Check implements Constraint.
 func (v VarIsNumber) Check() (Constraint, error) {
 	if v.V.Name == "" {
@@ -61,19 +66,14 @@ func (v VarIsNumber) Check() (Constraint, error) {
 		v.Min = v.Min.Ceil()  // convert limits to nearest integer
 
 		if v.Max.Eq(v.Min) { // range contains a single,  integer value
-			return v, nil
+			return v, nil // return the modified constraint, X = 2
 		}
 
 		if v.Max.Less(v.Min) { // range is empty
 			return nil, ErrInvalidConstraintEmptyRange
 		}
 	}
-	return v, nil
-}
-
-// Clone implements Constraint.
-func (c VarIsNumber) Clone() Constraint {
-	return c
+	return v, nil // v was assumed to be checked, so no further check.
 }
 
 // Simplify implements Constraint.
@@ -87,6 +87,7 @@ func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 				Max:         c1.Max,
 				IntegerOnly: c1.IntegerOnly,
 			}
+			// c2, c3 is valid, since input had been checked.
 			return []Constraint{c2, c3}, true, nil
 		}
 		if c2.W.Eq(c1.V) {
@@ -123,7 +124,7 @@ func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 		if !changed {
 			return nil, false, nil // no change
 		}
-		c4, err := c3.Check()
+		c4, err := c3.Check() // required to respect the garantee that all output are checked, assumming inputs are.
 		if err != nil {
 			return nil, false, err
 		}
@@ -137,8 +138,7 @@ func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 		if c2.V.Eq(c1.V) {
 			return nil, false, ErrInvalidConstraintSimplify
 		}
-		fmt.Println("VarIsNumber Simplify with VarIsCompoundTerm", ErrNotImplemented)
-		return nil, false, ErrNotImplemented
+		return nil, false, nil // no change
 	case VarIsString:
 		if c2.V.Eq(c1.V) {
 			return nil, false, ErrInvalidConstraintSimplify

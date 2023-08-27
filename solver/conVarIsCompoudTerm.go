@@ -8,9 +8,22 @@ type VarIsCompoundTerm struct {
 	T Term
 }
 
+var _ Constraint = VarIsCompoundTerm{}
+
 // String implements Constraint.
 func (v VarIsCompoundTerm) String() string {
 	return v.V.Pretty() + " = " + v.T.Pretty()
+}
+
+// Clone implements Constraint.
+func (c VarIsCompoundTerm) Clone() Constraint {
+	return VarIsCompoundTerm{
+		V: Variable{
+			Name: c.V.Name,
+			Nsp:  c.V.Nsp,
+		},
+		T: c.T,
+	}
 }
 
 // Check implements Constraint.
@@ -28,15 +41,4 @@ func (c VarIsCompoundTerm) Check() (Constraint, error) {
 func (VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	fmt.Println("VarIsCompoundTerm.Simplify error :", ErrNotImplemented)
 	return nil, false, ErrNotImplemented
-}
-
-// Clone implements Constraint.
-func (c VarIsCompoundTerm) Clone() Constraint {
-	return VarIsCompoundTerm{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		T: c.T,
-	}
 }

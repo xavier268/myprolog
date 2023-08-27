@@ -14,6 +14,7 @@ type Constraint interface {
 	Check() (Constraint, error)
 	// simplify c, taking into account the calling constraint (unchanged).
 	// If changed, replace c by all of cc (possibly empty, to just suppress c).
+	// It is assumed that input constraints are checked, it is garanteed that output constraints have been checked.
 	Simplify(c Constraint) (cc []Constraint, changed bool, err error)
 	String() string
 }
@@ -28,10 +29,12 @@ var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
 var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detected when simplifying")
 var ErrPositiveOccur = fmt.Errorf("positive occur check")
-var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET)
+var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET) // should be removed later on //TODO
 
 // Attempt to simplify constraint list.
 // Return error if an incompatibility was detected.
+// Constraints are supposed to have been checked before calling this function.
+// Its is a garantee that retuened constraints are checked.
 func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 
 hasChangedLoop: // loop again for each changed constraint ...
