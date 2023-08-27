@@ -80,6 +80,9 @@ func TestParser(t *testing.T) {
 		"3/4.0.",
 		"-3/4.",
 		"-3/-4.",
+
+		"a(b,c)",                  // missing final point
+		"a(right).another(wrong)", // missing final point
 	}
 
 	res := run(tdata)
@@ -92,13 +95,17 @@ func run(tdata []string) string {
 	sb := new(strings.Builder)
 	for i, d := range tdata {
 
+		fmt.Fprintln(sb)
+
+		fmt.Fprintf(sb, "\n%d \t\t<%s>", i, d)
 		r, err := ParseString(d, fmt.Sprintf("test # %d <%s>", i, d))
-		fmt.Fprintf(sb, "\n%d \t\t<%s>\n", i, d)
-		fmt.Fprintf(sb, "%d\t\terr=%v\n", i, err)
+		fmt.Fprintf(sb, "\n%d\t\terr=%v", i, err)
 		for _, v := range r {
-			fmt.Fprintf(sb, "%d\t\t(string)    %s\n", i, v.String())
-			fmt.Fprintf(sb, "%d\t\t(pretty)    %s\n", i, v.Pretty())
+			fmt.Fprintf(sb, "\n%d\t\t(string)    %s", i, v.String())
+			fmt.Fprintf(sb, "\n%d\t\t(pretty)    %s", i, v.Pretty())
 		}
+		rr := noFailParseString(d, fmt.Sprintf("test # %d <%s>", i, d))
+		fmt.Fprintf(sb, "\n%d \t\t(nofailparse)%s", i, rr)
 	}
 	return sb.String()
 }

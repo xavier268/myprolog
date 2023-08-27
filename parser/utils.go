@@ -48,3 +48,16 @@ func MustParseString(input string, sourcename string) []Term {
 	}
 	return r
 }
+
+// The error, if any, is added to the (partially) parsed list
+// Useful mainly for debugging.
+func noFailParseString(input string, sourcename string) []Term {
+	r, err := ParseString(input, sourcename)
+	if err != nil {
+		r = append(r, CompoundTerm{
+			Functor:  "error",
+			Children: []Term{String{Value: fmt.Sprintf("error : %v", err)}},
+		})
+	}
+	return r
+}
