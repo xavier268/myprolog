@@ -7,6 +7,8 @@ import (
 	"testing"
 )
 
+var DISPLAY_WINDOW = 160 // max number of characters to display, before and after first discrepency detected.
+
 // Verify content against reference file.
 // If no reference file found, creates it.
 func Verify(t *testing.T, content string, filename string) {
@@ -22,8 +24,8 @@ func Verify(t *testing.T, content string, filename string) {
 	if sc != content { // we know it is different, lets try to show where ...
 		for i, c := range content {
 			if i >= len([]rune(sc)) || c != ([]rune(sc)[i]) {
-				i1 := i - 160
-				i2 := i + 160
+				i1 := i - DISPLAY_WINDOW
+				i2 := i + DISPLAY_WINDOW
 				if i1 <= 0 {
 					i1 = 0
 				}
@@ -46,19 +48,18 @@ func Verify(t *testing.T, content string, filename string) {
 
 		// If we reach here, it means conet is matching ref, but both files are different.
 		// There must be extra reference ? Let's show it.
-
-		i1 := len(content) - 160
-		if len(content) <= 160 {
+		i := len(content)
+		i1 := len(content) - DISPLAY_WINDOW
+		if i1 < 0 {
 			i1 = 0
 		}
-		i := len(content)
 		i2 := len(content) + 160
 		if i2 > len(sc) {
 			i2 = len(sc)
 		}
-
 		fmt.Printf("\n===============================================================\n%s : Results differ from reference file", t.Name())
-		fmt.Printf("\n============================ got ==============================\n\n")
+		fmt.Printf("\n============================ got ==============================\n%s\n",
+			content[i1:i])
 		fmt.Println()
 		fmt.Printf("\n============================ want==============================\n%s%s%s%s\n",
 			sc[i1:i], RED, sc[i:i2], RESET)
