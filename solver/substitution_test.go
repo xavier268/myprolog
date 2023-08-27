@@ -65,5 +65,5 @@ func TestReplace(t *testing.T) {
 		fmt.Fprintf(sb, "\n%d\t\t\tfound: %t", i, found)
 
 	}
-	mytest.Verify(t, sb.String(), "substitution_test.want")
+	mytest.Verify(t, sb.String(), "substitution_test")
 }

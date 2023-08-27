@@ -58,6 +58,6 @@ func TestNumber(t *testing.T) {
 		}
 	}
 
-	mytest.Verify(t, sb.String(), "definitions_number_test.want")
+	mytest.Verify(t, sb.String(), "definitions_number_test")
 
 }

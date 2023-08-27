@@ -49,13 +49,13 @@ func TestSimplify(t *testing.T) {
 	var sb *strings.Builder
 
 	sb = run(t, tConsSimplify1)
-	mytest.Verify(t, sb.String(), "simplify_test.1.want")
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.1")
 
 	sb = run(t, tConsSimplify2)
-	mytest.Verify(t, sb.String(), "simplify_test.2.want")
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.2")
 
 	sb = run(t, append(tConsSimplify1, tConsSimplify2...))
-	mytest.Verify(t, sb.String(), "simplify_test.1.2.want")
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.1.2")
 
 }
 

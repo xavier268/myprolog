@@ -89,7 +89,7 @@ func TestParser(t *testing.T) {
 
 	res := run(tdata)
 
-	mytest.Verify(t, res, "parser_test.want")
+	mytest.Verify(t, res, "parser_test")
 
 }
 

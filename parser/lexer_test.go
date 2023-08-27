@@ -61,7 +61,7 @@ func TestLexer(t *testing.T) {
 		}
 	}
 
-	mytest.Verify(t, sb.String(), "lexer_test.want")
+	mytest.Verify(t, sb.String(), "lexer_test")
 
 }
 

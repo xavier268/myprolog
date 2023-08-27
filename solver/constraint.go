@@ -2,8 +2,6 @@ package solver
 
 import (
 	"fmt"
-
-	"github.com/xavier268/myprolog/parser"
 )
 
 // a Constraint is immutable
@@ -32,334 +30,38 @@ var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detected
 var ErrPositiveOccur = fmt.Errorf("positive occur check")
 var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET)
 
-type VarIsNumber struct {
-	V           Variable
-	Min         Number // minimum acceptable Number
-	Max         Number // maximum acceptable Number
-	IntegerOnly bool   // accept only integers
-}
+// Attempt to simplify constraint list.
+// Return error if an incompatibility was detected.
+func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 
-// String implements Constraint.
-// Constraints are assumed already checked and normalized.
-func (c VarIsNumber) String() string {
-	if c.Min.Eq(c.Max) {
-		return c.V.Pretty() + " = " + c.Min.Pretty()
-	}
-	if c.IntegerOnly { // only integer
-		if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
-			return c.V.Pretty() + " is an integer"
-		}
-		if c.Min.Eq(parser.MinNumber) {
-			return c.V.Pretty() + " is an integer and " + c.V.Pretty() + " <= " + c.Max.Pretty()
-		}
-		if c.Max.Eq(parser.MaxNumber) {
-			return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty()
-		}
-		return c.V.Pretty() + " is an integer and " + c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
-	} else { //  not necessarily an integer ...
-		if c.Min.Eq(parser.MinNumber) && c.Max.Eq(parser.MaxNumber) {
-			return c.V.Pretty() // that should have been cleaned before !
-		}
-		if c.Min.Eq(parser.MinNumber) {
-			return c.V.Pretty() + " <= " + c.Max.Pretty()
-		}
-		if c.Max.Eq(parser.MaxNumber) {
-			return c.Min.Pretty() + " <= " + c.V.Pretty()
-		}
-		return c.Min.Pretty() + " <= " + c.V.Pretty() + " <= " + c.Max.Pretty()
-	}
-}
-
-// Check implements Constraint.
-func (v VarIsNumber) Check() (Constraint, error) {
-	if v.V.Name == "" {
-		return nil, nil // ignore silently
-	}
-	if v.Min.Den == 0 || v.Max.Den == 0 { // ensure numbers are not NaN
-		return nil, ErrInvalidConstraintNaN
-	}
-	if v.Max.Less(v.Min) { // ensure range is not empty because of limits relative positions
-		return nil, ErrInvalidConstraintEmptyRange
-	}
-	if v.IntegerOnly { // Special case for integers only
-
-		v.Max = v.Max.Floor() // convert limits to nearest integer
-		v.Min = v.Min.Ceil()  // convert limits to nearest integer
-
-		if v.Max.Eq(v.Min) { // range contains a single,  integer value
-			return v, nil
-		}
-
-		if v.Max.Less(v.Min) { // range is empty
-			return nil, ErrInvalidConstraintEmptyRange
-		}
-	}
-	return v, nil
-}
-
-// Clone implements Constraint.
-func (c VarIsNumber) Clone() Constraint {
-	return c
-}
-
-// Simplify implements Constraint.
-func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
-	switch c2 := c2.(type) {
-	case VarIsVar:
-		if c2.V.Eq(c1.V) {
-			c3 := VarIsNumber{
-				V:           c2.W,
-				Min:         c1.Min,
-				Max:         c1.Max,
-				IntegerOnly: c1.IntegerOnly,
+hasChangedLoop: // loop again for each changed constraint ...
+	for i, c := range constraints {
+		for j, d := range constraints {
+			if i != j && c != nil && d != nil {
+				dd, ch, err := c.Simplify(d)
+				if err != nil {
+					return constraints, err // will trigger backtracking ...
+				}
+				if ch { // update if requested to do so. Could be nil.
+					if len(dd) == 0 { // suppress this  constraint
+						constraints[j] = nil
+					} else {
+						constraints[j] = dd[0] // replace with one or more new constraints
+						constraints = append(constraints, dd[1:]...)
+					}
+					break hasChangedLoop
+				}
 			}
-			return []Constraint{c2, c3}, true, nil
-		}
-		if c2.W.Eq(c1.V) {
-			c3 := VarIsNumber{
-				V:           c2.V,
-				Min:         c1.Min,
-				Max:         c1.Max,
-				IntegerOnly: c1.IntegerOnly,
-			}
-			return []Constraint{c2, c3}, true, nil
-		}
-		return nil, false, nil // no change
-	case VarIsNumber:
-		if !c1.V.Eq(c2.V) {
-			return nil, false, nil // no change
-		}
-		if c1.Min.Eq(c2.Min) && c1.Max.Eq(c2.Max) && c1.IntegerOnly == c2.IntegerOnly {
-			return nil, true, nil // identical, remove
-		}
-		changed := false
-		c3 := c2
-		if c2.Min.Less(c1.Min) {
-			c3.Min = c1.Min
-			changed = true
-		}
-		if c2.Max.Greater(c1.Max) {
-			c3.Max = c1.Max
-			changed = true
-		}
-		if c1.IntegerOnly && !c2.IntegerOnly {
-			c3.IntegerOnly = true
-			changed = true
-		}
-		if !changed {
-			return nil, false, nil // no change
-		}
-		c4, err := c3.Check()
-		if err != nil {
-			return nil, false, err
-		}
-		return []Constraint{c4}, true, nil
-	case VarIsAtom:
-		if c2.V.Eq(c1.V) {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		return nil, false, nil // no change
-	case VarIsCompoundTerm:
-		if c2.V.Eq(c1.V) {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		fmt.Println("VarIsNumber Simplify with VarIsCompoundTerm", ErrNotImplemented)
-		return nil, false, ErrNotImplemented
-	case VarIsString:
-		if c2.V.Eq(c1.V) {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		return nil, false, nil // no change
-	default:
-		panic("code not reachable")
-	}
-}
-
-type VarIsAtom struct {
-	V Variable
-	A Atom
-}
-
-// String implements Constraint.
-func (c VarIsAtom) String() string {
-	return c.V.Pretty() + " = " + c.A.Pretty()
-}
-
-// Check implements Constraint.
-func (c VarIsAtom) Check() (Constraint, error) {
-	if c.V.Name == "" {
-		return nil, nil // ignore silently
-	}
-	if c.A.Value == "" {
-		panic("invalid atom constraint, atom value should not be the empty string")
-	}
-	return c, nil
-}
-
-// Simplify by replacing c2 with the set, possibly empty, of cc.
-// c1 remains unchanged, and is never part of cc.
-// Assume check was performed on both c1 and c2.
-// If changed is false, ignore cc, keep c2 as is.
-// If changed is true, remove c2 and replace it by all of cc (possibly empty, to just suppress c2).
-func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
-	switch c2 := c2.(type) {
-	case VarIsAtom:
-		if c1.V.Eq(c2.V) { // same variable
-			if c1.A.Value == c2.A.Value { // same atom
-				return nil, true, nil // remove, duplicated.
-			} else {
-				return nil, false, ErrInvalidConstraintSimplify
-			}
-		} else { // different variables
-			return nil, false, nil // no change, keep all
-		}
-	case VarIsString:
-		if c1.V.Eq(c2.V) { // same variable {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		return nil, false, nil // no change, keep all
-	case VarIsNumber:
-		if c1.V.Eq(c2.V) { // same variable {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		return nil, false, nil // no change, keep all
-	case VarIsCompoundTerm:
-		if !FindVar(c1.V, c2.T) {
-			return nil, false, nil // no change, keep all
-		}
-		// here, we try to substitute c2/Atom in c1/Term ?
-		t3, found := ReplaceVar(c1.V, c2.T, c1.A)
-		if !found {
-			return nil, false, nil // no change, keep all
-		}
-		c3 := VarIsCompoundTerm{
-			V: c2.V,
-			T: t3}
-
-		return []Constraint{c3}, true, nil // no change, keep all
-	case VarIsVar:
-		if c1.V.Eq(c2.V) { // same variable
-			c3 := VarIsAtom{
-				V: c2.W,
-				A: c1.A}
-			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
-		}
-		if c1.V.Eq(c2.W) { // same variable
-			c3 := VarIsAtom{
-				V: c2.V,
-				A: c1.A}
-			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
-		}
-		return nil, false, nil // no change, keep all
-	default:
-		panic("unreachable code")
-	}
-}
-
-// Clone implements Constraint.
-func (c VarIsAtom) Clone() Constraint {
-	return c
-}
-
-// Constraint for X = term
-type VarIsCompoundTerm struct {
-	V Variable
-	T Term
-}
-
-// String implements Constraint.
-func (v VarIsCompoundTerm) String() string {
-	return v.V.Pretty() + " = " + v.T.Pretty()
-}
-
-// Check implements Constraint.
-func (c VarIsCompoundTerm) Check() (Constraint, error) {
-	if c.V.Name == "" {
-		return nil, nil // ignore silently
-	}
-	if FindVar(c.V, c.T) {
-		return nil, ErrPositiveOccur
-	}
-	return c, nil
-}
-
-// Simplify implements Constraint.
-func (VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	fmt.Println("VarIsCompoundTerm.Simplify error :", ErrNotImplemented)
-	return nil, false, ErrNotImplemented
-}
-
-// Clone implements Constraint.
-func (c VarIsCompoundTerm) Clone() Constraint {
-	return VarIsCompoundTerm{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		T: c.T,
-	}
-}
-
-type VarIsString struct {
-	V Variable
-	S string
-}
-
-// String implements Constraint.
-func (c VarIsString) String() string {
-	return fmt.Sprintf("%s = %q", c.V.Pretty(), c.S)
-}
-
-// Check implements Constraint.
-func (c VarIsString) Check() (Constraint, error) {
-	if c.V.Name == "" {
-		return nil, nil // silently ignore
-	}
-	return c, nil
-}
-
-// Simplify implements Constraint.
-func (VarIsString) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
-}
-
-// Clone implements Constraint.
-func (c VarIsString) Clone() Constraint {
-	return c
-}
-
-type VarIsVar struct {
-	V Variable
-	W Variable
-}
-
-// String implements Constraint.
-func (c VarIsVar) String() string {
-	return c.V.Pretty() + " = " + c.W.Pretty()
-}
-
-// Check implements Constraint.
-// There is a cannonical order of variables, with Y = Y means Y is latest (highest Nsp)
-func (c VarIsVar) Check() (Constraint, error) {
-	if c.V.Eq(c.W) { // Ignore X=X silently
-		return nil, nil
-	} else {
-		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)
-		if c.V.Nsp < c.W.Nsp || (c.V.Nsp == c.W.Nsp && c.V.Name < c.W.Name) {
-			return VarIsVar{c.W, c.V}, nil
-		} else {
-			return c, nil
 		}
 	}
-}
 
-// Simplify implements Constraint.
-func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	fmt.Println("VarIsVar.Simplify error :", ErrNotImplemented)
-	return nil, false, ErrNotImplemented
-}
-
-// Clone implements Constraint.
-func (c VarIsVar) Clone() Constraint {
-	return c
+	// Now, that we went through the previous loop once without changing anything,
+	// we should clean/remove remaining nil constraints
+	cc := make([]Constraint, 0, len(constraints))
+	for _, c := range constraints {
+		if c != nil {
+			cc = append(cc, c)
+		}
+	}
+	return cc, nil
 }

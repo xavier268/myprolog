@@ -174,5 +174,5 @@ func TestConstraintsCheck(t *testing.T) {
 		}
 	}
 
-	mytest.Verify(t, sb.String(), "constraint_test.want")
+	mytest.Verify(t, sb.String(), "constraint_test")
 }
