@@ -19,6 +19,26 @@ func FindVar(v Variable, t Term) (found bool) {
 	}
 }
 
+// Get the set of all vars in Term
+func FindVars(t Term) map[Variable]bool {
+	switch t := t.(type) {
+	case Variable:
+		return map[Variable]bool{t: true}
+	case Number, String, Atom, Underscore:
+		return nil
+	case CompoundTerm:
+		res := make(map[Variable]bool)
+		for _, c := range t.Children {
+			for v := range FindVars(c) {
+				res[v] = true
+			}
+		}
+		return res
+	default:
+		panic("code should have been unreacheable")
+	}
+}
+
 // Replace Variable v with the term w in  t.
 // If replacement occurs, Term is cloned and found flag is set.
 func ReplaceVar(v Variable, t Term, w Term) (res Term, found bool) {

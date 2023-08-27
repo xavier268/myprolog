@@ -1,0 +1,13 @@
+============== Test FindVars ==============
+
+0	a contains ... map[]
+1	"b" contains ... map[]
+2	1/2 contains ... map[]
+3	_ contains ... map[]
+4	X contains ... map[X:true]
+5	X$1 contains ... map[X$1:true]
+6	Y$1 contains ... map[Y$1:true]
+7	rule(a(X, c)) contains ... map[X:true]
+8	rule(a(b, X)) contains ... map[X:true]
+9	rule(a(X, dot(X, Y))) contains ... map[X:true Y:true]
+10	rule(a(Y, _, d)) contains ... map[Y:true]

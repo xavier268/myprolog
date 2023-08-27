@@ -65,5 +65,15 @@ func TestReplace(t *testing.T) {
 		fmt.Fprintf(sb, "\n%d\t\t\tfound: %t", i, found)
 
 	}
-	mytest.Verify(t, sb.String(), "substitution_test")
+	mytest.Verify(t, sb.String(), "substitution_test.replace")
+}
+
+func TestFindVars(t *testing.T) {
+	sb := new(strings.Builder)
+	fmt.Fprintf(sb, "============== Test FindVars ==============\n")
+	for i, d := range subTestData {
+		fmt.Fprintf(sb, "\n%d\t%s contains ... %v", i, d.String(), FindVars(d))
+	}
+
+	mytest.Verify(t, sb.String(), "substitution_test.findvars")
 }

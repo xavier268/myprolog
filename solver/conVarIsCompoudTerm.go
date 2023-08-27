@@ -1,7 +1,5 @@
 package solver
 
-import "fmt"
-
 // Constraint for X = term
 type VarIsCompoundTerm struct {
 	V Variable
@@ -41,7 +39,60 @@ func (c VarIsCompoundTerm) Check() (Constraint, error) {
 }
 
 // Simplify implements Constraint.
-func (VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	fmt.Println("VarIsCompoundTerm.Simplify error :", ErrNotImplemented)
-	return nil, false, ErrNotImplemented
+func (c1 VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
+	switch c2 := c.(type) {
+	case VarIsCompoundTerm:
+		panic("not implemented - need to unify)")
+	case VarIsAtom:
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // keep, no change
+	case VarIsString:
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // keep, no change
+	case VarIsNumber:
+		if c1.V.Name == c2.V.Name {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // keep, no change
+
+	case VarIsVar:
+		if c1.V == c2.V {
+			// substitute
+			c3 := VarIsCompoundTerm{
+				V: c2.W,
+				T: c1.T,
+			}
+			c4, err := c3.Check()
+			if err != nil {
+				return nil, false, err
+			}
+			if c4 == nil {
+				return nil, true, nil // remove
+			}
+			return []Constraint{c4}, true, nil // update
+		}
+		if c1.V == c2.W {
+			// substitute
+			c3 := VarIsCompoundTerm{
+				V: c2.V,
+				T: c1.T,
+			}
+			c4, err := c3.Check()
+			if err != nil {
+				return nil, false, err
+			}
+			if c4 == nil {
+				return nil, true, nil // remove
+			}
+			return []Constraint{c4}, true, nil // update
+		}
+		return nil, false, nil // keep, no change
+	default:
+		panic(" case not implemenbted")
+	}
+
 }
