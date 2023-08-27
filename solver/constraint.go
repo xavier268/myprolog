@@ -38,7 +38,7 @@ var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET) // should be
 // Attempt to simplify constraint list.
 // Return error if an incompatibility was detected.
 // Constraints are supposed to have been checked before calling this function.
-// Its is a garantee that retuened constraints are checked.
+// Its is a garantee that returned constraints are checked.
 func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 
 hasChangedLoop: // loop again for each changed constraint ...
