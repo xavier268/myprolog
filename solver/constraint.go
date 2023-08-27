@@ -28,8 +28,9 @@ var _ Constraint = VarIsAtom{}
 
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
-var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detectted when simplifying")
+var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detected when simplifying")
 var ErrPositiveOccur = fmt.Errorf("positive occur check")
+var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET)
 
 type VarIsNumber struct {
 	V           Variable
@@ -102,8 +103,76 @@ func (c VarIsNumber) Clone() Constraint {
 }
 
 // Simplify implements Constraint.
-func (VarIsNumber) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
+func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+	switch c2 := c2.(type) {
+	case VarIsVar:
+		if c2.V.Eq(c1.V) {
+			c3 := VarIsNumber{
+				V:           c2.W,
+				Min:         c1.Min,
+				Max:         c1.Max,
+				IntegerOnly: c1.IntegerOnly,
+			}
+			return []Constraint{c2, c3}, true, nil
+		}
+		if c2.W.Eq(c1.V) {
+			c3 := VarIsNumber{
+				V:           c2.V,
+				Min:         c1.Min,
+				Max:         c1.Max,
+				IntegerOnly: c1.IntegerOnly,
+			}
+			return []Constraint{c2, c3}, true, nil
+		}
+		return nil, false, nil // no change
+	case VarIsNumber:
+		if !c1.V.Eq(c2.V) {
+			return nil, false, nil // no change
+		}
+		if c1.Min.Eq(c2.Min) && c1.Max.Eq(c2.Max) && c1.IntegerOnly == c2.IntegerOnly {
+			return nil, true, nil // identical, remove
+		}
+		changed := false
+		c3 := c2
+		if c2.Min.Less(c1.Min) {
+			c3.Min = c1.Min
+			changed = true
+		}
+		if c2.Max.Greater(c1.Max) {
+			c3.Max = c1.Max
+			changed = true
+		}
+		if c1.IntegerOnly && !c2.IntegerOnly {
+			c3.IntegerOnly = true
+			changed = true
+		}
+		if !changed {
+			return nil, false, nil // no change
+		}
+		c4, err := c3.Check()
+		if err != nil {
+			return nil, false, err
+		}
+		return []Constraint{c4}, true, nil
+	case VarIsAtom:
+		if c2.V.Eq(c1.V) {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change
+	case VarIsCompoundTerm:
+		if c2.V.Eq(c1.V) {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		fmt.Println("VarIsNumber Simplify with VarIsCompoundTerm", ErrNotImplemented)
+		return nil, false, ErrNotImplemented
+	case VarIsString:
+		if c2.V.Eq(c1.V) {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change
+	default:
+		panic("code not reachable")
+	}
 }
 
 type VarIsAtom struct {
@@ -113,7 +182,7 @@ type VarIsAtom struct {
 
 // String implements Constraint.
 func (c VarIsAtom) String() string {
-	return c.V.Pretty() + " =" + c.A.Pretty()
+	return c.V.Pretty() + " = " + c.A.Pretty()
 }
 
 // Check implements Constraint.
@@ -144,7 +213,15 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		} else { // different variables
 			return nil, false, nil // no change, keep all
 		}
-	case VarIsString, VarIsNumber, VarIsVar:
+	case VarIsString:
+		if c1.V.Eq(c2.V) { // same variable {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
+	case VarIsNumber:
+		if c1.V.Eq(c2.V) { // same variable {
+			return nil, false, ErrInvalidConstraintSimplify
+		}
 		return nil, false, nil // no change, keep all
 	case VarIsCompoundTerm:
 		if !FindVar(c1.V, c2.T) {
@@ -160,9 +237,22 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 			T: t3}
 
 		return []Constraint{c3}, true, nil // no change, keep all
-
+	case VarIsVar:
+		if c1.V.Eq(c2.V) { // same variable
+			c3 := VarIsAtom{
+				V: c2.W,
+				A: c1.A}
+			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
+		}
+		if c1.V.Eq(c2.W) { // same variable
+			c3 := VarIsAtom{
+				V: c2.V,
+				A: c1.A}
+			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
+		}
+		return nil, false, nil // no change, keep all
 	default:
-		panic("unreacheable code")
+		panic("unreachable code")
 	}
 }
 
@@ -178,8 +268,8 @@ type VarIsCompoundTerm struct {
 }
 
 // String implements Constraint.
-func (VarIsCompoundTerm) String() string {
-	panic("unimplemented")
+func (v VarIsCompoundTerm) String() string {
+	return v.V.Pretty() + " = " + v.T.Pretty()
 }
 
 // Check implements Constraint.
@@ -195,7 +285,8 @@ func (c VarIsCompoundTerm) Check() (Constraint, error) {
 
 // Simplify implements Constraint.
 func (VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
+	fmt.Println("VarIsCompoundTerm.Simplify error :", ErrNotImplemented)
+	return nil, false, ErrNotImplemented
 }
 
 // Clone implements Constraint.
@@ -264,7 +355,8 @@ func (c VarIsVar) Check() (Constraint, error) {
 
 // Simplify implements Constraint.
 func (VarIsVar) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
+	fmt.Println("VarIsVar.Simplify error :", ErrNotImplemented)
+	return nil, false, ErrNotImplemented
 }
 
 // Clone implements Constraint.

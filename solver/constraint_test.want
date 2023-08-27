@@ -6,7 +6,7 @@
 0	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"", Nsp:0}, Min:parser.Number{Num:0, Den:0, Normalized:false}, Max:parser.Number{Num:0, Den:0, Normalized:false}, IntegerOnly:false}
 0	(checked)	<nil>
 
-1	(original)	 =
+1	(original)	 = 
 1	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"", Nsp:0}, A:parser.Atom{Value:""}}
 1	(checked)	<nil>
 
@@ -58,9 +58,9 @@
 13	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:-8, Den:6, Normalized:false}, Max:parser.Number{Num:-7, Den:6, Normalized:false}, IntegerOnly:true}
 13	(checked)	<nil>, error : invalid constraint, specified range is empty
 
-14	(original)	X$2 =foo
+14	(original)	X$2 = foo
 14	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:2}, A:parser.Atom{Value:"foo"}}
-14	(checked)	X$2 =foo
+14	(checked)	X$2 = foo
 
 15	(original)	X$2 = "hello world"
 15	(raw form)	solver.VarIsString{V:parser.Variable{Name:"X", Nsp:2}, S:"hello world"}

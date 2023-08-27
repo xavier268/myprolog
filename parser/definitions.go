@@ -75,6 +75,11 @@ func (n Number) Less(r Number) bool {
 	return n.Minus(r).Num < 0
 }
 
+// Check if n is strictly greater than r
+func (n Number) Greater(r Number) bool {
+	return n.Minus(r).Num > 0
+}
+
 // Normalize the internal representation of a number.
 // 0/0 is normalized as 0/1.
 func (n Number) Normalize() Number {
