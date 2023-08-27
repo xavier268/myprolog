@@ -9,12 +9,16 @@ type Constraint interface {
 	// deep copy
 	Clone() Constraint
 	// Check will check validity of constraint, clean it or simplify it.
-	// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored.
+	// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored (
+	// CAUTION : return can be nil, despite a nil error !
 	// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 	Check() (Constraint, error)
 	// simplify c, taking into account the calling constraint (unchanged).
+	// if error, other results are not significant and should not be used.
 	// If changed, replace c by all of cc (possibly empty, to just suppress c).
-	// It is assumed that input constraints are checked, it is garanteed that output constraints have been checked.
+	// If changed is false, cc has no meaning.
+	// Input constraints MUST BE checked
+	// Output constraints are checkedutput.
 	Simplify(c Constraint) (cc []Constraint, changed bool, err error)
 	String() string
 }

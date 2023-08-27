@@ -67,7 +67,7 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 		case Variable: // goal is a variable
 			c := VarIsString{
 				V: goal,
-				S: head.Value,
+				S: head,
 			}
 			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
@@ -104,7 +104,7 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 		case String:
 			c := VarIsString{
 				V: head, // head is the variable
-				S: goal.Value,
+				S: goal,
 			}
 			return CheckAddConstraint(cList, c)
 		case Atom:

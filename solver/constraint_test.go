@@ -96,7 +96,7 @@ var cData = []Constraint{
 			Name: "X",
 			Nsp:  2,
 		},
-		S: "hello world",
+		S: String{Value: "hello world"},
 	},
 
 	VarIsVar{

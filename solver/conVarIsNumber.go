@@ -49,7 +49,10 @@ func (c VarIsNumber) Clone() Constraint {
 	return c
 }
 
-// Check implements Constraint.
+// Check will check validity of constraint, clean it or simplify it.
+// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored (
+// CAUTION : return can be nil, despite a nil error !
+// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 func (v VarIsNumber) Check() (Constraint, error) {
 	if v.V.Name == "" {
 		return nil, nil // ignore silently
@@ -127,6 +130,9 @@ func (c1 VarIsNumber) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 		c4, err := c3.Check() // required to respect the garantee that all output are checked, assumming inputs are.
 		if err != nil {
 			return nil, false, err
+		}
+		if c4 == nil {
+			return nil, true, nil // remove
 		}
 		return []Constraint{c4}, true, nil
 	case VarIsAtom:

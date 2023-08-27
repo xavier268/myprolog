@@ -26,7 +26,10 @@ func (c VarIsCompoundTerm) Clone() Constraint {
 	}
 }
 
-// Check implements Constraint.
+// Check will check validity of constraint, clean it or simplify it.
+// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored (
+// CAUTION : return can be nil, despite a nil error !
+// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 func (c VarIsCompoundTerm) Check() (Constraint, error) {
 	if c.V.Name == "" {
 		return nil, nil // ignore silently

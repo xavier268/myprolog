@@ -337,9 +337,7 @@ type String struct {
 
 // CloneNsp implements Term.
 func (t String) CloneNsp(nsp int) Term {
-	return String{
-		Value: t.Value,
-	}
+	return t
 }
 
 // Clone implements Term.

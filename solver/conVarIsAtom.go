@@ -17,7 +17,10 @@ func (c VarIsAtom) Clone() Constraint {
 	return c
 }
 
-// Check implements Constraint.
+// Check will check validity of constraint, clean it or simplify it.
+// It will return the constraint itself,  possibly modified, or nil if constraint should be ignored (
+// CAUTION : return can be nil, despite a nil error !
+// An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 func (c VarIsAtom) Check() (Constraint, error) {
 	if c.V.Name == "" {
 		return nil, nil // ignore silently
@@ -28,12 +31,14 @@ func (c VarIsAtom) Check() (Constraint, error) {
 	return c, nil
 }
 
-// Simplify by replacing c2 with the set, possibly empty, of cc.
-// c1 remains unchanged, and is never part of cc.
-// Assume check was performed on both c1 and c2.
-// If changed is false, ignore cc, keep c2 as is.
-// If changed is true, remove c2 and replace it by all of cc (possibly empty, to just suppress c2).
+// simplify c2, taking into account the calling constraint c1 (unchanged).
+// if error, other results are not significant and should not be used.
+// If changed, replace c by all of cc (possibly empty, to just suppress c).
+// If changed is false, cc has no meaning.
+// Input constraints MUST BE checked
+// Output constraints are checked
 func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+
 	switch c2 := c2.(type) {
 	case VarIsAtom:
 		if c1.V.Eq(c2.V) { // same variable
@@ -71,7 +76,10 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 			V: c2.V,
 			T: t3}
 		c4, err := c3.Check() // verify, possible positive occur check ?
-		if err == nil {
+		if err == nil {       // c4 could also be nil
+			if c4 == nil {
+				return nil, true, nil // remove
+			}
 			return []Constraint{c4}, true, nil
 		} else {
 			return nil, false, err

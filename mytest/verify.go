@@ -1,3 +1,4 @@
+// package mytest provides testing utilities for long, repetitive, table driven tests.
 package mytest
 
 import (
