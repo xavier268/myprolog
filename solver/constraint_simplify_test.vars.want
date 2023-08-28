@@ -6,7 +6,8 @@
 0-1		 to simplify : Y$2 = X    --> 
 0-1			NO CHANGE, KEEP AS IS
 0-2		 to simplify : Y$2 = Y    --> 
-0-2			NO CHANGE, KEEP AS IS
+0-2			REPLACE BY
+0-2				Y$2 = X
 0-3		 to simplify : Z$3 = X    --> 
 0-3			NO CHANGE, KEEP AS IS
 0-4		 to simplify : Z$3 = Y$2    --> 
@@ -22,7 +23,8 @@
 1-3		 to simplify : Z$3 = X    --> 
 1-3			NO CHANGE, KEEP AS IS
 1-4		 to simplify : Z$3 = Y$2    --> 
-1-4			NO CHANGE, KEEP AS IS
+1-4			REPLACE BY
+1-4				Z$3 = X
 
 2	using : Y$2 = Y
 2-0		 to simplify : Y = X    --> 
@@ -34,7 +36,8 @@
 2-3		 to simplify : Z$3 = X    --> 
 2-3			NO CHANGE, KEEP AS IS
 2-4		 to simplify : Z$3 = Y$2    --> 
-2-4			NO CHANGE, KEEP AS IS
+2-4			REPLACE BY
+2-4				Z$3 = Y
 
 3	using : Z$3 = X
 3-0		 to simplify : Y = X    --> 

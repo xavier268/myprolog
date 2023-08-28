@@ -48,7 +48,8 @@
 2-3		 to simplify : Y$2 = X    --> 
 2-3			NO CHANGE, KEEP AS IS
 2-4		 to simplify : Y$2 = Y    --> 
-2-4			NO CHANGE, KEEP AS IS
+2-4			REPLACE BY
+2-4				Y$2 = X
 2-5		 to simplify : Z$3 = X    --> 
 2-5			NO CHANGE, KEEP AS IS
 2-6		 to simplify : Z$3 = Y$2    --> 
@@ -68,7 +69,8 @@
 3-5		 to simplify : Z$3 = X    --> 
 3-5			NO CHANGE, KEEP AS IS
 3-6		 to simplify : Z$3 = Y$2    --> 
-3-6			NO CHANGE, KEEP AS IS
+3-6			REPLACE BY
+3-6				Z$3 = X
 
 4	using : Y$2 = Y
 4-0		 to simplify : X = toto    --> 
@@ -84,7 +86,8 @@
 4-5		 to simplify : Z$3 = X    --> 
 4-5			NO CHANGE, KEEP AS IS
 4-6		 to simplify : Z$3 = Y$2    --> 
-4-6			NO CHANGE, KEEP AS IS
+4-6			REPLACE BY
+4-6				Z$3 = Y
 
 5	using : Z$3 = X
 5-0		 to simplify : X = toto    --> 
