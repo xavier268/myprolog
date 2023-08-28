@@ -1,0 +1,13 @@
+
+
+0	using : X = toto
+0-0		 to simplify : X = toto    --> 
+0-0			REMOVE
+0-1		 to simplify : Y$2 = tata    --> 
+0-1			NO CHANGE, KEEP AS IS
+
+1	using : Y$2 = tata
+1-0		 to simplify : X = toto    --> 
+1-0			NO CHANGE, KEEP AS IS
+1-1		 to simplify : Y$2 = tata    --> 
+1-1			REMOVE

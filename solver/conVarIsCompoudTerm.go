@@ -19,11 +19,8 @@ func (v VarIsCompoundTerm) String() string {
 // Clone implements Constraint.
 func (c VarIsCompoundTerm) Clone() Constraint {
 	return VarIsCompoundTerm{
-		V: Variable{
-			Name: c.V.Name,
-			Nsp:  c.V.Nsp,
-		},
-		T: c.T,
+		V: c.V,
+		T: c.T.Clone(),
 	}
 }
 

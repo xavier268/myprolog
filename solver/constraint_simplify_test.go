@@ -8,59 +8,29 @@ import (
 	"github.com/xavier268/myprolog/mytest"
 )
 
-var X, Y, Z = Variable{Name: "X", Nsp: 0}, Variable{Name: "Y", Nsp: 0}, Variable{Name: "Z", Nsp: 0}
-
-var tConsSimplify1 = []Constraint{
-	VarIsAtom{
-		V: X,
-		A: Atom{Value: "toto"},
-	},
-	VarIsAtom{
-		V: Y,
-		A: Atom{Value: "tata"},
-	},
-	VarIsVar{
-		V: Y,
-		W: Z,
-	},
-	VarIsVar{
-		V: X,
-		W: Z,
-	},
-}
-
-var tConsSimplify2 = []Constraint{
-
-	VarEQ{
-		V:     X,
-		Value: Number{Num: 3, Den: 2, Normalized: false},
-	},
-
-	VarINT{
-		V: Z,
-	},
-	VarINT{
-		V: X,
-	},
-}
-
 func TestSimplify(t *testing.T) {
 	var sb *strings.Builder
 
-	sb = run(t, tConsSimplify1)
-	mytest.Verify(t, sb.String(), "constraint_simplify_test.1")
+	sb = run(t, TEST_VAR_IS_ATOM)
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.atoms")
 
-	sb = run(t, tConsSimplify2)
-	mytest.Verify(t, sb.String(), "constraint_simplify_test.2")
+	sb = run(t, TEST_VAR_IS_VAR)
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.vars")
 
-	sb = run(t, append(tConsSimplify1, tConsSimplify2...))
-	mytest.Verify(t, sb.String(), "constraint_simplify_test.1.2")
+	sb = run(t, append(TEST_VAR_IS_ATOM, TEST_VAR_IS_VAR...))
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.atoms.vars")
 
 }
 
 func run(t *testing.T, tCons []Constraint) *strings.Builder {
+
 	sb := new(strings.Builder)
+
+	// only test on checked, non nil, constraints
+	tCons = cleanAllConstraints(tCons)
+
 	for i, c1 := range tCons {
+
 		fmt.Fprintln(sb)
 		fmt.Fprintf(sb, "\n%d\tusing : %v", i, c1)
 		for j, c2 := range tCons {

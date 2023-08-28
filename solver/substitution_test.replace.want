@@ -2,7 +2,7 @@
 
 
 0	Replacing X in : 	a
-0		by Y$3 		result: a
+0		by Y$2 		result: a
 0			found: false
 0		by _ 		result: a
 0			found: false
@@ -12,7 +12,7 @@
 0			found: false
 
 1	Replacing X in : 	"b"
-1		by Y$3 		result: "b"
+1		by Y$2 		result: "b"
 1			found: false
 1		by _ 		result: "b"
 1			found: false
@@ -22,7 +22,7 @@
 1			found: false
 
 2	Replacing X in : 	1/2
-2		by Y$3 		result: 1/2
+2		by Y$2 		result: 1/2
 2			found: false
 2		by _ 		result: 1/2
 2			found: false
@@ -32,7 +32,7 @@
 2			found: false
 
 3	Replacing X in : 	_
-3		by Y$3 		result: _
+3		by Y$2 		result: _
 3			found: false
 3		by _ 		result: _
 3			found: false
@@ -42,7 +42,7 @@
 3			found: false
 
 4	Replacing X in : 	X
-4		by Y$3 		result: Y$3
+4		by Y$2 		result: Y$2
 4			found: true
 4		by _ 		result: _
 4			found: true
@@ -52,7 +52,7 @@
 4			found: true
 
 5	Replacing X in : 	X$1
-5		by Y$3 		result: X$1
+5		by Y$2 		result: X$1
 5			found: false
 5		by _ 		result: X$1
 5			found: false
@@ -62,7 +62,7 @@
 5			found: false
 
 6	Replacing X in : 	Y$1
-6		by Y$3 		result: Y$1
+6		by Y$2 		result: Y$1
 6			found: false
 6		by _ 		result: Y$1
 6			found: false
@@ -72,7 +72,7 @@
 6			found: false
 
 7	Replacing X in : 	rule(a(X, c))
-7		by Y$3 		result: rule(a(Y$3, c))
+7		by Y$2 		result: rule(a(Y$2, c))
 7			found: true
 7		by _ 		result: rule(a(_, c))
 7			found: true
@@ -82,7 +82,7 @@
 7			found: true
 
 8	Replacing X in : 	rule(a(b, X))
-8		by Y$3 		result: rule(a(b, Y$3))
+8		by Y$2 		result: rule(a(b, Y$2))
 8			found: true
 8		by _ 		result: rule(a(b, _))
 8			found: true
@@ -92,7 +92,7 @@
 8			found: true
 
 9	Replacing X in : 	rule(a(X, dot(X, Y)))
-9		by Y$3 		result: rule(a(Y$3, dot(Y$3, Y)))
+9		by Y$2 		result: rule(a(Y$2, dot(Y$2, Y)))
 9			found: true
 9		by _ 		result: rule(a(_, dot(_, Y)))
 9			found: true
@@ -102,7 +102,7 @@
 9			found: true
 
 10	Replacing X in : 	rule(a(Y, _, d))
-10		by Y$3 		result: rule(a(Y, _, d))
+10		by Y$2 		result: rule(a(Y, _, d))
 10			found: false
 10		by _ 		result: rule(a(Y, _, d))
 10			found: false

@@ -2,40 +2,38 @@
 ========= Single constraint test =========
 
 
-0	(original)	 = 0
-0	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-0	(checked)	 = 0
+0	<nil>
 
-1	(original)	 < 0
-1	(raw form)	solver.VarLT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-1	(checked)	 < 0
+1	(original)	 = 0
+1	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+1	(checked)	 = 0
 
-2	(original)	 <= 0
-2	(raw form)	solver.VarLTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-2	(checked)	 <= 0
+2	(original)	 > 0
+2	(raw form)	solver.VarGT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+2	(checked)	 > 0
 
-3	(original)	 > 0
-3	(raw form)	solver.VarGT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-3	(checked)	 > 0
+3	(original)	 >= 0
+3	(raw form)	solver.VarGTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+3	(checked)	 >= 0
 
-4	(original)	 >= 0
-4	(raw form)	solver.VarGTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-4	(checked)	 >= 0
+4	(original)	 < 0
+4	(raw form)	solver.VarLT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+4	(checked)	 < 0
 
-5	(original)	 is an integer
-5	(raw form)	solver.VarINT{V:parser.Variable{Name:"", Nsp:0}}
-5	(checked)	 is an integer
+5	(original)	 <= 0
+5	(raw form)	solver.VarLTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+5	(checked)	 <= 0
 
-6	(original)	 = 
-6	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"", Nsp:0}, A:parser.Atom{Value:""}}
-6	(checked)	<nil>
+6	(original)	 is an integer
+6	(raw form)	solver.VarINT{V:parser.Variable{Name:"", Nsp:0}}
+6	(checked)	 is an integer
 
-7	(original)	 = "\"\""
-7	(raw form)	solver.VarIsString{V:parser.Variable{Name:"", Nsp:0}, S:parser.String{Value:""}}
+7	(original)	 = 
+7	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"", Nsp:0}, A:parser.Atom{Value:""}}
 7	(checked)	<nil>
 
-8	(original)	 = 
-8	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"", Nsp:0}, W:parser.Variable{Name:"", Nsp:0}}
+8	(original)	 = "\"\""
+8	(raw form)	solver.VarIsString{V:parser.Variable{Name:"", Nsp:0}, S:parser.String{Value:""}}
 8	(checked)	<nil>
 
 9	(original)	 = <nil>
@@ -46,54 +44,38 @@
 10	(raw form)	solver.VarIsCompoundTerm{V:parser.Variable{Name:"X", Nsp:0}, T:parser.Term(nil)}
 10	(checked)	<nil>
 
-11	(original)	X = 5/2
-11	(raw form)	solver.VarEQ{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
-11	(checked)	X = 5/2
+11	(original)	X = <nil>
+11	(raw form)	solver.VarIsCompoundTerm{V:parser.Variable{Name:"X", Nsp:0}, T:parser.Term(nil)}
+11	(checked)	<nil>
 
-12	(original)	X < 5/2
-12	(raw form)	solver.VarLT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
-12	(checked)	X < 5/2
+12	(original)	X = toto
+12	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:0}, A:parser.Atom{Value:"toto"}}
+12	(checked)	X = toto
 
-13	(original)	X > 5/2
-13	(raw form)	solver.VarGT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
-13	(checked)	X > 5/2
+13	(original)	Y$2 = tata
+13	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"Y", Nsp:2}, A:parser.Atom{Value:"tata"}}
+13	(checked)	Y$2 = tata
 
-14	(original)	X <= 5/2
-14	(raw form)	solver.VarLTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
-14	(checked)	X <= 5/2
+14	(original)	X = X
+14	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
+14	(checked)	<nil>
 
-15	(original)	X >= 5/2
-15	(raw form)	solver.VarGTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
-15	(checked)	X >= 5/2
+15	(original)	Y = X
+15	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
+15	(checked)	Y = X
 
-16	(original)	X is an integer
-16	(raw form)	solver.VarINT{V:parser.Variable{Name:"X", Nsp:0}}
-16	(checked)	X is an integer
+16	(original)	X = Y$2
+16	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
+16	(checked)	Y$2 = X
 
-17	(original)	X$2 = foo
-17	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:2}, A:parser.Atom{Value:"foo"}}
-17	(checked)	X$2 = foo
+17	(original)	Y = Y$2
+17	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
+17	(checked)	Y$2 = Y
 
-18	(original)	X$2 = "\"hello world\""
-18	(raw form)	solver.VarIsString{V:parser.Variable{Name:"X", Nsp:2}, S:parser.String{Value:"hello world"}}
-18	(checked)	X$2 = "\"hello world\""
+18	(original)	Z$3 = X
+18	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"X", Nsp:0}}
+18	(checked)	Z$3 = X
 
-19	(original)	X$2 = X$2
-19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
-19	(checked)	<nil>
-
-20	(original)	X$2 = Z$2
-20	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:2}}
-20	(checked)	Z$2 = X$2
-
-21	(original)	Z$2 = X$2
-21	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
-21	(checked)	Z$2 = X$2
-
-22	(original)	X$2 = Z$1
-22	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:1}}
-22	(checked)	X$2 = Z$1
-
-23	(original)	Z$1 = X$2
-23	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:1}, W:parser.Variable{Name:"X", Nsp:2}}
-23	(checked)	X$2 = Z$1
+19	(original)	Z$3 = Y$2
+19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"Y", Nsp:2}}
+19	(checked)	Z$3 = Y$2

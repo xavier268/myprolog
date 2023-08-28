@@ -8,126 +8,25 @@ import (
 	"github.com/xavier268/myprolog/mytest"
 )
 
-// Data set of constraints to test
-var cData = []Constraint{
-
-	// Testing all zero values
-	VarEQ{},
-	VarLT{},
-	VarLTE{},
-	VarGT{},
-	VarGTE{},
-	VarINT{},
-	VarIsAtom{},
-	VarIsString{},
-	VarIsVar{},
-	VarIsCompoundTerm{},
-	VarIsCompoundTerm{V: Variable{Name: "X", Nsp: 0}}, // nil term
-
-	VarEQ{
-		V:     Variable{Name: "X", Nsp: 0},
-		Value: Number{Num: 5, Den: 2, Normalized: false},
-	},
-
-	VarLT{
-		V:     Variable{Name: "X", Nsp: 0},
-		Value: Number{Num: 5, Den: 2, Normalized: false},
-	},
-	VarGT{
-		V:     Variable{Name: "X", Nsp: 0},
-		Value: Number{Num: 5, Den: 2, Normalized: false},
-	},
-	VarLTE{
-		V:     Variable{Name: "X", Nsp: 0},
-		Value: Number{Num: 5, Den: 2, Normalized: false},
-	},
-	VarGTE{
-		V:     Variable{Name: "X", Nsp: 0},
-		Value: Number{Num: 5, Den: 2, Normalized: false},
-	},
-	VarINT{
-		V: Variable{Name: "X", Nsp: 0},
-	},
-
-	VarIsAtom{
-		V: Variable{Name: "X", Nsp: 2},
-		A: Atom{
-			Value: "foo",
-		},
-	},
-
-	VarIsString{
-		V: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-		S: String{Value: "hello world"},
-	},
-
-	VarIsVar{
-		V: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-		W: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-	},
-
-	VarIsVar{ // The checked version will show a different order
-		V: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-		W: Variable{
-			Name: "Z",
-			Nsp:  2,
-		},
-	},
-
-	VarIsVar{
-		V: Variable{
-			Name: "Z",
-			Nsp:  2,
-		},
-		W: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-	},
-	VarIsVar{ // The checked version will show a different order
-		V: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-		W: Variable{
-			Name: "Z",
-			Nsp:  1,
-		},
-	},
-
-	VarIsVar{
-		V: Variable{
-			Name: "Z",
-			Nsp:  1,
-		},
-		W: Variable{
-			Name: "X",
-			Nsp:  2,
-		},
-	},
-}
-
 func TestConstraintsCheck(t *testing.T) {
 	var err error
 	sb := new(strings.Builder)
 
 	fmt.Fprintf(sb, "\n========= Single constraint test =========\n")
 
+	cData := append([]Constraint{}, TEST_EMPTY_CONSTRAINTS...)
+	cData = append(cData, TEST_VAR_IS_ATOM...)
+	cData = append(cData, TEST_VAR_IS_VAR...)
+
 	for i, c := range cData {
 
 		fmt.Fprintln(sb)
+
+		// special nil constraints - nothing to see !
+		if c == nil {
+			fmt.Fprintf(sb, "\n%d\t<nil>", i)
+			continue
+		}
 
 		fmt.Fprintf(sb, "\n%d\t(original)\t%v", i, c.String())
 		fmt.Fprintf(sb, "\n%d\t(raw form)\t%#v", i, c)

@@ -29,11 +29,8 @@ func TestReplace(t *testing.T) {
 
 	sb := new(strings.Builder)
 
-	// to be replaced
-	X := Variable{Name: "X", Nsp: 0} // X
-
 	// Replacements
-	Rep1 := Variable{Name: "Y", Nsp: 3}
+	Rep1 := Y2
 	Rep2 := Underscore{}
 	Rep3 := parser.MustParseString("a(b,c).", "test data")[0]
 	Rep4 := parser.MustParseString("a(X,c).", "test data")[0] // positive occur chech - should never happen anyway, but should work here.

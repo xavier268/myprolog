@@ -275,13 +275,25 @@ type Variable struct { // a named variable
 	Nsp  int // name space
 }
 
+// Less means v.nsp is strictly smaller than w.nsp, and if equal, v.Name is smaller than w.Name
+func (v Variable) Less(w Variable) bool {
+	if v.Nsp < w.Nsp {
+		return true
+	}
+	if v.Nsp > w.Nsp {
+		return false
+	}
+	// v.Nsp == w.Nsp
+	return v.Name < w.Name
+}
+
 // True if and only if t is a Variable and t Name and Nsp are identical to V
 func (v Variable) Eq(t Term) bool {
 	tt, ok := t.(Variable)
 	if !ok {
 		return false
 	}
-	return v.Name == tt.Name && v.Nsp == tt.Nsp
+	return v == tt
 }
 
 // CloneNsp implements Term.
