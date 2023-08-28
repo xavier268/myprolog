@@ -57,6 +57,8 @@ var TEST_EMPTY_CONSTRAINTS = []Constraint{
 	VarIsCompoundTerm{},
 	VarIsCompoundTerm{V: X},
 	VarIsCompoundTerm{V: X, T: nil},
+	VarIsCompoundTerm{V: X, T: X},
+	VarIsCompoundTerm{V: X, T: CompoundTerm{Functor: "foo", Children: []Term{}}},
 }
 
 func cleanAllConstraints(cc1 []Constraint) (cc2 []Constraint) {
