@@ -14,11 +14,20 @@ func TestSimplify(t *testing.T) {
 	sb = run(t, TEST_VAR_IS_ATOM)
 	mytest.Verify(t, sb.String(), "constraint_simplify_test.atoms")
 
+	sb = run(t, TEST_VAR_IS_STRING)
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.strings")
+
+	sb = run(t, append(TEST_VAR_IS_STRING, TEST_VAR_IS_ATOM...))
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.strings.atoms")
+
 	sb = run(t, TEST_VAR_IS_VAR)
 	mytest.Verify(t, sb.String(), "constraint_simplify_test.vars")
 
 	sb = run(t, append(TEST_VAR_IS_ATOM, TEST_VAR_IS_VAR...))
 	mytest.Verify(t, sb.String(), "constraint_simplify_test.atoms.vars")
+
+	sb = run(t, append(TEST_VAR_IS_STRING, TEST_VAR_IS_VAR...))
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.strings.vars")
 
 }
 

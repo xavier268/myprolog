@@ -22,6 +22,17 @@ var TEST_VAR_IS_ATOM = []Constraint{
 		V: Y2,
 		A: Atom{Value: "tata"},
 	},
+	VarIsAtom{
+		V: Z3,
+		A: Atom{Value: "titi"},
+	},
+}
+
+var TEST_VAR_IS_STRING = []Constraint{
+	VarIsString{},
+	VarIsString{X, String{}},
+	VarIsString{Y, String{Value: "a string"}},
+	VarIsString{Z3, String{Value: "another string"}},
 }
 
 var TEST_VAR_IS_VAR = []Constraint{

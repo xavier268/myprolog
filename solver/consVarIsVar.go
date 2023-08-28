@@ -44,8 +44,23 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 
 	switch c2 := c2.(type) {
-	case VarIsAtom, VarIsString:
-		// no action
+	case VarIsAtom:
+		if c1.V == c2.V { // same value - can unify both contents !
+			c3 := VarIsAtom{
+				V: c1.W,
+				A: c2.A,
+			}
+			return []Constraint{c3}, true, nil
+		}
+		return nil, false, nil // no change
+	case VarIsString:
+		if c1.V == c2.V { // same value - can unify both contents !
+			c3 := VarIsString{
+				V: c1.W,
+				S: c2.S,
+			}
+			return []Constraint{c3}, true, nil
+		}
 		return nil, false, nil // no change
 	case VarIsVar:
 		if c1.V.Eq(c2.V) && c1.W.Eq(c2.W) {

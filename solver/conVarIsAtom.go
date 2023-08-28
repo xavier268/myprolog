@@ -82,17 +82,17 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		}
 
 	case VarIsVar:
-		if c1.V.Eq(c2.V) { // same variable
+		if c1.V.Eq(c2.V) { // same variable in LHS
 			c3 := VarIsAtom{
 				V: c2.W,
 				A: c1.A}
-			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
+			return []Constraint{c3}, true, nil // c1.W = c1.A
 		}
-		if c1.V.Eq(c2.W) { // same variable, substitute
+		if c1.V.Eq(c2.W) { // same variable in RHS, substitute
 			c3 := VarIsAtom{
 				V: c2.V,
 				A: c1.A}
-			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
+			return []Constraint{c3}, true, nil // c2.V = c1.A
 		}
 		return nil, false, nil // no change, keep all
 	case VarEQ:

@@ -5,9 +5,21 @@
 0-0			REMOVE
 0-1		 to simplify : Y$2 = tata    --> 
 0-1			NO CHANGE, KEEP AS IS
+0-2		 to simplify : Z$3 = titi    --> 
+0-2			NO CHANGE, KEEP AS IS
 
 1	using : Y$2 = tata
 1-0		 to simplify : X = toto    --> 
 1-0			NO CHANGE, KEEP AS IS
 1-1		 to simplify : Y$2 = tata    --> 
 1-1			REMOVE
+1-2		 to simplify : Z$3 = titi    --> 
+1-2			NO CHANGE, KEEP AS IS
+
+2	using : Z$3 = titi
+2-0		 to simplify : X = toto    --> 
+2-0			NO CHANGE, KEEP AS IS
+2-1		 to simplify : Y$2 = tata    --> 
+2-1			NO CHANGE, KEEP AS IS
+2-2		 to simplify : Z$3 = titi    --> 
+2-2			REMOVE
