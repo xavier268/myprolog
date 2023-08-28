@@ -174,7 +174,7 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 
 // Check (individual), and Add a constraint to the list, return error for backtracking.
 // Simplification not performed.
-// Avoid later workload, avoid adding nil constraints.
+// Avoid later workload by notadding nil constraints.
 func CheckAddConstraint(cc []Constraint, c Constraint) ([]Constraint, error) {
 	clean, err := c.Check()
 	if err == nil && clean != nil {

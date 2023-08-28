@@ -78,6 +78,7 @@ func DoPredicate(st *State) (*State, error) {
 			switch functor {
 			case "rule":
 				// a rule appering as a goal will be added to a new RuleSet
+				// No dedup !
 				rs := new(RuleSet)             // create a new ruleset
 				rs.rules = append(rs.rules, g) // add the rule
 				st.Rules = rs                  // point to the new RuleSet ( doing it this way will allow backtracking on rule addition)
