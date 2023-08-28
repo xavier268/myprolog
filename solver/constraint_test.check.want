@@ -1,0 +1,99 @@
+
+========= Single constraint test =========
+
+
+0	(original)	 = 0
+0	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+0	(checked)	 = 0
+
+1	(original)	 < 0
+1	(raw form)	solver.VarLT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+1	(checked)	 < 0
+
+2	(original)	 <= 0
+2	(raw form)	solver.VarLTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+2	(checked)	 <= 0
+
+3	(original)	 > 0
+3	(raw form)	solver.VarGT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+3	(checked)	 > 0
+
+4	(original)	 >= 0
+4	(raw form)	solver.VarGTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+4	(checked)	 >= 0
+
+5	(original)	 is an integer
+5	(raw form)	solver.VarINT{V:parser.Variable{Name:"", Nsp:0}}
+5	(checked)	 is an integer
+
+6	(original)	 = 
+6	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"", Nsp:0}, A:parser.Atom{Value:""}}
+6	(checked)	<nil>
+
+7	(original)	 = "\"\""
+7	(raw form)	solver.VarIsString{V:parser.Variable{Name:"", Nsp:0}, S:parser.String{Value:""}}
+7	(checked)	<nil>
+
+8	(original)	 = 
+8	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"", Nsp:0}, W:parser.Variable{Name:"", Nsp:0}}
+8	(checked)	<nil>
+
+9	(original)	 = <nil>
+9	(raw form)	solver.VarIsCompoundTerm{V:parser.Variable{Name:"", Nsp:0}, T:parser.Term(nil)}
+9	(checked)	<nil>
+
+10	(original)	X = <nil>
+10	(raw form)	solver.VarIsCompoundTerm{V:parser.Variable{Name:"X", Nsp:0}, T:parser.Term(nil)}
+10	(checked)	<nil>
+
+11	(original)	X = 5/2
+11	(raw form)	solver.VarEQ{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+11	(checked)	X = 5/2
+
+12	(original)	X < 5/2
+12	(raw form)	solver.VarLT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+12	(checked)	X < 5/2
+
+13	(original)	X > 5/2
+13	(raw form)	solver.VarGT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+13	(checked)	X > 5/2
+
+14	(original)	X <= 5/2
+14	(raw form)	solver.VarLTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+14	(checked)	X <= 5/2
+
+15	(original)	X >= 5/2
+15	(raw form)	solver.VarGTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+15	(checked)	X >= 5/2
+
+16	(original)	X is an integer
+16	(raw form)	solver.VarINT{V:parser.Variable{Name:"X", Nsp:0}}
+16	(checked)	X is an integer
+
+17	(original)	X$2 = foo
+17	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:2}, A:parser.Atom{Value:"foo"}}
+17	(checked)	X$2 = foo
+
+18	(original)	X$2 = "\"hello world\""
+18	(raw form)	solver.VarIsString{V:parser.Variable{Name:"X", Nsp:2}, S:parser.String{Value:"hello world"}}
+18	(checked)	X$2 = "\"hello world\""
+
+19	(original)	X$2 = X$2
+19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
+19	(checked)	<nil>
+
+20	(original)	X$2 = Z$2
+20	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:2}}
+20	(checked)	Z$2 = X$2
+
+21	(original)	Z$2 = X$2
+21	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
+21	(checked)	Z$2 = X$2
+
+22	(original)	X$2 = Z$1
+22	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:1}}
+22	(checked)	X$2 = Z$1
+
+23	(original)	Z$1 = X$2
+23	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:1}, W:parser.Variable{Name:"X", Nsp:2}}
+23	(checked)	X$2 = Z$1

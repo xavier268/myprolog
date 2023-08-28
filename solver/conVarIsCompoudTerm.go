@@ -10,6 +10,9 @@ var _ Constraint = VarIsCompoundTerm{}
 
 // String implements Constraint.
 func (v VarIsCompoundTerm) String() string {
+	if v.T == nil {
+		return v.V.Pretty() + " = <nil>" // should never happen outside tests
+	}
 	return v.V.Pretty() + " = " + v.T.Pretty()
 }
 
@@ -29,7 +32,7 @@ func (c VarIsCompoundTerm) Clone() Constraint {
 // CAUTION : return can be nil, despite a nil error !
 // An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 func (c VarIsCompoundTerm) Check() (Constraint, error) {
-	if c.V.Name == "" {
+	if c.V.Name == "" || c.T == nil {
 		return nil, nil // ignore silently
 	}
 	if FindVar(c.V, c.T) {

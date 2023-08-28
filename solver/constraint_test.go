@@ -13,10 +13,16 @@ var cData = []Constraint{
 
 	// Testing all zero values
 	VarEQ{},
+	VarLT{},
+	VarLTE{},
+	VarGT{},
+	VarGTE{},
+	VarINT{},
 	VarIsAtom{},
 	VarIsString{},
 	VarIsVar{},
-	// VarIsCompoundTerm{},
+	VarIsCompoundTerm{},
+	VarIsCompoundTerm{V: Variable{Name: "X", Nsp: 0}}, // nil term
 
 	VarEQ{
 		V:     Variable{Name: "X", Nsp: 0},
@@ -133,5 +139,5 @@ func TestConstraintsCheck(t *testing.T) {
 		}
 	}
 
-	mytest.Verify(t, sb.String(), "constraint_test")
+	mytest.Verify(t, sb.String(), "constraint_test.check")
 }
