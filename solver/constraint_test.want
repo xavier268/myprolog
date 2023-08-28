@@ -3,8 +3,8 @@
 
 
 0	(original)	 = 0
-0	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"", Nsp:0}, Min:parser.Number{Num:0, Den:0, Normalized:false}, Max:parser.Number{Num:0, Den:0, Normalized:false}, IntegerOnly:false}
-0	(checked)	<nil>
+0	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+0	(checked)	 = 0
 
 1	(original)	 = 
 1	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"", Nsp:0}, A:parser.Atom{Value:""}}
@@ -18,70 +18,54 @@
 3	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"", Nsp:0}, W:parser.Variable{Name:"", Nsp:0}}
 3	(checked)	<nil>
 
-4	(original)	5/2 <= X <= 5
-4	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:2, Normalized:false}, Max:parser.Number{Num:10, Den:2, Normalized:false}, IntegerOnly:false}
-4	(checked)	5/2 <= X <= 5
+4	(original)	X = 5/2
+4	(raw form)	solver.VarEQ{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+4	(checked)	X = 5/2
 
-5	(original)	X is an integer and 5/2 <= X <= 5
-5	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:2, Normalized:false}, Max:parser.Number{Num:10, Den:2, Normalized:false}, IntegerOnly:true}
-5	(checked)	X is an integer and 3 <= X <= 5
+5	(original)	X < 5/2
+5	(raw form)	solver.VarLT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+5	(checked)	X < 5/2
 
-6	(original)	5 <= Y$4 <= 3/2
-6	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"Y", Nsp:4}, Min:parser.Number{Num:10, Den:2, Normalized:false}, Max:parser.Number{Num:3, Den:2, Normalized:false}, IntegerOnly:false}
-6	(checked)	<nil>, error : invalid constraint, specified range is empty
+6	(original)	X > 5/2
+6	(raw form)	solver.VarGT{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+6	(checked)	X > 5/2
 
-7	(original)	Y$4 is an integer and 5 <= Y$4 <= 3/2
-7	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"Y", Nsp:4}, Min:parser.Number{Num:10, Den:2, Normalized:false}, Max:parser.Number{Num:3, Den:2, Normalized:false}, IntegerOnly:true}
-7	(checked)	<nil>, error : invalid constraint, specified range is empty
+7	(original)	X <= 5/2
+7	(raw form)	solver.VarLTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+7	(checked)	X <= 5/2
 
-8	(original)	5/6 <= X <= 7/6
-8	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:7, Den:6, Normalized:false}, IntegerOnly:false}
-8	(checked)	5/6 <= X <= 7/6
+8	(original)	X >= 5/2
+8	(raw form)	solver.VarGTE{V:parser.Variable{Name:"X", Nsp:0}, Value:parser.Number{Num:5, Den:2, Normalized:false}}
+8	(checked)	X >= 5/2
 
-9	(original)	X is an integer and 5/6 <= X <= 7/6
-9	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:7, Den:6, Normalized:false}, IntegerOnly:true}
-9	(checked)	X = 1
+9	(original)	X is an integer
+9	(raw form)	solver.VarINT{V:parser.Variable{Name:"X", Nsp:0}}
+9	(checked)	X is an integer
 
-10	(original)	5/6 <= X <= 13/6
-10	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:13, Den:6, Normalized:false}, IntegerOnly:false}
-10	(checked)	5/6 <= X <= 13/6
+10	(original)	X$2 = foo
+10	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:2}, A:parser.Atom{Value:"foo"}}
+10	(checked)	X$2 = foo
 
-11	(original)	X is an integer and 5/6 <= X <= 13/6
-11	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:5, Den:6, Normalized:false}, Max:parser.Number{Num:13, Den:6, Normalized:false}, IntegerOnly:true}
-11	(checked)	X is an integer and 1 <= X <= 2
+11	(original)	X$2 = "\"hello world\""
+11	(raw form)	solver.VarIsString{V:parser.Variable{Name:"X", Nsp:2}, S:parser.String{Value:"hello world"}}
+11	(checked)	X$2 = "\"hello world\""
 
-12	(original)	-4/3 <= X <= -7/6
-12	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:-8, Den:6, Normalized:false}, Max:parser.Number{Num:-7, Den:6, Normalized:false}, IntegerOnly:false}
-12	(checked)	-4/3 <= X <= -7/6
+12	(original)	X$2 = X$2
+12	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
+12	(checked)	<nil>
 
-13	(original)	X is an integer and -4/3 <= X <= -7/6
-13	(raw form)	solver.VarIsNumber{V:parser.Variable{Name:"X", Nsp:0}, Min:parser.Number{Num:-8, Den:6, Normalized:false}, Max:parser.Number{Num:-7, Den:6, Normalized:false}, IntegerOnly:true}
-13	(checked)	<nil>, error : invalid constraint, specified range is empty
+13	(original)	X$2 = Z$2
+13	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:2}}
+13	(checked)	Z$2 = X$2
 
-14	(original)	X$2 = foo
-14	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"X", Nsp:2}, A:parser.Atom{Value:"foo"}}
-14	(checked)	X$2 = foo
+14	(original)	Z$2 = X$2
+14	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
+14	(checked)	Z$2 = X$2
 
-15	(original)	X$2 = "\"hello world\""
-15	(raw form)	solver.VarIsString{V:parser.Variable{Name:"X", Nsp:2}, S:parser.String{Value:"hello world"}}
-15	(checked)	X$2 = "\"hello world\""
+15	(original)	X$2 = Z$1
+15	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:1}}
+15	(checked)	X$2 = Z$1
 
-16	(original)	X$2 = X$2
-16	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
-16	(checked)	<nil>
-
-17	(original)	X$2 = Z$2
-17	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:2}}
-17	(checked)	Z$2 = X$2
-
-18	(original)	Z$2 = X$2
-18	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:2}, W:parser.Variable{Name:"X", Nsp:2}}
-18	(checked)	Z$2 = X$2
-
-19	(original)	X$2 = Z$1
-19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:2}, W:parser.Variable{Name:"Z", Nsp:1}}
-19	(checked)	X$2 = Z$1
-
-20	(original)	Z$1 = X$2
-20	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:1}, W:parser.Variable{Name:"X", Nsp:2}}
-20	(checked)	X$2 = Z$1
+16	(original)	Z$1 = X$2
+16	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:1}, W:parser.Variable{Name:"X", Nsp:2}}
+16	(checked)	X$2 = Z$1

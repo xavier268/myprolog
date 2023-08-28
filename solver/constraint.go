@@ -23,16 +23,28 @@ type Constraint interface {
 	String() string
 }
 
-var _ Constraint = VarIsCompoundTerm{}
+// X = ...
+var _ Constraint = VarIsVar{}          // X = Y
+var _ Constraint = VarIsCompoundTerm{} // X = a(b,Y)
+
+// X = constant atomic term
 var _ Constraint = VarIsString{}
-var _ Constraint = VarIsNumber{}
-var _ Constraint = VarIsVar{}
 var _ Constraint = VarIsAtom{}
+
+// constraint on numbers
+var _ Constraint = VarINT{} // X is integer number
+var _ Constraint = VarEQ{}  // X = n
+var _ Constraint = VarLTE{} // X <= n
+var _ Constraint = VarLT{}  // X < n
+var _ Constraint = VarGT{}  // X > n
+var _ Constraint = VarGTE{} // X >! n
 
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")
 var ErrInvalidConstraintSimplify = fmt.Errorf("incompatible constraints detected when simplifying")
 var ErrPositiveOccur = fmt.Errorf("positive occur check")
+var ErrNaN = fmt.Errorf("not a number (NaN)")
+
 var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET) // should be removed later on //TODO
 
 // Attempt to simplify constraint list.

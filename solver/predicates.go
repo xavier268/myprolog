@@ -108,18 +108,16 @@ func DoPredicate(st *State) (*State, error) {
 				nst.NextRule = 0
 				return nst, nil
 
-			case "number": // force a number
+			case "number": // force a number, any number
 				switch child := (g.Children[0]).(type) {
 				case Number, Underscore: // all fine already !
 					st.Goals = st.Goals[1:] // eat the goal
 					st.NextRule = 0         //since goals changed, reset the next rule pointer ...
 					return st, nil
 				case Variable: // create a constraint on the variable
-					c := VarIsNumber{
-						V:           child.Clone().(Variable),
-						Min:         parser.MinNumber,
-						Max:         parser.MaxNumber,
-						IntegerOnly: false,
+					c := VarLT{
+						V:     child.Clone().(Variable),
+						Value: parser.MaxNumber,
 					}
 					cc, err := CheckAddConstraint(st.Constraints, c)
 					if err != nil {
@@ -154,13 +152,9 @@ func DoPredicate(st *State) (*State, error) {
 						// if not, error
 					}
 					return st, ErrPred
-
 				case Variable: // create a constraint on the variable
-					c := VarIsNumber{
-						V:           child.Clone().(Variable),
-						Min:         parser.MinNumber,
-						Max:         parser.MaxNumber,
-						IntegerOnly: true,
+					c := VarINT{
+						V: child.Clone().(Variable),
 					}
 					cc, err := CheckAddConstraint(st.Constraints, c)
 					if err != nil {

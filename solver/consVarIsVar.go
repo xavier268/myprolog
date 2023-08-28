@@ -44,7 +44,7 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 
 	switch c2 := c2.(type) {
-	case VarIsAtom, VarIsString, VarIsNumber:
+	case VarIsAtom, VarIsString:
 		// no action
 		return nil, false, nil // no change
 	case VarIsVar:
@@ -67,8 +67,21 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 		}
 		return []Constraint{c4}, true, nil
 
-	default:
-		panic("case not implemented")
+	case VarEQ:
+		panic("unimplement")
+	case VarLT:
+		panic("unimplement")
+	case VarGT:
+		panic("unimplement")
+	case VarGTE:
+		panic("unimplement")
+	case VarLTE:
+		panic("unimplement")
+	case VarINT:
+		panic("unimplement")
 
+	default:
+		_ = c2 // keep the compiler happy
+		panic("internal error - unimplemented case")
 	}
 }

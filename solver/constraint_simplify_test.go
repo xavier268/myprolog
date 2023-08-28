@@ -31,17 +31,16 @@ var tConsSimplify1 = []Constraint{
 
 var tConsSimplify2 = []Constraint{
 
-	VarIsNumber{
-		V:           X,
-		Min:         Number{Num: 3, Den: 2, Normalized: false},
-		Max:         Number{Num: 7, Den: 2, Normalized: false},
-		IntegerOnly: false,
+	VarEQ{
+		V:     X,
+		Value: Number{Num: 3, Den: 2, Normalized: false},
 	},
-	VarIsNumber{
-		V:           Z,
-		Min:         Number{Num: -3, Den: 2, Normalized: false},
-		Max:         Number{Num: 1, Den: 2, Normalized: false},
-		IntegerOnly: true,
+
+	VarINT{
+		V: Z,
+	},
+	VarINT{
+		V: X,
 	},
 }
 

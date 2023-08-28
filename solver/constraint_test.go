@@ -12,76 +12,35 @@ import (
 var cData = []Constraint{
 
 	// Testing all zero values
-	VarIsNumber{},
+	VarEQ{},
 	VarIsAtom{},
 	VarIsString{},
 	VarIsVar{},
 	// VarIsCompoundTerm{},
 
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 2, Normalized: false},
-		Max:         Number{Num: 10, Den: 2, Normalized: false},
-		IntegerOnly: false,
-	},
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 2, Normalized: false},
-		Max:         Number{Num: 10, Den: 2, Normalized: false},
-		IntegerOnly: true,
+	VarEQ{
+		V:     Variable{Name: "X", Nsp: 0},
+		Value: Number{Num: 5, Den: 2, Normalized: false},
 	},
 
-	VarIsNumber{
-		V:           Variable{Name: "Y", Nsp: 4},
-		Min:         Number{Num: 10, Den: 2, Normalized: false},
-		Max:         Number{Num: 3, Den: 2, Normalized: false},
-		IntegerOnly: false,
+	VarLT{
+		V:     Variable{Name: "X", Nsp: 0},
+		Value: Number{Num: 5, Den: 2, Normalized: false},
 	},
-
-	VarIsNumber{
-		V:           Variable{Name: "Y", Nsp: 4},
-		Min:         Number{Num: 10, Den: 2, Normalized: false},
-		Max:         Number{Num: 3, Den: 2, Normalized: false},
-		IntegerOnly: true,
+	VarGT{
+		V:     Variable{Name: "X", Nsp: 0},
+		Value: Number{Num: 5, Den: 2, Normalized: false},
 	},
-
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 6, Normalized: false},
-		Max:         Number{Num: 7, Den: 6, Normalized: false},
-		IntegerOnly: false,
+	VarLTE{
+		V:     Variable{Name: "X", Nsp: 0},
+		Value: Number{Num: 5, Den: 2, Normalized: false},
 	},
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 6, Normalized: false},
-		Max:         Number{Num: 7, Den: 6, Normalized: false},
-		IntegerOnly: true,
+	VarGTE{
+		V:     Variable{Name: "X", Nsp: 0},
+		Value: Number{Num: 5, Den: 2, Normalized: false},
 	},
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 6, Normalized: false},
-		Max:         Number{Num: 13, Den: 6, Normalized: false},
-		IntegerOnly: false,
-	},
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: 5, Den: 6, Normalized: false},
-		Max:         Number{Num: 13, Den: 6, Normalized: false},
-		IntegerOnly: true,
-	},
-
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: -8, Den: 6, Normalized: false},
-		Max:         Number{Num: -7, Den: 6, Normalized: false},
-		IntegerOnly: false,
-	},
-
-	VarIsNumber{
-		V:           Variable{Name: "X", Nsp: 0},
-		Min:         Number{Num: -8, Den: 6, Normalized: false},
-		Max:         Number{Num: -7, Den: 6, Normalized: false},
-		IntegerOnly: true,
+	VarINT{
+		V: Variable{Name: "X", Nsp: 0},
 	},
 
 	VarIsAtom{

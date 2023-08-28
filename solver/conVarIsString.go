@@ -54,11 +54,7 @@ func (c1 VarIsString) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarIsNumber:
-		if c1.V.Eq(c2.V) { // same variable {
-			return nil, false, ErrInvalidConstraintSimplify
-		}
-		return nil, false, nil // no change, keep all
+
 	case VarIsCompoundTerm:
 		if c1.V.Eq(c2.V) { // same variable {
 			return nil, false, ErrInvalidConstraintSimplify
@@ -97,8 +93,22 @@ func (c1 VarIsString) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
 		}
 		return nil, false, nil // no change, keep all
+	case VarEQ:
+		panic("unimplement")
+	case VarLT:
+		panic("unimplement")
+	case VarGT:
+		panic("unimplement")
+	case VarGTE:
+		panic("unimplement")
+	case VarLTE:
+		panic("unimplement")
+	case VarINT:
+		panic("unimplement")
+
 	default:
-		panic("unreachable code")
+		_ = c2 // keep the compiler happy
+		panic("internal error - unimplemented case")
 	}
 
 }

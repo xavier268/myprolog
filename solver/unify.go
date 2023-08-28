@@ -6,7 +6,7 @@ var ErrUnificationImpossible = fmt.Errorf("unification impossible")
 
 // Unify recursively unifies rule head and goal.
 // We avoid state directly, by just appending to a list of constraints.
-// Check and simplifcation will occur later.
+// Simplification will occur later.
 // No predicates are handled here.
 // No backtracking is done.
 func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
@@ -38,11 +38,9 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 		case String, Atom: //  do not unify
 			return cList, ErrUnificationImpossible
 		case Variable: // goal is a variable
-			c := VarIsNumber{
-				V:           goal,
-				Min:         head,
-				Max:         head,
-				IntegerOnly: false,
+			c := VarEQ{
+				V:     goal,
+				Value: head,
 			}
 			return CheckAddConstraint(cList, c)
 		case CompoundTerm:
@@ -94,11 +92,9 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 			}
 			return CheckAddConstraint(cList, c)
 		case Number:
-			c := VarIsNumber{
-				V:           head,
-				Min:         goal,
-				Max:         goal,
-				IntegerOnly: false,
+			c := VarEQ{
+				V:     head,
+				Value: goal,
 			}
 			return CheckAddConstraint(cList, c)
 		case String:
