@@ -27,7 +27,7 @@ func (c VarIsVar) Check() (Constraint, error) {
 		return nil, nil
 	} else {
 		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)
-		if c.V.Nsp < c.W.Nsp || (c.V.Nsp == c.W.Nsp && c.V.Name < c.W.Name) {
+		if c.V.Less(c.W) {
 			return VarIsVar{c.W, c.V}, nil
 		} else {
 			return c, nil
@@ -52,7 +52,22 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 			return nil, true, nil // duplicate
 		}
 		if c1.V.Eq(c2.W) && c1.W.Eq(c2.V) {
-			return nil, true, nil // duplicate
+			return nil, true, nil // duplicate, should never happen if correctly ordered (checked) before.
+		}
+		if c1.V.Eq(c2.W) { // substitute !
+			c3 := VarIsVar{
+				c2.V,
+				c1.W,
+			}
+			c4, err := c3.Check()
+			if err != nil {
+				return nil, false, err
+			}
+			if c4 != nil {
+				return []Constraint{c4}, true, nil
+			} else {
+				return nil, true, nil // remove
+			}
 		}
 		return nil, false, nil // no change
 	case VarIsCompoundTerm:

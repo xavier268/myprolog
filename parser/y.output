@@ -29,7 +29,7 @@ state 2
 	'['  shift 10
 	OPQUERY  shift 4
 	ATOM  shift 7
-	.  reduce 1 (src line 48)
+	.  reduce 1 (src line 45)
 
 	phrase  goto 11
 	conjterm  goto 6
@@ -40,7 +40,7 @@ state 2
 state 3
 	phrases:  phrase.    (2)
 
-	.  reduce 2 (src line 55)
+	.  reduce 2 (src line 52)
 
 
 state 4
@@ -69,7 +69,7 @@ state 5
 state 6
 	head:  conjterm.    (8)
 
-	.  reduce 8 (src line 85)
+	.  reduce 8 (src line 82)
 
 
 state 7
@@ -78,19 +78,19 @@ state 7
 	compterm:  ATOM.'(' ')' 
 
 	'('  shift 17
-	.  reduce 13 (src line 105)
+	.  reduce 13 (src line 102)
 
 
 state 8
 	conjterm:  compterm.    (14)
 
-	.  reduce 14 (src line 107)
+	.  reduce 14 (src line 104)
 
 
 state 9
 	compterm:  list.    (17)
 
-	.  reduce 17 (src line 120)
+	.  reduce 17 (src line 117)
 
 
 state 10
@@ -118,7 +118,7 @@ state 10
 state 11
 	phrases:  phrases phrase.    (3)
 
-	.  reduce 3 (src line 57)
+	.  reduce 3 (src line 54)
 
 
 state 12
@@ -133,7 +133,7 @@ state 13
 	disjterms:  conjterms.';' disjterms 
 
 	';'  shift 30
-	.  reduce 9 (src line 89)
+	.  reduce 9 (src line 86)
 
 
 state 14
@@ -141,13 +141,13 @@ state 14
 	conjterms:  conjterm.',' conjterms 
 
 	','  shift 31
-	.  reduce 11 (src line 97)
+	.  reduce 11 (src line 94)
 
 
 state 15
 	phrase:  head '.'.    (5)
 
-	.  reduce 5 (src line 66)
+	.  reduce 5 (src line 63)
 
 
 state 16
@@ -188,7 +188,7 @@ state 17
 state 18
 	list:  '[' ']'.    (26)
 
-	.  reduce 26 (src line 139)
+	.  reduce 26 (src line 136)
 
 
 state 19
@@ -206,7 +206,7 @@ state 20
 
 	','  shift 38
 	'|'  shift 39
-	.  reduce 18 (src line 124)
+	.  reduce 18 (src line 121)
 
 
 state 21
@@ -215,43 +215,43 @@ state 21
 	param:  ATOM.    (20)
 
 	'('  shift 17
-	.  reduce 20 (src line 130)
+	.  reduce 20 (src line 127)
 
 
 state 22
 	param:  number.    (21)
 
-	.  reduce 21 (src line 132)
+	.  reduce 21 (src line 129)
 
 
 state 23
 	param:  STRING.    (22)
 
-	.  reduce 22 (src line 133)
+	.  reduce 22 (src line 130)
 
 
 state 24
 	param:  VARIABLE.    (23)
 
-	.  reduce 23 (src line 134)
+	.  reduce 23 (src line 131)
 
 
 state 25
 	param:  '_'.    (24)
 
-	.  reduce 24 (src line 135)
+	.  reduce 24 (src line 132)
 
 
 state 26
 	param:  compterm.    (25)
 
-	.  reduce 25 (src line 136)
+	.  reduce 25 (src line 133)
 
 
 state 27
 	number:  NUMBER.    (30)
 
-	.  reduce 30 (src line 161)
+	.  reduce 30 (src line 158)
 
 
 state 28
@@ -264,7 +264,7 @@ state 28
 state 29
 	phrase:  OPQUERY disjterms '.'.    (4)
 
-	.  reduce 4 (src line 59)
+	.  reduce 4 (src line 56)
 
 
 state 30
@@ -295,7 +295,7 @@ state 31
 state 32
 	phrase:  head OPRULE '.'.    (6)
 
-	.  reduce 6 (src line 72)
+	.  reduce 6 (src line 69)
 
 
 state 33
@@ -315,7 +315,7 @@ state 34
 state 35
 	compterm:  ATOM '(' ')'.    (16)
 
-	.  reduce 16 (src line 115)
+	.  reduce 16 (src line 112)
 
 
 state 36
@@ -323,13 +323,13 @@ state 36
 	params:  param.',' params 
 
 	','  shift 38
-	.  reduce 18 (src line 124)
+	.  reduce 18 (src line 121)
 
 
 state 37
 	list:  '[' params ']'.    (27)
 
-	.  reduce 27 (src line 145)
+	.  reduce 27 (src line 142)
 
 
 state 38
@@ -372,37 +372,37 @@ state 39
 state 40
 	number:  '-' NUMBER.    (31)
 
-	.  reduce 31 (src line 162)
+	.  reduce 31 (src line 159)
 
 
 state 41
 	disjterms:  conjterms ';' disjterms.    (10)
 
-	.  reduce 10 (src line 91)
+	.  reduce 10 (src line 88)
 
 
 state 42
 	conjterms:  conjterm ',' conjterms.    (12)
 
-	.  reduce 12 (src line 99)
+	.  reduce 12 (src line 96)
 
 
 state 43
 	phrase:  head OPRULE disjterms '.'.    (7)
 
-	.  reduce 7 (src line 78)
+	.  reduce 7 (src line 75)
 
 
 state 44
 	compterm:  ATOM '(' params ')'.    (15)
 
-	.  reduce 15 (src line 109)
+	.  reduce 15 (src line 106)
 
 
 state 45
 	params:  param ',' params.    (19)
 
-	.  reduce 19 (src line 126)
+	.  reduce 19 (src line 123)
 
 
 state 46
@@ -415,13 +415,13 @@ state 46
 state 47
 	list:  '[' param '|' ']'.    (29)
 
-	.  reduce 29 (src line 153)
+	.  reduce 29 (src line 150)
 
 
 state 48
 	list:  '[' param '|' param ']'.    (28)
 
-	.  reduce 28 (src line 148)
+	.  reduce 28 (src line 145)
 
 
 20 terminals, 13 nonterminals

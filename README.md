@@ -7,6 +7,13 @@ A Prolog (the langage) implementation for educational purposes
 # work in progress
 
 * change VarIsNumber into smaller number/integer constraints
+    * wip
+
+* simplify VarIsVar with VarIsVar : do not try to be clever, just substitute in the rhs if we can (assumming VarIsVar is ordered)
+    * with  Y = X,  
+        * Z = Y => Z = X
+        * Z = X => Z = X
+
 * find a way to handle diff
     * do we need constraints, or can we handle it as predicate only ?
     * if diff constraints, can we have a single constraint, capitalising on any other constraint(s)
