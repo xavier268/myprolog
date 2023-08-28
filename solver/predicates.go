@@ -77,7 +77,14 @@ func DoPredicate(st *State) (*State, error) {
 			}
 			switch functor {
 			case "rule":
-				continue // don't handle rule. As a predicate, it has no effect.
+				// a rule appering as a goal will be added to a new RuleSet
+				rs := new(RuleSet)             // create a new ruleset
+				rs.rules = append(rs.rules, g) // add the rule
+				st.Rules = rs                  // point to the new RuleSet ( doing it this way will allow backtracking on rule addition)
+
+				st.Goals = st.Goals[1:] // eat goal
+				st.NextRule = 0         // when goal change, reset the next rule pointer ...
+				continue
 			case "query": // remove query, and add its children as goals instead.
 				st.Goals = append(g.Children, st.Goals[1:]...)
 				st.NextRule = 0 // when goal change, reset the next rule pointer ...
