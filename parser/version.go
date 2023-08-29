@@ -9,6 +9,8 @@ package parser
 
 //go:generate goyacc -o parser.go -p "my" grammar.y
 
+//go:generate go mod tidy
+
 //go:generate go fmt ./...
 
 const VERSION = "0.8.2"

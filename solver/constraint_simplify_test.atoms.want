@@ -1,25 +1,131 @@
 
 
-0	using : X = toto
-0-0		 to simplify : X = toto    --> 
-0-0			REMOVE
-0-1		 to simplify : Y$2 = tata    --> 
-0-1			NO CHANGE, KEEP AS IS
-0-2		 to simplify : Z$3 = titi    --> 
-0-2			NO CHANGE, KEEP AS IS
 
-1	using : Y$2 = tata
-1-0		 to simplify : X = toto    --> 
-1-0			NO CHANGE, KEEP AS IS
-1-1		 to simplify : Y$2 = tata    --> 
-1-1			REMOVE
-1-2		 to simplify : Z$3 = titi    --> 
-1-2			NO CHANGE, KEEP AS IS
+  0	using :  = 0
 
-2	using : Z$3 = titi
-2-0		 to simplify : X = toto    --> 
-2-0			NO CHANGE, KEEP AS IS
-2-1		 to simplify : Y$2 = tata    --> 
-2-1			NO CHANGE, KEEP AS IS
-2-2		 to simplify : Z$3 = titi    --> 
-2-2			REMOVE
+  0-  0	to simplify :	 = 0    --> 
+  0-  0							REMOVE
+  0-  1	to simplify :	0 <     --> 
+  0-  1					ERROR   : invalid constraint, specified range is empty
+  0-  2	to simplify :	0 <=     --> 
+  0-  2							REMOVE
+  0-  3	to simplify :	 < 0    --> 
+  0-  3					ERROR   : invalid constraint, specified range is empty
+  0-  4	to simplify :	 <= 0    --> 
+  0-  4							REMOVE
+  0-  5	to simplify :	 is an integer    --> 
+  0-  5							REMOVE
+  0-  6	to simplify :	X = foo()    --> 
+  0-  6							NO CHANGE, KEEP AS IS
+
+
+  1	using : 0 < 
+
+  1-  0	to simplify :	 = 0    --> 
+  1-  0					ERROR   : invalid constraint, specified range is empty
+  1-  1	to simplify :	0 <     --> 
+  1-  1							NO CHANGE, KEEP AS IS
+  1-  2	to simplify :	0 <=     --> 
+  1-  2							REMOVE
+  1-  3	to simplify :	 < 0    --> 
+  1-  3					ERROR   : invalid constraint, specified range is empty
+  1-  4	to simplify :	 <= 0    --> 
+  1-  4					ERROR   : invalid constraint, specified range is empty
+  1-  5	to simplify :	 is an integer    --> 
+  1-  5							NO CHANGE, KEEP AS IS
+  1-  6	to simplify :	X = foo()    --> 
+  1-  6							NO CHANGE, KEEP AS IS
+
+
+  2	using : 0 <= 
+
+  2-  0	to simplify :	 = 0    --> 
+  2-  0							NO CHANGE, KEEP AS IS
+  2-  1	to simplify :	0 <     --> 
+  2-  1							NO CHANGE, KEEP AS IS
+  2-  2	to simplify :	0 <=     --> 
+  2-  2							REMOVE
+  2-  3	to simplify :	 < 0    --> 
+  2-  3					ERROR   : invalid constraint, specified range is empty
+  2-  4	to simplify :	 <= 0    --> 
+  2-  4							REPLACE BY
+  2-  4									 = 0
+  2-  5	to simplify :	 is an integer    --> 
+  2-  5							NO CHANGE, KEEP AS IS
+  2-  6	to simplify :	X = foo()    --> 
+  2-  6							NO CHANGE, KEEP AS IS
+
+
+  3	using :  < 0
+
+  3-  0	to simplify :	 = 0    --> 
+  3-  0					ERROR   : invalid constraint, specified range is empty
+  3-  1	to simplify :	0 <     --> 
+  3-  1					ERROR   : invalid constraint, specified range is empty
+  3-  2	to simplify :	0 <=     --> 
+  3-  2					ERROR   : invalid constraint, specified range is empty
+  3-  3	to simplify :	 < 0    --> 
+  3-  3							NO CHANGE, KEEP AS IS
+  3-  4	to simplify :	 <= 0    --> 
+  3-  4							REMOVE
+  3-  5	to simplify :	 is an integer    --> 
+  3-  5							NO CHANGE, KEEP AS IS
+  3-  6	to simplify :	X = foo()    --> 
+  3-  6							NO CHANGE, KEEP AS IS
+
+
+  4	using :  <= 0
+
+  4-  0	to simplify :	 = 0    --> 
+  4-  0							NO CHANGE, KEEP AS IS
+  4-  1	to simplify :	0 <     --> 
+  4-  1					ERROR   : invalid constraint, specified range is empty
+  4-  2	to simplify :	0 <=     --> 
+  4-  2							REPLACE BY
+  4-  2									 = 0
+  4-  3	to simplify :	 < 0    --> 
+  4-  3							NO CHANGE, KEEP AS IS
+  4-  4	to simplify :	 <= 0    --> 
+  4-  4							REMOVE
+  4-  5	to simplify :	 is an integer    --> 
+  4-  5							NO CHANGE, KEEP AS IS
+  4-  6	to simplify :	X = foo()    --> 
+  4-  6							NO CHANGE, KEEP AS IS
+
+
+  5	using :  is an integer
+
+  5-  0	to simplify :	 = 0    --> 
+  5-  0							NO CHANGE, KEEP AS IS
+  5-  1	to simplify :	0 <     --> 
+  5-  1							REPLACE BY
+  5-  1									 <= 1
+  5-  2	to simplify :	0 <=     --> 
+  5-  2							NO CHANGE, KEEP AS IS
+  5-  3	to simplify :	 < 0    --> 
+  5-  3							REPLACE BY
+  5-  3									 <= -1
+  5-  4	to simplify :	 <= 0    --> 
+  5-  4							NO CHANGE, KEEP AS IS
+  5-  5	to simplify :	 is an integer    --> 
+  5-  5							REMOVE
+  5-  6	to simplify :	X = foo()    --> 
+  5-  6							NO CHANGE, KEEP AS IS
+
+
+  6	using : X = foo()
+
+  6-  0	to simplify :	 = 0    --> 
+  6-  0							NO CHANGE, KEEP AS IS
+  6-  1	to simplify :	0 <     --> 
+  6-  1							NO CHANGE, KEEP AS IS
+  6-  2	to simplify :	0 <=     --> 
+  6-  2							NO CHANGE, KEEP AS IS
+  6-  3	to simplify :	 < 0    --> 
+  6-  3							NO CHANGE, KEEP AS IS
+  6-  4	to simplify :	 <= 0    --> 
+  6-  4							NO CHANGE, KEEP AS IS
+  6-  5	to simplify :	 is an integer    --> 
+  6-  5							NO CHANGE, KEEP AS IS
+  6-  6	to simplify :	X = foo()    --> 
+  6-  6							REMOVE

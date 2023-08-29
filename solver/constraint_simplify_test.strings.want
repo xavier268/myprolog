@@ -1,25 +1,31 @@
 
 
-0	using : X = "\"\""
-0-0		 to simplify : X = "\"\""    --> 
-0-0			REMOVE
-0-1		 to simplify : Y = "\"a string\""    --> 
-0-1			NO CHANGE, KEEP AS IS
-0-2		 to simplify : Z$3 = "\"another string\""    --> 
-0-2			NO CHANGE, KEEP AS IS
 
-1	using : Y = "\"a string\""
-1-0		 to simplify : X = "\"\""    --> 
-1-0			NO CHANGE, KEEP AS IS
-1-1		 to simplify : Y = "\"a string\""    --> 
-1-1			REMOVE
-1-2		 to simplify : Z$3 = "\"another string\""    --> 
-1-2			NO CHANGE, KEEP AS IS
+  0	using : X = "\"\""
 
-2	using : Z$3 = "\"another string\""
-2-0		 to simplify : X = "\"\""    --> 
-2-0			NO CHANGE, KEEP AS IS
-2-1		 to simplify : Y = "\"a string\""    --> 
-2-1			NO CHANGE, KEEP AS IS
-2-2		 to simplify : Z$3 = "\"another string\""    --> 
-2-2			REMOVE
+  0-  0	to simplify :	X = "\"\""    --> 
+  0-  0							REMOVE
+  0-  1	to simplify :	Y = "\"a string\""    --> 
+  0-  1							NO CHANGE, KEEP AS IS
+  0-  2	to simplify :	Z$3 = "\"another string\""    --> 
+  0-  2							NO CHANGE, KEEP AS IS
+
+
+  1	using : Y = "\"a string\""
+
+  1-  0	to simplify :	X = "\"\""    --> 
+  1-  0							NO CHANGE, KEEP AS IS
+  1-  1	to simplify :	Y = "\"a string\""    --> 
+  1-  1							REMOVE
+  1-  2	to simplify :	Z$3 = "\"another string\""    --> 
+  1-  2							NO CHANGE, KEEP AS IS
+
+
+  2	using : Z$3 = "\"another string\""
+
+  2-  0	to simplify :	X = "\"\""    --> 
+  2-  0							NO CHANGE, KEEP AS IS
+  2-  1	to simplify :	Y = "\"a string\""    --> 
+  2-  1							NO CHANGE, KEEP AS IS
+  2-  2	to simplify :	Z$3 = "\"another string\""    --> 
+  2-  2							REMOVE

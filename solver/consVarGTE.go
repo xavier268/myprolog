@@ -10,7 +10,7 @@ var _ Constraint = VarGTE{}
 
 // String implements Constraint.
 func (c VarGTE) String() string {
-	return c.V.Pretty() + " >= " + c.Value.Pretty()
+	return c.Value.Pretty() + " <= " + c.V.Pretty()
 }
 
 // Check implements Constraint.

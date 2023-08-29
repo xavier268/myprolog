@@ -42,7 +42,16 @@ func (c VarIsCompoundTerm) Check() (Constraint, error) {
 func (c1 VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c.(type) {
 	case VarIsCompoundTerm:
-		panic("not implemented - need to unify)")
+		if c1.V == c2.V {
+			// unification is needed
+			cc, err := Unify([]Constraint{}, c1.T, c2.T)
+			if err != nil {
+				return nil, false, err
+			}
+			return cc, true, nil
+		}
+
+		return nil, false, nil // keep, no change
 	case VarIsAtom:
 		if c1.V == c2.V {
 			return nil, false, ErrInvalidConstraintSimplify

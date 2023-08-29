@@ -15,6 +15,8 @@ type String = parser.String
 type Number = parser.Number
 
 // useful numbers
+type Numbre = parser.Number
+
 var ZeroNumber, OneNumber = parser.ZeroNumber, parser.OneNumber
 
 // Solve for a given state.

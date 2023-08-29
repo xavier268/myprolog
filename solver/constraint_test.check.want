@@ -8,13 +8,13 @@
 1	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 1	(checked)	 = 0
 
-2	(original)	 > 0
+2	(original)	0 < 
 2	(raw form)	solver.VarGT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-2	(checked)	 > 0
+2	(checked)	0 < 
 
-3	(original)	 >= 0
+3	(original)	0 <= 
 3	(raw form)	solver.VarGTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
-3	(checked)	 >= 0
+3	(checked)	0 <= 
 
 4	(original)	 < 0
 4	(raw form)	solver.VarLT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
