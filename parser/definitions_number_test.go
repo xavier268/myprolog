@@ -25,7 +25,6 @@ func TestNumber(t *testing.T) {
 
 	sb := new(strings.Builder)
 
-	fmt.Fprintf(sb, "Test name : %s\n", t.Name())
 	fmt.Fprintf(sb, "Using a set of %d test numbers : %v\n", len(testNumberData), testNumberData)
 
 	fmt.Fprintf(sb, "\n============= Single number test =============\n")

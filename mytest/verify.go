@@ -14,9 +14,13 @@ var DISPLAY_WINDOW = 160 // max number of characters to display, before and afte
 // If no reference file found, creates it.
 // A .want extension is always added to the filename.
 func Verify(t *testing.T, content string, filename string) {
+
 	filename = filepath.Base(filename)
 	filename, _ = filepath.Abs("_" + filename)
 	filename = filename + ".want"
+
+	content = fmt.Sprintf("Test name : %s\nThis file : %s\n%s\n", t.Name(), filename, content)
+
 	fmt.Println(GREEN+"Verifying test results against file : "+RESET, filename)
 	check, err := os.ReadFile(filename)
 	if err != nil {

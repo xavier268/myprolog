@@ -1,3 +1,5 @@
+Test name : TestFindVars
+This file : C:\Users\xavie\Desktop\myprolog\solver\_substitution_test.findvars.want
 ============== Test FindVars ==============
 
 0	a contains ... map[]

@@ -1,3 +1,5 @@
+Test name : TestLexer
+This file : C:\Users\xavie\Desktop\myprolog\parser\_lexer_test.want
 
 
 Lexer test for :
@@ -400,3 +402,4 @@ token type: 45, ( '-' )
 token type: 57350, ( '\ue006' )
 	string representation: 12/1
 	pretty representation: 12
+
