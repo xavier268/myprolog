@@ -1,217 +1,316 @@
 
 
+USE        :	X = toto
+TO SIMPLIFY:	X = toto
+	 -- >	REMOVE
+USE        :	X = toto
+TO SIMPLIFY:	X = toto
+	 -- >	REMOVE
 
-  0	using : X = toto
+USE        :	X = toto
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  0-  0	to simplify :	X = toto    --> 
-  0-  0							REMOVE
-  0-  1	to simplify :	Y$2 = tata    --> 
-  0-  1							NO CHANGE, KEEP AS IS
-  0-  2	to simplify :	Y = tutu    --> 
-  0-  2							NO CHANGE, KEEP AS IS
-  0-  3	to simplify :	Z$3 = titi    --> 
-  0-  3							NO CHANGE, KEEP AS IS
-  0-  4	to simplify :	Y = X    --> 
-  0-  4							REPLACE BY
-  0-  4									Y = toto
-  0-  5	to simplify :	Y$2 = X    --> 
-  0-  5							REPLACE BY
-  0-  5									Y$2 = toto
-  0-  6	to simplify :	Y$2 = Y    --> 
-  0-  6							NO CHANGE, KEEP AS IS
-  0-  7	to simplify :	Z$3 = X    --> 
-  0-  7							REPLACE BY
-  0-  7									Z$3 = toto
-  0-  8	to simplify :	Z$3 = Y$2    --> 
-  0-  8							NO CHANGE, KEEP AS IS
+USE        :	X = toto
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
+USE        :	X = toto
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  1	using : Y$2 = tata
+USE        :	X = toto
+TO SIMPLIFY:	Y = X
+	 -- >	REPLACE WITH:	  Y = toto
+USE        :	Y = X
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  1-  0	to simplify :	X = toto    --> 
-  1-  0							NO CHANGE, KEEP AS IS
-  1-  1	to simplify :	Y$2 = tata    --> 
-  1-  1							REMOVE
-  1-  2	to simplify :	Y = tutu    --> 
-  1-  2							NO CHANGE, KEEP AS IS
-  1-  3	to simplify :	Z$3 = titi    --> 
-  1-  3							NO CHANGE, KEEP AS IS
-  1-  4	to simplify :	Y = X    --> 
-  1-  4							NO CHANGE, KEEP AS IS
-  1-  5	to simplify :	Y$2 = X    --> 
-  1-  5							REPLACE BY
-  1-  5									X = tata
-  1-  6	to simplify :	Y$2 = Y    --> 
-  1-  6							REPLACE BY
-  1-  6									Y = tata
-  1-  7	to simplify :	Z$3 = X    --> 
-  1-  7							NO CHANGE, KEEP AS IS
-  1-  8	to simplify :	Z$3 = Y$2    --> 
-  1-  8							REPLACE BY
-  1-  8									Z$3 = tata
+USE        :	X = toto
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REPLACE WITH:	  Y$2 = toto
+USE        :	Y$2 = X
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
+USE        :	X = toto
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  2	using : Y = tutu
+USE        :	X = toto
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REPLACE WITH:	  Z$3 = toto
+USE        :	Z$3 = X
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  2-  0	to simplify :	X = toto    --> 
-  2-  0							NO CHANGE, KEEP AS IS
-  2-  1	to simplify :	Y$2 = tata    --> 
-  2-  1							NO CHANGE, KEEP AS IS
-  2-  2	to simplify :	Y = tutu    --> 
-  2-  2							REMOVE
-  2-  3	to simplify :	Z$3 = titi    --> 
-  2-  3							NO CHANGE, KEEP AS IS
-  2-  4	to simplify :	Y = X    --> 
-  2-  4							REPLACE BY
-  2-  4									X = tutu
-  2-  5	to simplify :	Y$2 = X    --> 
-  2-  5							NO CHANGE, KEEP AS IS
-  2-  6	to simplify :	Y$2 = Y    --> 
-  2-  6							REPLACE BY
-  2-  6									Y$2 = tutu
-  2-  7	to simplify :	Z$3 = X    --> 
-  2-  7							NO CHANGE, KEEP AS IS
-  2-  8	to simplify :	Z$3 = Y$2    --> 
-  2-  8							NO CHANGE, KEEP AS IS
+USE        :	X = toto
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REMOVE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REMOVE
 
-  3	using : Z$3 = titi
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
 
-  3-  0	to simplify :	X = toto    --> 
-  3-  0							NO CHANGE, KEEP AS IS
-  3-  1	to simplify :	Y$2 = tata    --> 
-  3-  1							NO CHANGE, KEEP AS IS
-  3-  2	to simplify :	Y = tutu    --> 
-  3-  2							NO CHANGE, KEEP AS IS
-  3-  3	to simplify :	Z$3 = titi    --> 
-  3-  3							REMOVE
-  3-  4	to simplify :	Y = X    --> 
-  3-  4							NO CHANGE, KEEP AS IS
-  3-  5	to simplify :	Y$2 = X    --> 
-  3-  5							NO CHANGE, KEEP AS IS
-  3-  6	to simplify :	Y$2 = Y    --> 
-  3-  6							NO CHANGE, KEEP AS IS
-  3-  7	to simplify :	Z$3 = X    --> 
-  3-  7							REPLACE BY
-  3-  7									X = titi
-  3-  8	to simplify :	Z$3 = Y$2    --> 
-  3-  8							REPLACE BY
-  3-  8									Y$2 = titi
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
 
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+USE        :	Y = X
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
 
-  4	using : Y = X
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REPLACE WITH:	  X = tata
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REPLACE WITH:	  X = tata
 
-  4-  0	to simplify :	X = toto    --> 
-  4-  0							NO CHANGE, KEEP AS IS
-  4-  1	to simplify :	Y$2 = tata    --> 
-  4-  1							NO CHANGE, KEEP AS IS
-  4-  2	to simplify :	Y = tutu    --> 
-  4-  2							REPLACE BY
-  4-  2									X = tutu
-  4-  3	to simplify :	Z$3 = titi    --> 
-  4-  3							NO CHANGE, KEEP AS IS
-  4-  4	to simplify :	Y = X    --> 
-  4-  4							REMOVE
-  4-  5	to simplify :	Y$2 = X    --> 
-  4-  5							NO CHANGE, KEEP AS IS
-  4-  6	to simplify :	Y$2 = Y    --> 
-  4-  6							REPLACE BY
-  4-  6									Y$2 = X
-  4-  7	to simplify :	Z$3 = X    --> 
-  4-  7							NO CHANGE, KEEP AS IS
-  4-  8	to simplify :	Z$3 = Y$2    --> 
-  4-  8							NO CHANGE, KEEP AS IS
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REPLACE WITH:	  Y = tata
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REPLACE WITH:	  Y = tata
 
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
 
-  5	using : Y$2 = X
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REPLACE WITH:	  Z$3 = tata
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
 
-  5-  0	to simplify :	X = toto    --> 
-  5-  0							NO CHANGE, KEEP AS IS
-  5-  1	to simplify :	Y$2 = tata    --> 
-  5-  1							REPLACE BY
-  5-  1									X = tata
-  5-  2	to simplify :	Y = tutu    --> 
-  5-  2							NO CHANGE, KEEP AS IS
-  5-  3	to simplify :	Z$3 = titi    --> 
-  5-  3							NO CHANGE, KEEP AS IS
-  5-  4	to simplify :	Y = X    --> 
-  5-  4							NO CHANGE, KEEP AS IS
-  5-  5	to simplify :	Y$2 = X    --> 
-  5-  5							REMOVE
-  5-  6	to simplify :	Y$2 = Y    --> 
-  5-  6							NO CHANGE, KEEP AS IS
-  5-  7	to simplify :	Z$3 = X    --> 
-  5-  7							NO CHANGE, KEEP AS IS
-  5-  8	to simplify :	Z$3 = Y$2    --> 
-  5-  8							REPLACE BY
-  5-  8									Z$3 = X
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = tutu
+	 -- >	REMOVE
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = tutu
+	 -- >	REMOVE
 
+USE        :	Y = tutu
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
 
-  6	using : Y$2 = Y
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = X
+	 -- >	REPLACE WITH:	  X = tutu
+USE        :	Y = X
+TO SIMPLIFY:	Y = tutu
+	 -- >	REPLACE WITH:	  X = tutu
 
-  6-  0	to simplify :	X = toto    --> 
-  6-  0							NO CHANGE, KEEP AS IS
-  6-  1	to simplify :	Y$2 = tata    --> 
-  6-  1							REPLACE BY
-  6-  1									Y = tata
-  6-  2	to simplify :	Y = tutu    --> 
-  6-  2							NO CHANGE, KEEP AS IS
-  6-  3	to simplify :	Z$3 = titi    --> 
-  6-  3							NO CHANGE, KEEP AS IS
-  6-  4	to simplify :	Y = X    --> 
-  6-  4							NO CHANGE, KEEP AS IS
-  6-  5	to simplify :	Y$2 = X    --> 
-  6-  5							NO CHANGE, KEEP AS IS
-  6-  6	to simplify :	Y$2 = Y    --> 
-  6-  6							REMOVE
-  6-  7	to simplify :	Z$3 = X    --> 
-  6-  7							NO CHANGE, KEEP AS IS
-  6-  8	to simplify :	Z$3 = Y$2    --> 
-  6-  8							REPLACE BY
-  6-  8									Z$3 = Y
+USE        :	Y = tutu
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
 
+USE        :	Y = tutu
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REPLACE WITH:	  Y$2 = tutu
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
 
-  7	using : Z$3 = X
+USE        :	Y = tutu
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
 
-  7-  0	to simplify :	X = toto    --> 
-  7-  0							NO CHANGE, KEEP AS IS
-  7-  1	to simplify :	Y$2 = tata    --> 
-  7-  1							NO CHANGE, KEEP AS IS
-  7-  2	to simplify :	Y = tutu    --> 
-  7-  2							NO CHANGE, KEEP AS IS
-  7-  3	to simplify :	Z$3 = titi    --> 
-  7-  3							REPLACE BY
-  7-  3									X = titi
-  7-  4	to simplify :	Y = X    --> 
-  7-  4							NO CHANGE, KEEP AS IS
-  7-  5	to simplify :	Y$2 = X    --> 
-  7-  5							NO CHANGE, KEEP AS IS
-  7-  6	to simplify :	Y$2 = Y    --> 
-  7-  6							NO CHANGE, KEEP AS IS
-  7-  7	to simplify :	Z$3 = X    --> 
-  7-  7							REMOVE
-  7-  8	to simplify :	Z$3 = Y$2    --> 
-  7-  8							NO CHANGE, KEEP AS IS
+USE        :	Y = tutu
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
 
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REMOVE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REMOVE
 
-  8	using : Z$3 = Y$2
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
 
-  8-  0	to simplify :	X = toto    --> 
-  8-  0							NO CHANGE, KEEP AS IS
-  8-  1	to simplify :	Y$2 = tata    --> 
-  8-  1							NO CHANGE, KEEP AS IS
-  8-  2	to simplify :	Y = tutu    --> 
-  8-  2							NO CHANGE, KEEP AS IS
-  8-  3	to simplify :	Z$3 = titi    --> 
-  8-  3							REPLACE BY
-  8-  3									Y$2 = titi
-  8-  4	to simplify :	Y = X    --> 
-  8-  4							NO CHANGE, KEEP AS IS
-  8-  5	to simplify :	Y$2 = X    --> 
-  8-  5							NO CHANGE, KEEP AS IS
-  8-  6	to simplify :	Y$2 = Y    --> 
-  8-  6							NO CHANGE, KEEP AS IS
-  8-  7	to simplify :	Z$3 = X    --> 
-  8-  7							NO CHANGE, KEEP AS IS
-  8-  8	to simplify :	Z$3 = Y$2    --> 
-  8-  8							REMOVE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REPLACE WITH:	  X = titi
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REPLACE WITH:	  X = titi
+
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REPLACE WITH:	  Y$2 = titi
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REPLACE WITH:	  Y$2 = titi
+
+USE        :	Y = X
+TO SIMPLIFY:	Y = X
+	 -- >	REMOVE
+USE        :	Y = X
+TO SIMPLIFY:	Y = X
+	 -- >	REMOVE
+
+USE        :	Y = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REMOVE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REMOVE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REMOVE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REMOVE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REMOVE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REMOVE
+
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REMOVE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REMOVE

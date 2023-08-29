@@ -130,39 +130,47 @@ func generateConstraintsFromNumbers(nn []Number) (cc []Constraint) {
 
 // Simplify each constraint against the others, two by two.
 // no cleaning is done on constraints, except skipping nils.
-func runConstraintSimplify2x2Test(t *testing.T, tCons []Constraint) *strings.Builder {
+func runConstraintSimplify2x2Test(t *testing.T, cc []Constraint) *strings.Builder {
+
+	do := func(sb *strings.Builder, i int, j int, cc []Constraint) {
+		c1 := cc[i]
+		c2 := cc[j]
+		if c1 == nil || c2 == nil {
+			return
+		}
+
+		c3, ch, err := c1.Simplify(c2)
+		fmt.Fprintf(sb, "\nUSE        :\t%s\nTO SIMPLIFY:\t%s\n\t -- >\t", c1.String(), c2.String())
+		if err != nil {
+			fmt.Fprintf(sb, "ERROR : %v", err)
+		} else {
+			if !ch {
+				fmt.Fprintf(sb, "NO CHANGE")
+			} else {
+				if len(c3) == 0 {
+					fmt.Fprintf(sb, "REMOVE")
+				} else {
+					fmt.Fprintf(sb, "REPLACE WITH:\t  ")
+					for k, r := range c3 {
+						fmt.Fprintf(sb, "%s", r.String())
+						if k != len(c3)-1 {
+							fmt.Fprintf(sb, " and ")
+						}
+					}
+				}
+			}
+		}
+
+	}
 
 	sb := new(strings.Builder)
 
-	for i, c1 := range tCons {
+	for i := 0; i < len(cc); i++ {
+		for j := i; j < len(cc); j++ {
+			fmt.Fprintln(sb)
+			do(sb, i, j, cc)
+			do(sb, j, i, cc)
 
-		fmt.Fprintln(sb)
-		if c1 == nil {
-			continue
-		}
-		fmt.Fprintf(sb, "\n\n%3d\tusing : %v\n", i, c1)
-		for j, c2 := range tCons {
-			if c2 == nil {
-				continue
-			}
-			fmt.Fprintf(sb, "\n%3d-%3d\tto simplify :\t%v    --> ", i, j, c2)
-			cc, changed, err := c1.Simplify(c2)
-			if err != nil {
-				fmt.Fprintf(sb, "\n%3d-%3d\t\t\t\t\tERROR   : %v", i, j, err)
-			} else {
-				if changed {
-					if len(cc) == 0 {
-						fmt.Fprintf(sb, "\n%3d-%3d\t\t\t\t\t\t\tREMOVE", i, j)
-					} else {
-						fmt.Fprintf(sb, "\n%3d-%3d\t\t\t\t\t\t\tREPLACE BY", i, j)
-						for _, c := range cc {
-							fmt.Fprintf(sb, "\n%3d-%3d\t\t\t\t\t\t\t\t\t%v", i, j, c)
-						}
-					}
-				} else {
-					fmt.Fprintf(sb, "\n%3d-%3d\t\t\t\t\t\t\tNO CHANGE, KEEP AS IS", i, j)
-				}
-			}
 		}
 	}
 	return sb

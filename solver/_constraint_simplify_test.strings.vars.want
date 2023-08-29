@@ -1,174 +1,253 @@
 
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	REMOVE
+USE        :	X = "\"\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	REMOVE
 
-  0	using : X = "\"\""
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  0-  0	to simplify :	X = "\"\""    --> 
-  0-  0							REMOVE
-  0-  1	to simplify :	Y = "\"a string\""    --> 
-  0-  1							NO CHANGE, KEEP AS IS
-  0-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  0-  2							NO CHANGE, KEEP AS IS
-  0-  3	to simplify :	Y = X    --> 
-  0-  3							REPLACE BY
-  0-  3									Y = "\"\""
-  0-  4	to simplify :	Y$2 = X    --> 
-  0-  4							REPLACE BY
-  0-  4									Y$2 = "\"\""
-  0-  5	to simplify :	Y$2 = Y    --> 
-  0-  5							NO CHANGE, KEEP AS IS
-  0-  6	to simplify :	Z$3 = X    --> 
-  0-  6							REPLACE BY
-  0-  6									Z$3 = "\"\""
-  0-  7	to simplify :	Z$3 = Y$2    --> 
-  0-  7							NO CHANGE, KEEP AS IS
+USE        :	X = "\"\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y = X
+	 -- >	REPLACE WITH:	  Y = "\"\""
+USE        :	Y = X
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  1	using : Y = "\"a string\""
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REPLACE WITH:	  Y$2 = "\"\""
+USE        :	Y$2 = X
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  1-  0	to simplify :	X = "\"\""    --> 
-  1-  0							NO CHANGE, KEEP AS IS
-  1-  1	to simplify :	Y = "\"a string\""    --> 
-  1-  1							REMOVE
-  1-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  1-  2							NO CHANGE, KEEP AS IS
-  1-  3	to simplify :	Y = X    --> 
-  1-  3							REPLACE BY
-  1-  3									X = "\"a string\""
-  1-  4	to simplify :	Y$2 = X    --> 
-  1-  4							NO CHANGE, KEEP AS IS
-  1-  5	to simplify :	Y$2 = Y    --> 
-  1-  5							REPLACE BY
-  1-  5									Y$2 = "\"a string\""
-  1-  6	to simplify :	Z$3 = X    --> 
-  1-  6							NO CHANGE, KEEP AS IS
-  1-  7	to simplify :	Z$3 = Y$2    --> 
-  1-  7							NO CHANGE, KEEP AS IS
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REPLACE WITH:	  Z$3 = "\"\""
+USE        :	Z$3 = X
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  2	using : Z$3 = "\"another string\""
+USE        :	X = "\"\""
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  2-  0	to simplify :	X = "\"\""    --> 
-  2-  0							NO CHANGE, KEEP AS IS
-  2-  1	to simplify :	Y = "\"a string\""    --> 
-  2-  1							NO CHANGE, KEEP AS IS
-  2-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  2-  2							REMOVE
-  2-  3	to simplify :	Y = X    --> 
-  2-  3							NO CHANGE, KEEP AS IS
-  2-  4	to simplify :	Y$2 = X    --> 
-  2-  4							NO CHANGE, KEEP AS IS
-  2-  5	to simplify :	Y$2 = Y    --> 
-  2-  5							NO CHANGE, KEEP AS IS
-  2-  6	to simplify :	Z$3 = X    --> 
-  2-  6							REPLACE BY
-  2-  6									X = "\"another string\""
-  2-  7	to simplify :	Z$3 = Y$2    --> 
-  2-  7							REPLACE BY
-  2-  7									Y$2 = "\"another string\""
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	REMOVE
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	REMOVE
 
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  3	using : Y = X
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = X
+	 -- >	REPLACE WITH:	  X = "\"a string\""
+USE        :	Y = X
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	REPLACE WITH:	  X = "\"a string\""
 
-  3-  0	to simplify :	X = "\"\""    --> 
-  3-  0							NO CHANGE, KEEP AS IS
-  3-  1	to simplify :	Y = "\"a string\""    --> 
-  3-  1							REPLACE BY
-  3-  1									X = "\"a string\""
-  3-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  3-  2							NO CHANGE, KEEP AS IS
-  3-  3	to simplify :	Y = X    --> 
-  3-  3							REMOVE
-  3-  4	to simplify :	Y$2 = X    --> 
-  3-  4							NO CHANGE, KEEP AS IS
-  3-  5	to simplify :	Y$2 = Y    --> 
-  3-  5							REPLACE BY
-  3-  5									Y$2 = X
-  3-  6	to simplify :	Z$3 = X    --> 
-  3-  6							NO CHANGE, KEEP AS IS
-  3-  7	to simplify :	Z$3 = Y$2    --> 
-  3-  7							NO CHANGE, KEEP AS IS
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REPLACE WITH:	  Y$2 = "\"a string\""
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  4	using : Y$2 = X
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  4-  0	to simplify :	X = "\"\""    --> 
-  4-  0							NO CHANGE, KEEP AS IS
-  4-  1	to simplify :	Y = "\"a string\""    --> 
-  4-  1							NO CHANGE, KEEP AS IS
-  4-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  4-  2							NO CHANGE, KEEP AS IS
-  4-  3	to simplify :	Y = X    --> 
-  4-  3							NO CHANGE, KEEP AS IS
-  4-  4	to simplify :	Y$2 = X    --> 
-  4-  4							REMOVE
-  4-  5	to simplify :	Y$2 = Y    --> 
-  4-  5							NO CHANGE, KEEP AS IS
-  4-  6	to simplify :	Z$3 = X    --> 
-  4-  6							NO CHANGE, KEEP AS IS
-  4-  7	to simplify :	Z$3 = Y$2    --> 
-  4-  7							REPLACE BY
-  4-  7									Z$3 = X
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REMOVE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REMOVE
 
-  5	using : Y$2 = Y
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
-  5-  0	to simplify :	X = "\"\""    --> 
-  5-  0							NO CHANGE, KEEP AS IS
-  5-  1	to simplify :	Y = "\"a string\""    --> 
-  5-  1							NO CHANGE, KEEP AS IS
-  5-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  5-  2							NO CHANGE, KEEP AS IS
-  5-  3	to simplify :	Y = X    --> 
-  5-  3							NO CHANGE, KEEP AS IS
-  5-  4	to simplify :	Y$2 = X    --> 
-  5-  4							NO CHANGE, KEEP AS IS
-  5-  5	to simplify :	Y$2 = Y    --> 
-  5-  5							REMOVE
-  5-  6	to simplify :	Z$3 = X    --> 
-  5-  6							NO CHANGE, KEEP AS IS
-  5-  7	to simplify :	Z$3 = Y$2    --> 
-  5-  7							REPLACE BY
-  5-  7									Z$3 = Y
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
-  6	using : Z$3 = X
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REPLACE WITH:	  X = "\"another string\""
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REPLACE WITH:	  X = "\"another string\""
 
-  6-  0	to simplify :	X = "\"\""    --> 
-  6-  0							NO CHANGE, KEEP AS IS
-  6-  1	to simplify :	Y = "\"a string\""    --> 
-  6-  1							NO CHANGE, KEEP AS IS
-  6-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  6-  2							REPLACE BY
-  6-  2									X = "\"another string\""
-  6-  3	to simplify :	Y = X    --> 
-  6-  3							NO CHANGE, KEEP AS IS
-  6-  4	to simplify :	Y$2 = X    --> 
-  6-  4							NO CHANGE, KEEP AS IS
-  6-  5	to simplify :	Y$2 = Y    --> 
-  6-  5							NO CHANGE, KEEP AS IS
-  6-  6	to simplify :	Z$3 = X    --> 
-  6-  6							REMOVE
-  6-  7	to simplify :	Z$3 = Y$2    --> 
-  6-  7							NO CHANGE, KEEP AS IS
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REPLACE WITH:	  Y$2 = "\"another string\""
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REPLACE WITH:	  Y$2 = "\"another string\""
 
+USE        :	Y = X
+TO SIMPLIFY:	Y = X
+	 -- >	REMOVE
+USE        :	Y = X
+TO SIMPLIFY:	Y = X
+	 -- >	REMOVE
 
-  7	using : Z$3 = Y$2
+USE        :	Y = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
 
-  7-  0	to simplify :	X = "\"\""    --> 
-  7-  0							NO CHANGE, KEEP AS IS
-  7-  1	to simplify :	Y = "\"a string\""    --> 
-  7-  1							NO CHANGE, KEEP AS IS
-  7-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  7-  2							REPLACE BY
-  7-  2									Y$2 = "\"another string\""
-  7-  3	to simplify :	Y = X    --> 
-  7-  3							NO CHANGE, KEEP AS IS
-  7-  4	to simplify :	Y$2 = X    --> 
-  7-  4							NO CHANGE, KEEP AS IS
-  7-  5	to simplify :	Y$2 = Y    --> 
-  7-  5							NO CHANGE, KEEP AS IS
-  7-  6	to simplify :	Z$3 = X    --> 
-  7-  6							NO CHANGE, KEEP AS IS
-  7-  7	to simplify :	Z$3 = Y$2    --> 
-  7-  7							REMOVE
+USE        :	Y = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REMOVE
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	REMOVE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y$2 = X
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REMOVE
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	REMOVE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = Y
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Y$2 = Y
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REMOVE
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = X
+	 -- >	REMOVE
+
+USE        :	Z$3 = X
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	NO CHANGE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = X
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REMOVE
+USE        :	Z$3 = Y$2
+TO SIMPLIFY:	Z$3 = Y$2
+	 -- >	REMOVE

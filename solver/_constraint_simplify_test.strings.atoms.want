@@ -1,127 +1,197 @@
 
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	REMOVE
+USE        :	X = "\"\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	REMOVE
 
-  0	using : X = "\"\""
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  0-  0	to simplify :	X = "\"\""    --> 
-  0-  0							REMOVE
-  0-  1	to simplify :	Y = "\"a string\""    --> 
-  0-  1							NO CHANGE, KEEP AS IS
-  0-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  0-  2							NO CHANGE, KEEP AS IS
-  0-  3	to simplify :	X = toto    --> 
-  0-  3					ERROR   : incompatible constraints detected when simplifying
-  0-  4	to simplify :	Y$2 = tata    --> 
-  0-  4							NO CHANGE, KEEP AS IS
-  0-  5	to simplify :	Y = tutu    --> 
-  0-  5							NO CHANGE, KEEP AS IS
-  0-  6	to simplify :	Z$3 = titi    --> 
-  0-  6							NO CHANGE, KEEP AS IS
+USE        :	X = "\"\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	X = toto
+	 -- >	ERROR : incompatible constraints detected when simplifying
+USE        :	X = toto
+TO SIMPLIFY:	X = "\"\""
+	 -- >	ERROR : incompatible constraints detected when simplifying
 
-  1	using : Y = "\"a string\""
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  1-  0	to simplify :	X = "\"\""    --> 
-  1-  0							NO CHANGE, KEEP AS IS
-  1-  1	to simplify :	Y = "\"a string\""    --> 
-  1-  1							REMOVE
-  1-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  1-  2							NO CHANGE, KEEP AS IS
-  1-  3	to simplify :	X = toto    --> 
-  1-  3							NO CHANGE, KEEP AS IS
-  1-  4	to simplify :	Y$2 = tata    --> 
-  1-  4							NO CHANGE, KEEP AS IS
-  1-  5	to simplify :	Y = tutu    --> 
-  1-  5					ERROR   : incompatible constraints detected when simplifying
-  1-  6	to simplify :	Z$3 = titi    --> 
-  1-  6							NO CHANGE, KEEP AS IS
+USE        :	X = "\"\""
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
+USE        :	X = "\"\""
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	X = "\"\""
+	 -- >	NO CHANGE
 
-  2	using : Z$3 = "\"another string\""
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	REMOVE
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	REMOVE
 
-  2-  0	to simplify :	X = "\"\""    --> 
-  2-  0							NO CHANGE, KEEP AS IS
-  2-  1	to simplify :	Y = "\"a string\""    --> 
-  2-  1							NO CHANGE, KEEP AS IS
-  2-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  2-  2							REMOVE
-  2-  3	to simplify :	X = toto    --> 
-  2-  3							NO CHANGE, KEEP AS IS
-  2-  4	to simplify :	Y$2 = tata    --> 
-  2-  4							NO CHANGE, KEEP AS IS
-  2-  5	to simplify :	Y = tutu    --> 
-  2-  5							NO CHANGE, KEEP AS IS
-  2-  6	to simplify :	Z$3 = titi    --> 
-  2-  6					ERROR   : incompatible constraints detected when simplifying
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
+USE        :	X = toto
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  3	using : X = toto
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  3-  0	to simplify :	X = "\"\""    --> 
-  3-  0					ERROR   : incompatible constraints detected when simplifying
-  3-  1	to simplify :	Y = "\"a string\""    --> 
-  3-  1							NO CHANGE, KEEP AS IS
-  3-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  3-  2							NO CHANGE, KEEP AS IS
-  3-  3	to simplify :	X = toto    --> 
-  3-  3							REMOVE
-  3-  4	to simplify :	Y$2 = tata    --> 
-  3-  4							NO CHANGE, KEEP AS IS
-  3-  5	to simplify :	Y = tutu    --> 
-  3-  5							NO CHANGE, KEEP AS IS
-  3-  6	to simplify :	Z$3 = titi    --> 
-  3-  6							NO CHANGE, KEEP AS IS
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Y = tutu
+	 -- >	ERROR : incompatible constraints detected when simplifying
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	ERROR : incompatible constraints detected when simplifying
 
+USE        :	Y = "\"a string\""
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y = "\"a string\""
+	 -- >	NO CHANGE
 
-  4	using : Y$2 = tata
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REMOVE
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	REMOVE
 
-  4-  0	to simplify :	X = "\"\""    --> 
-  4-  0							NO CHANGE, KEEP AS IS
-  4-  1	to simplify :	Y = "\"a string\""    --> 
-  4-  1							NO CHANGE, KEEP AS IS
-  4-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  4-  2							NO CHANGE, KEEP AS IS
-  4-  3	to simplify :	X = toto    --> 
-  4-  3							NO CHANGE, KEEP AS IS
-  4-  4	to simplify :	Y$2 = tata    --> 
-  4-  4							REMOVE
-  4-  5	to simplify :	Y = tutu    --> 
-  4-  5							NO CHANGE, KEEP AS IS
-  4-  6	to simplify :	Z$3 = titi    --> 
-  4-  6							NO CHANGE, KEEP AS IS
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
+USE        :	X = toto
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
-  5	using : Y = tutu
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	NO CHANGE
 
-  5-  0	to simplify :	X = "\"\""    --> 
-  5-  0							NO CHANGE, KEEP AS IS
-  5-  1	to simplify :	Y = "\"a string\""    --> 
-  5-  1					ERROR   : incompatible constraints detected when simplifying
-  5-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  5-  2							NO CHANGE, KEEP AS IS
-  5-  3	to simplify :	X = toto    --> 
-  5-  3							NO CHANGE, KEEP AS IS
-  5-  4	to simplify :	Y$2 = tata    --> 
-  5-  4							NO CHANGE, KEEP AS IS
-  5-  5	to simplify :	Y = tutu    --> 
-  5-  5							REMOVE
-  5-  6	to simplify :	Z$3 = titi    --> 
-  5-  6							NO CHANGE, KEEP AS IS
+USE        :	Z$3 = "\"another string\""
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	ERROR : incompatible constraints detected when simplifying
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = "\"another string\""
+	 -- >	ERROR : incompatible constraints detected when simplifying
 
+USE        :	X = toto
+TO SIMPLIFY:	X = toto
+	 -- >	REMOVE
+USE        :	X = toto
+TO SIMPLIFY:	X = toto
+	 -- >	REMOVE
 
-  6	using : Z$3 = titi
+USE        :	X = toto
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
 
-  6-  0	to simplify :	X = "\"\""    --> 
-  6-  0							NO CHANGE, KEEP AS IS
-  6-  1	to simplify :	Y = "\"a string\""    --> 
-  6-  1							NO CHANGE, KEEP AS IS
-  6-  2	to simplify :	Z$3 = "\"another string\""    --> 
-  6-  2					ERROR   : incompatible constraints detected when simplifying
-  6-  3	to simplify :	X = toto    --> 
-  6-  3							NO CHANGE, KEEP AS IS
-  6-  4	to simplify :	Y$2 = tata    --> 
-  6-  4							NO CHANGE, KEEP AS IS
-  6-  5	to simplify :	Y = tutu    --> 
-  6-  5							NO CHANGE, KEEP AS IS
-  6-  6	to simplify :	Z$3 = titi    --> 
-  6-  6							REMOVE
+USE        :	X = toto
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
+
+USE        :	X = toto
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	X = toto
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REMOVE
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	REMOVE
+
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+USE        :	Y = tutu
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+
+USE        :	Y$2 = tata
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y$2 = tata
+	 -- >	NO CHANGE
+
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = tutu
+	 -- >	REMOVE
+USE        :	Y = tutu
+TO SIMPLIFY:	Y = tutu
+	 -- >	REMOVE
+
+USE        :	Y = tutu
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	NO CHANGE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Y = tutu
+	 -- >	NO CHANGE
+
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REMOVE
+USE        :	Z$3 = titi
+TO SIMPLIFY:	Z$3 = titi
+	 -- >	REMOVE

@@ -78,26 +78,9 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 		if c1.V.Eq(c2.V) && c1.W.Eq(c2.W) {
 			return nil, true, nil // duplicate
 		}
-		if c1.V.Eq(c2.W) && c1.W.Eq(c2.V) {
-			return nil, true, nil // duplicate, should never happen if correctly ordered (checked) before.
-		}
-		if c1.V.Eq(c2.W) { // substitute !
-			c3 := VarIsVar{
-				c2.V,
-				c1.W,
-			}
-			c4, err := c3.Check()
-			if err != nil {
-				return nil, false, err
-			}
-			if c4 != nil {
-				return []Constraint{c4}, true, nil
-			} else {
-				return nil, true, nil // remove
-			}
-		}
+		// no further attempts. Special situation like X=Y, X=a => Y=a will be better handled as X=a, X=Y => Y=a, removing X=Y !
 		return nil, false, nil // no change
-	case VarIsCompoundTerm:
+	case VarIsCompoundTerm: // X=Y, f(a,X,Y) => eliminate X , ie retun f(a,Y, Y)
 		tt, found := ReplaceVar(c1.V, c2.T, c1.W)
 		if !found {
 			return nil, false, nil // no change
