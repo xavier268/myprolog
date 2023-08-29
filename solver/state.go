@@ -30,3 +30,13 @@ func NewState(parent *State) *State {
 	st.Goals = append(st.Goals, parent.Goals...)
 	return st
 }
+
+// Partially resets the state. The state is modified.
+func (st *State) Abort() {
+	if st == nil {
+		return
+	}
+	st.NextRule = 0
+	st.Constraints = st.Constraints[:0]
+	st.Goals = st.Goals[:0]
+}
