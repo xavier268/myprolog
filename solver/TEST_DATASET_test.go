@@ -45,6 +45,10 @@ var TEST_VAR_IS_ATOM = []Constraint{
 		A: Atom{Value: "tata"},
 	},
 	VarIsAtom{
+		V: Y,
+		A: Atom{Value: "tutu"},
+	},
+	VarIsAtom{
 		V: Z3,
 		A: Atom{Value: "titi"},
 	},

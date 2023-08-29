@@ -64,30 +64,34 @@
 15	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"Y", Nsp:2}, A:parser.Atom{Value:"tata"}}
 15	(checked)	Y$2 = tata
 
-16	(original)	Z$3 = titi
-16	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"Z", Nsp:3}, A:parser.Atom{Value:"titi"}}
-16	(checked)	Z$3 = titi
+16	(original)	Y = tutu
+16	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"Y", Nsp:0}, A:parser.Atom{Value:"tutu"}}
+16	(checked)	Y = tutu
 
-17	(original)	X = X
-17	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
-17	(checked)	<nil>
+17	(original)	Z$3 = titi
+17	(raw form)	solver.VarIsAtom{V:parser.Variable{Name:"Z", Nsp:3}, A:parser.Atom{Value:"titi"}}
+17	(checked)	Z$3 = titi
 
-18	(original)	Y = X
-18	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
-18	(checked)	Y = X
+18	(original)	X = X
+18	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
+18	(checked)	<nil>
 
-19	(original)	X = Y$2
-19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
-19	(checked)	Y$2 = X
+19	(original)	Y = X
+19	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"X", Nsp:0}}
+19	(checked)	Y = X
 
-20	(original)	Y = Y$2
-20	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
-20	(checked)	Y$2 = Y
+20	(original)	X = Y$2
+20	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"X", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
+20	(checked)	Y$2 = X
 
-21	(original)	Z$3 = X
-21	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"X", Nsp:0}}
-21	(checked)	Z$3 = X
+21	(original)	Y = Y$2
+21	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Y", Nsp:0}, W:parser.Variable{Name:"Y", Nsp:2}}
+21	(checked)	Y$2 = Y
 
-22	(original)	Z$3 = Y$2
-22	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"Y", Nsp:2}}
-22	(checked)	Z$3 = Y$2
+22	(original)	Z$3 = X
+22	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"X", Nsp:0}}
+22	(checked)	Z$3 = X
+
+23	(original)	Z$3 = Y$2
+23	(raw form)	solver.VarIsVar{V:parser.Variable{Name:"Z", Nsp:3}, W:parser.Variable{Name:"Y", Nsp:2}}
+23	(checked)	Z$3 = Y$2
