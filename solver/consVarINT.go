@@ -23,5 +23,88 @@ func (c VarINT) Clone() Constraint {
 
 // Simplify implements Constraint.
 func (c1 VarINT) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
-	panic("unimplemented")
+	switch c2 := c2.(type) {
+	case VarEQ:
+		if c1.V == c2.V {
+			if c2.Value.IsInteger() {
+				return nil, false, nil // keep, no change
+			} else {
+				return nil, false, ErrInvalidConstraintSimplify
+			}
+		}
+		return nil, false, nil // keep, no change
+	case VarLT:
+		if c1.V == c2.V { // X is INT & X < a
+			if c2.Value.IsInteger() { // a is int
+
+				c3 := VarLTE{V: c2.V, Value: c2.Value.Minus(OneNumber)} // c3: X <= a-1
+				return []Constraint{c3}, true, nil
+			} else { // a is NOT an int
+				c3 := VarLTE{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
+				return []Constraint{c3}, true, nil
+			}
+		}
+		return nil, false, nil // keep, no change
+	case VarGT:
+		if c1.V == c2.V { // X is INT & X > a
+			if c2.Value.IsInteger() { // a is int
+
+				c3 := VarLTE{V: c2.V, Value: c2.Value.Plus(OneNumber)} // c3: X >= a+1
+				return []Constraint{c3}, true, nil
+			} else { // a is NOT an int
+				c3 := VarLTE{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
+				return []Constraint{c3}, true, nil
+			}
+		}
+		return nil, false, nil // keep, no change
+	case VarGTE:
+		if c1.V == c2.V { // X is INT & X > a
+			if c2.Value.IsInteger() { // a is int
+				return nil, false, nil // keep, no change
+			} else { // a is NOT an int
+				c3 := VarGTE{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
+				return []Constraint{c3}, true, nil
+			}
+		}
+		return nil, false, nil // keep, no change
+	case VarLTE:
+		if c1.V == c2.V { // X is INT & X <= a
+			if c2.Value.IsInteger() { // a is int
+				return nil, false, nil // keep, no change
+			} else { // a is NOT an int
+				c3 := VarLTE{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
+				return []Constraint{c3}, true, nil
+			}
+		}
+		return nil, false, nil // keep, no change
+	case VarINT:
+		return nil, true, nil // remove, duplicate
+	case VarIsVar:
+		if c1.V == c2.V {
+			c3 := VarINT{c2.W}
+			return []Constraint{c2, c3}, true, nil
+		}
+		if c1.V == c2.W {
+			c3 := VarINT{c2.V}
+			return []Constraint{c2, c3}, true, nil
+		}
+		return nil, false, nil // keep, no change
+	case VarIsAtom:
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // conflict
+		}
+		return nil, false, nil // keep, no change
+	case VarIsString:
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // conflict
+		}
+		return nil, false, nil // keep, no change
+	case VarIsCompoundTerm:
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // conflict
+		}
+		return nil, false, nil // keep, no change
+	default:
+		panic("cases not implemented")
+	}
 }

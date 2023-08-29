@@ -96,20 +96,36 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		}
 		return nil, false, nil // no change, keep all
 	case VarEQ:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarLT:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarGT:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarGTE:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarLTE:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarINT:
-		panic("unimplement")
-
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	default:
-		_ = c2 // keep the compiler happy
 		panic("internal error - unimplemented case")
 	}
 }

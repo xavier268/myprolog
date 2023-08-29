@@ -31,27 +31,85 @@ func (c VarEQ) Clone() Constraint {
 func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
 	case VarEQ:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.Eq(c2.Value) {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarLT:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.Less(c2.Value) {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarGT:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.Greater(c2.Value) {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarGTE:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.Greater(c2.Value) || c1.Value.Eq(c2.Value) {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarLTE:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.Less(c2.Value) || c1.Value.Eq(c2.Value) {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarINT:
-		panic("unimplement")
+		if c1.V == c2.V {
+			if c1.Value.IsInteger() {
+				return nil, true, nil // ignore duplicate
+			} else {
+				return nil, false, ErrInvalidConstraintEmptyRange // contradiction
+			}
+		}
+		return nil, false, nil // keep, no change
 	case VarIsVar:
-		panic("unimplement")
+		if c1.V == c2.V {
+			c3 := VarEQ{c2.W, c1.Value}
+			return []Constraint{c3}, true, nil
+		}
+		if c1.V == c2.W {
+			c3 := VarEQ{c2.V, c1.Value}
+			return []Constraint{c3}, true, nil
+		}
+		return nil, false, nil // keep, no change
 	case VarIsAtom:
-		panic("unimplement")
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // contradiction
+		}
+		return nil, false, nil // keep, no change
 	case VarIsString:
-		panic("unimplement")
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // contradiction
+		}
+		return nil, false, nil // keep, no change
 	case VarIsCompoundTerm:
-		panic("unimplement")
+		if c1.V == c2.V {
+			return nil, false, ErrInvalidConstraintSimplify // contradiction
+		}
+		return nil, false, nil // keep, no change
 	default:
-		_ = c2 // keep the compiler happy
 		panic("internal error - unimplemented case")
 	}
 }

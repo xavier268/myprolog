@@ -87,17 +87,35 @@ func (c1 VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed boo
 		}
 		return nil, false, nil // keep, no change
 	case VarEQ:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarLT:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarGT:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarGTE:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarLTE:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 	case VarINT:
-		panic("unimplement")
+		if c1.V.Eq(c2.V) { // same variable
+			return nil, false, ErrInvalidConstraintSimplify
+		}
+		return nil, false, nil // no change, keep all
 
 	default:
 		_ = c2 // keep the compiler happy

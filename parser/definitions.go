@@ -49,6 +49,11 @@ var (
 		Den:        1,
 		Normalized: true,
 	}
+	OneNumber = Number{
+		Num:        1,
+		Den:        1,
+		Normalized: true,
+	}
 )
 
 // Number are immutable

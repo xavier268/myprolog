@@ -44,6 +44,18 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 
 	switch c2 := c2.(type) {
+	case VarEQ:
+		return nil, false, nil // keep, no change - will be handled in the other direction
+	case VarLT:
+		return nil, false, nil // keep, no change - will be handled in the other direction
+	case VarGT:
+		return nil, false, nil // keep, no change - will be handled in the other direction
+	case VarGTE:
+		return nil, false, nil // keep, no change - will be handled in the other direction
+	case VarLTE:
+		return nil, false, nil // keep, no change - will be handled in the other direction
+	case VarINT:
+		return nil, false, nil // keep, no change - will be handled in the other direction
 	case VarIsAtom:
 		if c1.V == c2.V { // same value - can unify both contents !
 			c3 := VarIsAtom{
@@ -96,19 +108,6 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 			return nil, false, err
 		}
 		return []Constraint{c4}, true, nil
-
-	case VarEQ:
-		panic("unimplement")
-	case VarLT:
-		panic("unimplement")
-	case VarGT:
-		panic("unimplement")
-	case VarGTE:
-		panic("unimplement")
-	case VarLTE:
-		panic("unimplement")
-	case VarINT:
-		panic("unimplement")
 
 	default:
 		_ = c2 // keep the compiler happy

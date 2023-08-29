@@ -14,6 +14,9 @@ type Atom = parser.Atom
 type String = parser.String
 type Number = parser.Number
 
+// useful numbers
+var ZeroNumber, OneNumber = parser.ZeroNumber, parser.OneNumber
+
 // Solve for a given state.
 // Backtracking is managed only in this function.
 func Solve(st *State, sh SolutionHandler) *State {
