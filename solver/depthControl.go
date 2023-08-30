@@ -9,9 +9,11 @@ import (
 const MIN_DEPTH = 10 // minimum depth control for state/uids
 
 // Check if maxdepth is reached.
-// Prefer usuing this rather than doing a direct compare,
-// since this will allow to detect too frequent hits and dynamically increase maxdepth if needed.
+
 func (st State) CheckDepth() error {
+	// Prefer usuing this rather than doing a direct compare,
+	// since this will allow to detect too frequent hits and dynamically increase maxdepth if needed.
+
 	// naive heuristic, to be improved later...
 	md := MIN_DEPTH + st.Rules.Count()*3
 	if st.Uid >= md {
