@@ -2,6 +2,7 @@ package solver
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/xavier268/myprolog/parser"
 )
@@ -9,6 +10,21 @@ import (
 // Set of rules that can be applied in a state
 type RuleSet struct {
 	rules []CompoundTerm
+}
+
+func (r *RuleSet) Count() int {
+	if r == nil {
+		return 0
+	}
+	return len(r.rules)
+}
+
+func (r *RuleSet) String() string {
+	sb := new(strings.Builder)
+	for _, rule := range r.rules {
+		fmt.Fprintln(sb, rule.Pretty())
+	}
+	return sb.String()
 }
 
 func (rs *RuleSet) AddRule(rule Term) {
@@ -31,6 +47,7 @@ func (rs *RuleSet) AddRule(rule Term) {
 
 // Find the next rule applicable in the current context.
 // Returns an alpha-transformed rule.
+// Only consider rules whose index is higher or equal to st.NextRule
 // New State is created if a choice was made between multiple applicable rules.
 // Return nil if no rule available.
 func FindNextRule(st *State) (*State, Term) {
@@ -45,6 +62,9 @@ func FindNextRule(st *State) (*State, Term) {
 
 	// iterate over all rules, check which are applicable
 	for i, rule := range st.Rules.rules {
+		if i < st.NextRule {
+			continue
+		}
 		if SameStructure(rule.Children[0], goal) {
 			if count == 0 {
 				selected = i // remember only the first one found

@@ -68,7 +68,7 @@ hasChangedLoop: // loop again for each changed constraint ...
 						constraints[j] = dd[0] // replace with one or more new constraints
 						constraints = append(constraints, dd[1:]...)
 					}
-					break hasChangedLoop
+					continue hasChangedLoop
 				}
 			}
 		}

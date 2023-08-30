@@ -1,0 +1,9 @@
+Test name : TestEndToEnd
+This file : _endToEnd_test.1.want
+
+
+Input:	a(b,c). a(d,e).    ?- a(X,Y).
+Parsed:	[rule(a(b, c)) rule(a(d, e)) query(a(X, Y))]
+solution:	[X = b Y = c]
+solution:	[X = d Y = e]
+State:	<nil>

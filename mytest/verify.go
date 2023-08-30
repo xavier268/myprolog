@@ -19,7 +19,7 @@ func Verify(t *testing.T, content string, filename string) {
 	filename, _ = filepath.Abs("_" + filename)
 	filename = filename + ".want"
 
-	content = fmt.Sprintf("Test name : %s\nThis file : %s\n%s\n", t.Name(), filename, content)
+	content = fmt.Sprintf("Test name : %s\nThis file : %s\n%s\n", t.Name(), filepath.Base(filename), content)
 
 	fmt.Println(GREEN+"Verifying test results against file : "+RESET, filename)
 	check, err := os.ReadFile(filename)

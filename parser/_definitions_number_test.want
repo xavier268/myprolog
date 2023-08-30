@@ -1,5 +1,5 @@
 Test name : TestNumber
-This file : C:\Users\xavie\Desktop\myprolog\parser\_definitions_number_test.want
+This file : _definitions_number_test.want
 Using a set of 9 test numbers : [0/0 1/0 9223372036854775807/1 -9223372036854775807/1 5/1 2/3 -6/-1 -2/6 10/-6]
 
 ============= Single number test =============

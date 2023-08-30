@@ -1,5 +1,12 @@
 package solver
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/xavier268/myprolog/parser"
+)
+
 // State maintains the current state of the puzzle current state, and is used for backtracking.
 // A new state is created if and only if we have to make a choice and backtracking may be necessary.
 type State struct {
@@ -29,6 +36,30 @@ func NewState(parent *State) *State {
 	st.Constraints = append(st.Constraints, parent.Constraints...)
 	st.Goals = append(st.Goals, parent.Goals...)
 	return st
+}
+
+func (st *State) AddRule(rule ...CompoundTerm) {
+	if st.Rules == nil {
+		st.Rules = &RuleSet{rules: []parser.CompoundTerm{}}
+	}
+	st.Rules.rules = append(st.Rules.rules, rule...)
+}
+
+func (st *State) String() string {
+	sb := new(strings.Builder)
+
+	fmt.Fprintf(sb, "State: \n")
+	fmt.Fprintf(sb, "Rules :\n%s", st.Rules)
+	fmt.Fprintf(sb, "Constraints : %s\n", st.Constraints)
+	fmt.Fprintf(sb, "Goals : %s\n", st.Goals)
+	fmt.Fprintf(sb, "NextRule : %d\n", st.NextRule)
+	fmt.Fprintf(sb, "Uid : %d\n", st.Uid)
+	if st.Parent != nil {
+		fmt.Fprintf(sb, "Parent : NO\n")
+	} else {
+		fmt.Fprintf(sb, "Parent : YES\n")
+	}
+	return sb.String()
 }
 
 // Partially resets the state. The state is modified.
