@@ -50,53 +50,42 @@ func (rs *RuleSet) AddRule(rule Term) {
 // Only consider rules whose index is higher or equal to st.NextRule
 // New State is created if a choice was made between multiple applicable rules.
 // Return nil if no rule available.
+// Will enforce the constraints of MAX_DEPTH when doing alpha-substitution.
 func FindNextRule(st *State) (*State, Term) {
 
 	if len(st.Goals) == 0 {
 		return st, nil // no rule can be found for a non existing goal
 	}
 
-	count := 0     // number of applicable rules. Needed to decide to fork state or not.
-	selected := -1 // index of first applicable rule selected
-	goal := st.Goals[0]
+	if st.CheckDepth() != nil {
+		return st, nil // no rule can be found for a goal with too deep context
+	}
 
-	// iterate over all rules, check which are applicable
-	for i, rule := range st.Rules.rules {
-		if i < st.NextRule {
-			continue
-		}
-		if SameStructure(rule.Children[0], goal) {
-			if count == 0 {
-				selected = i // remember only the first one found
-			}
-			count = count + 1
-			if count >= 2 {
-				break // multiple rules are applicable
-			}
+	selected := -1      // the rule we selected
+	goal := st.Goals[0] // the goal we try to match
+
+	// iterate over all rules, starting with index st.NextRule.
+	// check which are applicable.
+	// return the first we find, whos'e index is >= NextRule.
+	for i := st.NextRule; i < len(st.Rules.rules); i++ {
+		rule := st.Rules.rules[i]
+		if rule.Functor != "" && len(rule.Children) > 0 && SameStructure(rule.Children[0], goal) {
+			selected = i
+			break // found a matching rule
 		}
 	}
 
-	if count <= 0 { // no rule found
-		st.NextRule = len(st.Rules.rules)
-		return st, nil //  will trigger backtracking ...
+	if selected < 0 { // no rule found
+		st.NextRule = -1 // to be safe
+		return st, nil   //  will trigger backtracking ...
 	}
 
-	if count == 1 { // only one rule is applicable - do not fork state
-		st.Uid = st.Uid + 1
-		rule := st.Rules.rules[selected].CloneNsp(st.Uid)
-		st.NextRule = selected + 1 // to ensure no loop
-		return st, rule
-	}
-
-	if count >= 2 { // more than one r=ule possible - need to fork state
-		st.NextRule = selected + 1 // st becomes the old state we will backtrack into
-		nst := NewState(st)        // fork a new state to continue with
-		nst.NextRule = selected
-		nst.Uid = st.Uid + 1
-		rule := st.Rules.rules[selected].CloneNsp(nst.Uid)
-		return nst, rule
-	}
-	panic("internal error - code should be unreacheable")
+	// since a rule is applicable, lets fork the state.
+	st.NextRule = selected + 1 // st becomes the old state we will backtrack into
+	nst := NewState(st)        // fork a new state to continue with
+	nst.NextRule = 0           // reset next rule for new state
+	rule := st.Rules.rules[selected].CloneNsp(nst.Uid)
+	return nst, rule
 }
 
 // Apply a rule to the state.
@@ -132,7 +121,7 @@ func ApplyRule(st *State, rule Term) (*State, error) {
 
 	// Update goals after successfull unification with the rule rhs.
 	st.Goals = append(crule.Children[1:], st.Goals[1:]...)
-	st.NextRule = 0 // reset next rule because goals changed
+	// st.NextRule = 0 // reset next rule because goals changed - NOPE ! We already forked the state with FindRule.
 	return st, nil
 
 }

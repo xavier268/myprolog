@@ -48,19 +48,20 @@ func Solve(st *State, sh SolutionHandler) *State {
 			continue // loop again
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
+			// it is the responsability of sh to replace st by st.Parent if we want to search next soltions
 			st = sh(st)
-			if st == nil { // stop !
+			if st == nil { // stop solving !
 				return st
 			} else {
-				continue // loop again
+				continue // loop again, try to find more solutions ...
 			}
 		}
 
 		// Find next rule to apply.
-		// State is modified if a choice was necessary among more than one rule (unlikely ?)
+		// State is forked if a rule is returned to try.
 		var rule Term
 		st, rule = FindNextRule(st)
-		if st == nil { // stop !
+		if st == nil { // stop solver !
 			return nil
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
@@ -77,7 +78,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 		}
 
 		// Apply selected rule, replacing the first goal with rule head.
-		// State MAY change if a choice was necessary.
+		// No new state is created, backtracking is not performed inside ApplyRule.
 		st, err = ApplyRule(st, rule)
 		if st == nil {
 			return nil

@@ -1,0 +1,22 @@
+Test name : TestEndToEnd
+This file : _endToEnd_test.6.want
+
+
+Input:	a(b,c). a(c,d).a(e,f).  ?- a(T,_).
+Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(e, f)) query(a(T, _))]
+solution:	[T = b]
+Rules applied : 
+rule#1	a(b, c) :-  
+
+
+solution:	[T = c]
+Rules applied : 
+rule#2	a(c, d) :-  
+
+
+solution:	[T = e]
+Rules applied : 
+rule#3	a(e, f) :-  
+
+
+State:	<nil>

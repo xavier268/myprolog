@@ -26,15 +26,17 @@ type State struct {
 func NewState(parent *State) *State {
 
 	if parent == nil {
-		return new(State)
+		st := new(State)
+		st.Uid = 1
+		return st
 	}
 
 	st := new(State)
 	st.Rules = parent.Rules // default is to point to the same ruleset
 	st.Parent = parent
-	st.Uid = parent.Uid
-	st.Constraints = append(st.Constraints, parent.Constraints...)
-	st.Goals = append(st.Goals, parent.Goals...)
+	st.Uid = parent.Uid + 1
+	st.Constraints = append(st.Constraints, parent.Constraints...) // deep copy the constraints
+	st.Goals = append(st.Goals, parent.Goals...)                   // deep copy the goals
 	return st
 }
 
@@ -62,12 +64,19 @@ func (st *State) String() string {
 	return sb.String()
 }
 
-// Partially resets the state. The state is modified.
-func (st *State) Abort() {
-	if st == nil {
-		return
+// a printable explanation of the rules applied to reach this state.
+// rules are listed in the order they were applied.
+func (st *State) RulesHistory() string {
+
+	res := ""
+	for s := st; s != nil; s = s.Parent {
+		if s.NextRule <= 0 {
+			continue
+		}
+		rule := s.Rules.rules[s.NextRule-1]
+		res = fmt.Sprintf("rule#%d\t%s\n%s", s.NextRule, rule.Pretty(), res)
 	}
-	st.NextRule = 0
-	st.Constraints = st.Constraints[:0]
-	st.Goals = st.Goals[:0]
+
+	return res
+
 }

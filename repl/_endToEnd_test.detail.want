@@ -1,0 +1,67 @@
+Test name : TestEndToEndDetail
+This file : _endToEnd_test.detail.want
+
+==================
+Input:	a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).
+==================
+
+
+State:	State: 
+Rules :
+<nil>Constraints : []
+Goals : [rule(a(b, c)) rule(a(c, d)) rule(a(X, Y), and(a(X, V), a(V, Y))) query(a(A, B))]
+NextRule : 0
+Uid : 1
+Parent : YES
+
+State:	State: 
+Rules :
+<nil>Constraints : []
+Goals : [rule(a(b, c)) rule(a(c, d)) rule(a(X, Y), and(a(X, V), a(V, Y))) query(a(A, B))]
+NextRule : 0
+Uid : 1
+Parent : YES
+
+State:	State: 
+Rules :
+a(b, c) :-  
+a(c, d) :-  
+a(X, Y) :- and(a(X, V), a(V, Y)) 
+Constraints : [A = b B = c]
+Goals : []
+NextRule : 0
+Uid : 2
+Parent : NO
+
+
+=========> solution:	[A = b B = c]
+
+State:	State: 
+Rules :
+a(b, c) :-  
+a(c, d) :-  
+a(X, Y) :- and(a(X, V), a(V, Y)) 
+Constraints : [A = c B = d]
+Goals : []
+NextRule : 0
+Uid : 2
+Parent : NO
+
+
+=========> solution:	[A = c B = d]
+
+State:	State: 
+Rules :
+a(b, c) :-  
+a(c, d) :-  
+a(X, Y) :- and(a(X, V), a(V, Y)) 
+Constraints : [A = b B = d X$2 = b V$2 = c Y$2 = d]
+Goals : []
+NextRule : 0
+Uid : 4
+Parent : NO
+
+
+=========> solution:	[A = b B = d X$2 = b V$2 = c Y$2 = d]
+
+State:	<nil>

@@ -19,6 +19,10 @@ func TestEndToEnd(t *testing.T) {
 		"a(b,c). a(d,e).    ?- a(Y,X).",
 		"a(b,c).a(c,d).     ?- a(U,V),a(V,W).",
 		"a(b,c). a(c,d).a(e,f). ?- a(X,Y).",
+		"a(b,c). a(c,d).a(e,f).  ?- a(_,Z).",
+		"a(b,c). a(c,d).a(e,f).  ?- a(T,_).",
+		"a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).",
+		"a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).",
 	}
 
 	for i, input := range inputData { // one file per input
@@ -32,6 +36,7 @@ func TestEndToEnd(t *testing.T) {
 				return st
 			} else {
 				fmt.Fprintf(sb, "\nsolution:\t%v", st.Constraints)
+				fmt.Fprintf(sb, "\nRules applied : \n%s\n", st.RulesHistory())
 				return st.Parent
 			}
 		}
@@ -60,8 +65,8 @@ func TestEndToEnd(t *testing.T) {
 
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
-	t.Skip()
-	input := "a(X,Z) :- a(X,Y),a(Y,Z). a(b,c). a(c,d). a(d,e).  ?- a(X,Y)."
+	// t.Skip()
+	input := "a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B)."
 
 	sb := new(strings.Builder)
 
