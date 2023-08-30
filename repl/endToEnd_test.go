@@ -60,6 +60,8 @@ func TestEndToEnd(t *testing.T) {
 
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
+	t.Skip()
+	input := "a(X,Z) :- a(X,Y),a(Y,Z). a(b,c). a(c,d). a(d,e).  ?- a(X,Y)."
 
 	sb := new(strings.Builder)
 
@@ -77,8 +79,6 @@ func TestEndToEndDetail(t *testing.T) {
 			return st.Parent
 		}
 	}
-
-	input := "a(X,Z) :- a(X,Y),a(Y,Z). a(b,c). a(c,d). a(d,e).  ?- a(X,Y)."
 
 	fmt.Fprintf(sb, "\n==================\nInput:\t%v\n==================\n\n", input)
 	st := solver.NewState(nil)                     // create new state

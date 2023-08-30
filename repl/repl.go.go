@@ -20,7 +20,6 @@ var _ SolutionHandler = solHandlr
 
 // main repl
 func Repl() {
-	fmt.Println("Welcome to prolog !")
 	st := solver.NewState(nil) // create initial, non nil, state
 	for {
 
@@ -33,7 +32,7 @@ func Repl() {
 	}
 }
 
-// Accpet new rule or query as input, add input as goals.
+// Accept new rule or query as input, add input as goals.
 func AcceptRuleQuery(st *solver.State) *solver.State {
 
 	if st == nil {
