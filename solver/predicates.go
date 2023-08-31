@@ -12,8 +12,8 @@ import (
 // Assumes only canonical form.
 // Constant values are eliminated (numbers, strings ...) as well as underscore.
 var CompPredicateMap = map[string]int{
-	"rule":    -1, // rule definition
-	"query":   -1, // query definition
+	"rule":    -1, // rule definition, used internally to represent a rule
+	"query":   -1, // query definition, used internally to represent a query
 	"dot":     -1, // actually, between 0 and 2 - special check enforced in code
 	"and":     2,  // both children must erase
 	"or":      2,  // at least one child must erase
@@ -23,8 +23,9 @@ var CompPredicateMap = map[string]int{
 
 // Known atomic predicates.
 var AtomPredicate = map[string]bool{
-	"!":    true, // the 'cut' predicate will prevent backtracking from now on.
-	"fail": true, // always fail
+	"!":     true, // the 'cut' predicate will prevent backtracking from now on.
+	"fail":  true, // always fail
+	"rules": true, // print the rules currently known
 }
 
 var ErrPred = fmt.Errorf("predicate cannot apply")
@@ -60,6 +61,16 @@ func DoPredicate(st *State) (*State, error) {
 				continue
 			case "fail": // always fail
 				return st, ErrPred
+			case "rules": // print the rules currently known
+				fmt.Println("\n-------- rules --------")
+				for i, r := range st.Rules.rules {
+					fmt.Printf("#%d:\t%s\n", i, r.Pretty())
+				}
+				fmt.Println("-----------------------")
+
+				st.Goals = st.Goals[1:]
+				st.NextRule = 0 // when goal change, reset the next rule pointer ...
+				continue
 			default: // should not happen
 				panic("internal error : unknown Atom predicate : " + g.Value)
 			}
@@ -129,8 +140,10 @@ func DoPredicate(st *State) (*State, error) {
 					st.Goals = st.Goals[1:] // eat the goal
 					st.NextRule = 0         // when goal change, reset the next rule pointer ...
 					return st, nil
+
 				case String, CompoundTerm, Atom:
 					return st, ErrPred
+
 				default:
 					panic("code should be unreacheable")
 				}
@@ -171,7 +184,6 @@ func DoPredicate(st *State) (*State, error) {
 				default:
 					panic("code should be unreacheable")
 				}
-
 			default:
 				panic("internal error for predicate : " + g.String())
 			}

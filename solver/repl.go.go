@@ -49,6 +49,8 @@ func AcceptRuleQuery(st *State) *State {
 // naive (debugging) solution handler
 func solHandlr(st *State) *State {
 
+	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'h' for help"
+
 	if st == nil {
 		fmt.Println("No (more) solutions.")
 		return st
@@ -61,7 +63,7 @@ func solHandlr(st *State) *State {
 	} else {
 		fmt.Println("Solution :", FilterSolutions(st.Constraints))
 	}
-	fmt.Println("Enter 'x' to exit, 's' to dump state, 'n' for next solution, 'e' to enter new query or rules, 'r' to see the rules used")
+	fmt.Println(help)
 	for {
 		switch ReadCharRawMode() {
 		case 's': // print states
@@ -71,7 +73,7 @@ func solHandlr(st *State) *State {
 			return st
 		case 'n':
 			return st.Parent
-		case 'e': // enter new query or rules
+		case 'e', ' ': // enter new query or rules
 			return AcceptRuleQuery(st)
 		case 'x':
 			os.Exit(0)
@@ -80,7 +82,14 @@ func solHandlr(st *State) *State {
 			// loop
 		case 0:
 			os.Exit(1)
-		default: // loop
+		case 'h':
+			fmt.Println(help) // loop
+		case '\n', '\r', '\t':
+		// Ignore
+		// loop
+		default:
+			fmt.Println(help) // loop
+			// loop
 		}
 
 	}
