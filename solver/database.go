@@ -36,8 +36,8 @@ func ResetDB() {
 
 func ListDBRules() string {
 	sb := new(strings.Builder)
-	for _, rule := range MYDB.rules {
-		fmt.Fprintln(sb, rule.Pretty())
+	for i, rule := range MYDB.rules {
+		fmt.Fprintf(sb, "rule#%d>\t%s\n", i+1, rule.Pretty())
 	}
 	return sb.String()
 }

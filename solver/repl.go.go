@@ -15,27 +15,26 @@ import (
 // It tmodifies the state according to the the next expected task to do : look fore more solutions, stop, ...
 var _ SolutionHandler = solHandlr
 
+const helpRepl = "'x':exit, 's' status, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'z': zero the rules, 'h' for help"
+
 // main repl
 func Repl() {
 	st := NewState(nil) // create initial, non nil, state
+	fmt.Println(helpRepl)
 	for {
-
+		st = Solve(st, solHandlr) // display all solution, return nil on empty solutions.
 		if st == nil {
-			fmt.Println("Nothing to do.")
-			st = NewState(nil) // recreate empty state
+			st = NewState(nil) // prevent exit, rules are kept
 		}
-		st = Solve(st, solHandlr)
 	}
 }
 
 // solution handler
 func solHandlr(st *State) *State {
 
-	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'z': zero the rules, 'h' for help"
-
 	if st == nil {
 		fmt.Println("No (more) solutions.")
-		return st
+		return NewState(nil)
 	} else {
 		fmt.Println("Ok.")
 	}
@@ -45,25 +44,18 @@ func solHandlr(st *State) *State {
 	} else {
 		fmt.Println("Solution :", FilterSolutions(st.Constraints))
 	}
-	fmt.Println(help)
 	for {
 		switch readCharRawMode() {
 		case 's': // print states
-			for ss := st; ss != nil; ss = ss.Parent {
-				fmt.Println(ss)
-			}
+			fmt.Print(st)
+			fmt.Printf("\nKnown rules :\n%s-------------------\n", ListDBRules())
 			return st
 		case 'n':
-			if st.Parent != nil {
-				return st.Parent
-			}
-			if st.Parent == nil {
-				fmt.Println("No more solutions.")
-				return st
-			}
+			return st.Parent
 
 		case 'e', ' ': // enter new query or rules
-			return acceptRuleQuery(st)
+			st = acceptRuleQuery(st)
+			return st
 		case 'x':
 			os.Exit(0)
 		case 'r':
@@ -75,12 +67,12 @@ func solHandlr(st *State) *State {
 			ResetDB()
 			return nil
 		case 'h':
-			fmt.Println(help) // loop
+			fmt.Println(helpRepl) // loop
 		case '\n', '\r', '\t':
-		// Ignore
+		// Ignoren
 		// loop
 		default:
-			fmt.Println(help) // loop
+			//fmt.Println(help) // loop
 			// loop
 		}
 

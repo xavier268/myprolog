@@ -39,7 +39,6 @@ func NewState(parent *State) *State {
 func (st *State) String() string {
 	sb := new(strings.Builder)
 
-	fmt.Fprintf(sb, "State: \n")
 	fmt.Fprintf(sb, "Constraints : %s\n", st.Constraints)
 	fmt.Fprintf(sb, "Goals : %s\n", st.Goals)
 	fmt.Fprintf(sb, "NextRule : %d\n", st.NextRule)
@@ -62,7 +61,7 @@ func (st *State) RulesHistory() string {
 			continue
 		}
 		rule := MYDB.rules[s.NextRule-1]
-		res = fmt.Sprintf("rule#%d\t%s\n%s", s.NextRule, rule.Pretty(), res)
+		res = fmt.Sprintf("rule#%d>\t%s\n%s", s.NextRule, rule.Pretty(), res)
 	}
 
 	return res
