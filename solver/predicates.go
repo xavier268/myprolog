@@ -2,6 +2,9 @@ package solver
 
 import (
 	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
 
 	"github.com/xavier268/myprolog/parser"
 )
@@ -19,6 +22,8 @@ var CompPredicateMap = map[string]int{
 	"or":      2,  // at least one child must erase
 	"number":  1,  // children must be a number or unify to a number
 	"integer": 1,  // children must be an integer or unify to an integer
+	"load":    -1, // load a file and evaluate it. Children must be one or more string, that will be joined with system file separator.
+	"print":   -1, // print children, that should be strings or numbers.
 }
 
 // Known atomic predicates.
@@ -184,6 +189,50 @@ func DoPredicate(st *State) (*State, error) {
 				default:
 					panic("code should be unreacheable")
 				}
+			case "load":
+				// load a file, path is constructed by concatenating provided strings.
+				if len(g.Children) == 0 {
+					return st, fmt.Errorf("load must be provided with a path")
+				}
+				path := ""
+				for _, s := range g.Children {
+					if s, ok := s.(String); !ok {
+						return st, fmt.Errorf("load path should contain only strings")
+					} else {
+						path = filepath.Join(path, s.Value)
+					}
+				}
+				f, err := os.Open(path)
+				if err != nil {
+					return st, err
+				}
+				defer f.Close()
+				tt, err := parser.Parse(f, path) // get new terms
+				if err != nil {
+					return st, err
+				}
+				// add tt to the goals, removing load call
+				st.Goals = append(tt, st.Goals[1:]...)
+				st.NextRule = 0 // when goal change, reset the next rule pointer ...
+				continue        // there could be predicates in the file
+			case "print":
+				// print children (strings or numbers).
+				ss := []string{}
+				for _, sc := range g.Children {
+					switch s := sc.(type) {
+					case String:
+						ss = append(ss, s.Pretty())
+					case Number:
+						ss = append(ss, s.Pretty())
+					default:
+						return st, fmt.Errorf("invalid argument type to print")
+					}
+				}
+				fmt.Println("\n" + strings.Join(ss, " "))
+				st.Goals = st.Goals[1:] // eat the print goal
+				st.NextRule = 0         // when goal change, reset the next rule pointer ...
+				continue                // there could be predicates in the file
+
 			default:
 				panic("internal error for predicate : " + g.String())
 			}
