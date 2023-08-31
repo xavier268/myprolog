@@ -6,7 +6,7 @@ Input:	a(b,c).  ?- a(X,Y).
 Parsed:	[rule(a(b, c)) query(a(X, Y))]
 solution:	[X = b Y = c]
 Rules applied : 
-rule#1	a(b, c) :-  
+rule#1>	a(b, c) :-  
 
 
 State:	<nil>

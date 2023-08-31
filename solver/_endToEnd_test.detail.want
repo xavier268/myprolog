@@ -13,21 +13,18 @@ Input:	 	// reverse a list
 ==================
 
 
-State:	State: 
-Constraints : []
+State:	Constraints : []
 Goals : [rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(X, dot(Y, dot()))), Reversed))]
 NextRule : 0
 Uid : 1
 Parent : YES
 
-State:	State: 
-Constraints : []
+State:	Constraints : []
 Goals : [rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(X, dot(Y, dot()))), Reversed))]
 NextRule : 0
 Uid : 1
 Parent : YES
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -41,7 +38,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -55,7 +51,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -69,7 +64,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -83,7 +77,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -97,7 +90,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -111,7 +103,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -125,7 +116,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -139,7 +129,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -153,7 +142,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -167,7 +155,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -181,7 +168,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -195,7 +181,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -209,7 +194,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -223,7 +207,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -237,7 +220,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -251,7 +233,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -265,7 +246,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -279,7 +259,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -293,7 +272,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -307,7 +285,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -321,7 +298,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -335,7 +311,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -349,7 +324,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -363,7 +337,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -377,7 +350,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -391,7 +363,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -405,7 +376,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -419,7 +389,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -433,7 +402,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -447,7 +415,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0
@@ -461,7 +428,6 @@ Parent : NO
 
 =========> solution cleaned:	[Reversed = [Y, X, a]]
 
-State: 
 Constraints : [Acc$6 = [Y, X, a] Tail$5 = [] Reversed$5 = [Y, X, a] Head$5 = Y Acc$5 = [X, a] Tail$4 = [Y] Reversed$4 = [Y, X, a] Head$4 = X Acc$4 = [a] Tail$3 = [X, Y] Reversed$3 = [Y, X, a] Head$3 = a Acc$3 = [] Reversed$2 = [Y, X, a] List$2 = [a, X, Y] Reversed = [Y, X, a]]
 Goals : []
 NextRule : 0

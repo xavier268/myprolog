@@ -12,12 +12,12 @@ Input:	 // define reverse a list
 Parsed:	[rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(b, dot(c, dot(d, dot())))), Reversed))]
 solution:	[Reversed = [d, c, b, a]]
 Rules applied : 
-rule#1	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
-rule#3	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#2	reverse_list([], Acc, Acc) :-  
+rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#2>	reverse_list([], Acc, Acc) :-  
 
 
 State:	<nil>

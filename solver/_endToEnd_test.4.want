@@ -6,17 +6,17 @@ Input:	a(b,c). a(c,d).a(e,f). ?- a(X,Y).
 Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(e, f)) query(a(X, Y))]
 solution:	[X = b Y = c]
 Rules applied : 
-rule#1	a(b, c) :-  
+rule#1>	a(b, c) :-  
 
 
 solution:	[X = c Y = d]
 Rules applied : 
-rule#2	a(c, d) :-  
+rule#2>	a(c, d) :-  
 
 
 solution:	[X = e Y = f]
 Rules applied : 
-rule#3	a(e, f) :-  
+rule#3>	a(e, f) :-  
 
 
 State:	<nil>

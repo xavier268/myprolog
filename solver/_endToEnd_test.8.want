@@ -6,19 +6,19 @@ Input:	a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).
 Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(X, Y), and(a(X, V), a(V, Y))) query(a(A, B))]
 solution:	[A = b B = c]
 Rules applied : 
-rule#1	a(b, c) :-  
+rule#1>	a(b, c) :-  
 
 
 solution:	[A = c B = d]
 Rules applied : 
-rule#2	a(c, d) :-  
+rule#2>	a(c, d) :-  
 
 
 solution:	[A = b B = d]
 Rules applied : 
-rule#3	a(X, Y) :- and(a(X, V), a(V, Y)) 
-rule#1	a(b, c) :-  
-rule#2	a(c, d) :-  
+rule#3>	a(X, Y) :- and(a(X, V), a(V, Y)) 
+rule#1>	a(b, c) :-  
+rule#2>	a(c, d) :-  
 
 
 State:	<nil>
