@@ -5,6 +5,7 @@ This file : _constraint_simplify_test.strings.atoms.want
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
+
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
@@ -12,6 +13,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -19,6 +21,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -26,6 +29,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = toto
 	 -- >	ERROR : incompatible constraints detected when simplifying
+
 USE        :	X = toto
 TO SIMPLIFY:	X = "\"\""
 	 -- >	ERROR : incompatible constraints detected when simplifying
@@ -33,6 +37,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -40,6 +45,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -47,6 +53,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -54,6 +61,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
@@ -61,6 +69,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -68,6 +77,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
+
 USE        :	X = toto
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -75,6 +85,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -82,6 +93,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = tutu
 	 -- >	ERROR : incompatible constraints detected when simplifying
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	ERROR : incompatible constraints detected when simplifying
@@ -89,6 +101,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -96,6 +109,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE
@@ -103,6 +117,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
+
 USE        :	X = toto
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -110,6 +125,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -117,6 +133,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -124,6 +141,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	ERROR : incompatible constraints detected when simplifying
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	ERROR : incompatible constraints detected when simplifying
@@ -131,6 +149,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	X = toto
 TO SIMPLIFY:	X = toto
 	 -- >	REMOVE
+
 USE        :	X = toto
 TO SIMPLIFY:	X = toto
 	 -- >	REMOVE
@@ -138,6 +157,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -145,6 +165,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -152,6 +173,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -159,6 +181,7 @@ TO SIMPLIFY:	X = toto
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REMOVE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REMOVE
@@ -166,6 +189,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -173,6 +197,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -180,6 +205,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = tutu
 	 -- >	REMOVE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = tutu
 	 -- >	REMOVE
@@ -187,6 +213,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -194,6 +221,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REMOVE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REMOVE

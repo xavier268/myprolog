@@ -6,7 +6,7 @@ import (
 	"github.com/xavier268/myprolog/mytest"
 )
 
-const MIN_DEPTH = 10 // minimum depth control for state/uids
+const MIN_DEPTH = 30 // minimum depth control for state/uids
 
 // Check if maxdepth is reached.
 

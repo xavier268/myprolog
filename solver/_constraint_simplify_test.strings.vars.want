@@ -5,6 +5,7 @@ This file : _constraint_simplify_test.strings.vars.want
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
+
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
@@ -12,6 +13,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -19,6 +21,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -26,6 +29,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y = X
 	 -- >	REPLACE WITH:	  Y = "\"\""
+
 USE        :	Y = X
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -33,6 +37,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REPLACE WITH:	  Y$2 = "\"\""
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -40,6 +45,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -47,6 +53,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REPLACE WITH:	  Z$3 = "\"\""
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -54,6 +61,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -61,6 +69,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
@@ -68,6 +77,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -75,6 +85,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = X
 	 -- >	REPLACE WITH:	  X = "\"a string\""
+
 USE        :	Y = X
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REPLACE WITH:	  X = "\"a string\""
@@ -82,6 +93,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -89,6 +101,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REPLACE WITH:	  Y$2 = "\"a string\""
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -96,6 +109,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -103,6 +117,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -110,6 +125,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE
@@ -117,6 +133,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
+
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -124,6 +141,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -131,6 +149,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
@@ -138,6 +157,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REPLACE WITH:	  X = "\"another string\""
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REPLACE WITH:	  X = "\"another string\""
@@ -145,6 +165,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REPLACE WITH:	  Y$2 = "\"another string\""
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REPLACE WITH:	  Y$2 = "\"another string\""
@@ -152,6 +173,7 @@ TO SIMPLIFY:	Z$3 = "\"another string\""
 USE        :	Y = X
 TO SIMPLIFY:	Y = X
 	 -- >	REMOVE
+
 USE        :	Y = X
 TO SIMPLIFY:	Y = X
 	 -- >	REMOVE
@@ -159,6 +181,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -166,6 +189,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -173,6 +197,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -180,6 +205,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -187,6 +213,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REMOVE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REMOVE
@@ -194,6 +221,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -201,6 +229,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -208,6 +237,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -215,6 +245,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REMOVE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REMOVE
@@ -222,6 +253,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
@@ -229,6 +261,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
@@ -236,6 +269,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REMOVE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REMOVE
@@ -243,6 +277,7 @@ TO SIMPLIFY:	Z$3 = X
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
@@ -250,6 +285,7 @@ TO SIMPLIFY:	Z$3 = X
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REMOVE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REMOVE

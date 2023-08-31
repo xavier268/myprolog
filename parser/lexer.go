@@ -87,7 +87,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		}
 		return STRING
 
-	case scanner.Float: // float are only accepted in the %f format. They are converted to rationales.
+	case scanner.Float: // float are only accepted in the %f format. They are converted to rationales, normalized.
 		var num, den int
 		var z float64
 		txt := strings.ToUpper(lx.s.TokenText())

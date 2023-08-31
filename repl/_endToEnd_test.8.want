@@ -14,7 +14,7 @@ Rules applied :
 rule#2	a(c, d) :-  
 
 
-solution:	[A = b B = d X$2 = b V$2 = c Y$2 = d]
+solution:	[A = b B = d]
 Rules applied : 
 rule#3	a(X, Y) :- and(a(X, V), a(V, Y)) 
 rule#1	a(b, c) :-  

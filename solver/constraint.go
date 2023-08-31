@@ -53,22 +53,26 @@ var ErrNotImplemented = fmt.Errorf(RED + "not implemented" + RESET) // should be
 // Its is a garantee that returned constraints are checked.
 func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 
-hasChangedLoop: // loop again for each changed constraint ...
-	for i, c := range constraints {
-		for j, d := range constraints {
-			if i != j && c != nil && d != nil {
-				dd, ch, err := c.Simplify(d)
-				if err != nil {
-					return constraints, err // will trigger backtracking ...
-				}
-				if ch { // update if requested to do so. Could be nil.
-					if len(dd) == 0 { // suppress this  constraint
-						constraints[j] = nil
-					} else {
-						constraints[j] = dd[0] // replace with one or more new constraints
-						constraints = append(constraints, dd[1:]...)
+	for changed := true; changed; { // loop until no more changes are made ...
+		changed = false
+	hasChangedLoop: // loop again for each changed constraint ...
+		for i, c := range constraints {
+			for j, d := range constraints {
+				if i != j && c != nil && d != nil { // filter out nil values
+					dd, ch, err := c.Simplify(d)
+					if err != nil {
+						return constraints, err // will trigger backtracking ...
 					}
-					continue hasChangedLoop
+					if ch { // update if requested to do so. Could be nil.
+						changed = true
+						if len(dd) == 0 { // suppress this  constraint
+							constraints[j] = nil
+						} else {
+							constraints[j] = dd[0]                       // replace d
+							constraints = append(constraints, dd[1:]...) // if more than 1, add at the end
+						}
+						break hasChangedLoop
+					}
 				}
 			}
 		}
@@ -83,4 +87,61 @@ hasChangedLoop: // loop again for each changed constraint ...
 		}
 	}
 	return cc, nil
+}
+
+// Filter constraints to display, keeping only 0 Nsp.
+func FilterSolutions(cc []Constraint) []Constraint {
+	ncc := make([]Constraint, 0, len(cc))
+	for _, c := range cc {
+
+		if c == nil {
+			continue
+		}
+
+		switch cv := c.(type) {
+		case VarIsVar:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarIsAtom:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarIsString:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarIsCompoundTerm:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarEQ:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarLT:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarGT:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarLTE:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarGTE:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		case VarINT:
+			if cv.V.Nsp == 0 {
+				ncc = append(ncc, c)
+			}
+		default:
+			panic("case unimplemented")
+		}
+	}
+	return ncc
 }

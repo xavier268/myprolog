@@ -45,7 +45,14 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 
 	switch c2 := c2.(type) {
 	case VarEQ:
-		return nil, false, nil // keep, no change - will be handled in the other direction
+		if c1.V == c2.V { // same value - can unify both contents !
+			c3 := VarEQ{
+				V:     c1.W,
+				Value: c2.Value,
+			}
+			return []Constraint{c3}, true, nil
+		}
+		return nil, false, nil // no change
 	case VarLT:
 		return nil, false, nil // keep, no change - will be handled in the other direction
 	case VarGT:
@@ -93,7 +100,6 @@ func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 		return []Constraint{c4}, true, nil
 
 	default:
-		_ = c2 // keep the compiler happy
 		panic("internal error - unimplemented case")
 	}
 }

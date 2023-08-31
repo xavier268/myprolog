@@ -5,6 +5,7 @@ This file : _constraint_simplify_test.strings.want
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
+
 USE        :	X = "\"\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	REMOVE
@@ -12,6 +13,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -19,6 +21,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	X = "\"\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	X = "\"\""
 	 -- >	NO CHANGE
@@ -26,6 +29,7 @@ TO SIMPLIFY:	X = "\"\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
+
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	REMOVE
@@ -33,6 +37,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Y = "\"a string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Y = "\"a string\""
 	 -- >	NO CHANGE
@@ -40,6 +45,7 @@ TO SIMPLIFY:	Y = "\"a string\""
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE
+
 USE        :	Z$3 = "\"another string\""
 TO SIMPLIFY:	Z$3 = "\"another string\""
 	 -- >	REMOVE

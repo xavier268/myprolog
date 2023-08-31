@@ -50,6 +50,21 @@ func (c1 VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed boo
 			}
 			return cc, true, nil
 		}
+		// now, c1. != c2.V, but may be we could substitute ?
+		tt, ch := ReplaceVar(c1.V, c2.T, c1.T)
+		if ch { // substitution succeed !
+			c3, err := VarIsCompoundTerm{
+				V: c2.V,
+				T: tt,
+			}.Check()
+			if err != nil {
+				return nil, false, err
+			}
+			if c3 == nil {
+				return nil, true, nil // remove
+			}
+			return []Constraint{c3}, true, nil // update
+		}
 
 		return nil, false, nil // keep, no change
 	case VarIsAtom:

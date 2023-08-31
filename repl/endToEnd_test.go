@@ -23,6 +23,52 @@ func TestEndToEnd(t *testing.T) {
 		"a(b,c). a(c,d).a(e,f).  ?- a(T,_).",
 		"a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).",
 		"a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).",
+		` // define reverse a list
+		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
+		// query
+		?- reverse_list([a,b,c,d], Reversed).
+		`,
+		` // define reverse a list
+		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
+		// query
+		?- reverse_list([1,2,3,4], Reversed).
+		`,
+		` // define reverse a list
+		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
+		// query
+		?- reverse_list(["a","b","c","d"], Reversed).
+		`,
+		` 	// reverse a list
+		reverse_list(List, Reversed) :-
+    	reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) :-
+    	reverse_list(Tail, [Head|Acc], Reversed).	
+		?- reverse_list([a,_,b], Reversed).
+		`,
+		` 	// reverse a list
+		reverse_list(List, Reversed) :-
+    	reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) :-
+    	reverse_list(Tail, [Head|Acc], Reversed).	
+		?- reverse_list([a,_,b,c,d], Reversed).
+		`,
+
+		` 	// reverse a list
+		reverse_list(List, Reversed) :-
+    	reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) :-
+    	reverse_list(Tail, [Head|Acc], Reversed).	
+		?- reverse_list([a,X,Y], Reversed).
+		`,
 	}
 
 	for i, input := range inputData { // one file per input
@@ -35,7 +81,7 @@ func TestEndToEnd(t *testing.T) {
 				fmt.Fprintf(sb, "\nsolution:\tnil state")
 				return st
 			} else {
-				fmt.Fprintf(sb, "\nsolution:\t%v", st.Constraints)
+				fmt.Fprintf(sb, "\nsolution:\t%v", solver.FilterSolutions(st.Constraints))
 				fmt.Fprintf(sb, "\nRules applied : \n%s\n", st.RulesHistory())
 				return st.Parent
 			}
@@ -66,7 +112,14 @@ func TestEndToEnd(t *testing.T) {
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
 	// t.Skip()
-	input := "a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B)."
+	input := ` 	// reverse a list
+	reverse_list(List, Reversed) :-
+	reverse_list(List, [], Reversed).
+	reverse_list([], Acc, Acc).
+	reverse_list([Head|Tail], Acc, Reversed) :-
+	reverse_list(Tail, [Head|Acc], Reversed).	
+	?- reverse_list([a,X,Y], Reversed).
+	`
 
 	sb := new(strings.Builder)
 
@@ -78,8 +131,9 @@ func TestEndToEndDetail(t *testing.T) {
 			return st
 		} else {
 
-			fmt.Fprintf(sb, "\nState:\t%v", st)
+			fmt.Fprintf(sb, "\n%v\n", st)
 			fmt.Fprintf(sb, "\n\n=========> solution:\t%v\n", st.Constraints)
+			fmt.Fprintf(sb, "\n\n=========> solution cleaned:\t%v\n", solver.FilterSolutions(st.Constraints))
 
 			return st.Parent
 		}

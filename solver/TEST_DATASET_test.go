@@ -11,11 +11,14 @@ import (
 var (
 	X  = Variable{Name: "X", Nsp: 0}
 	X1 = Variable{Name: "X", Nsp: 1}
+	X2 = Variable{Name: "X", Nsp: 2}
 
 	Y  = Variable{Name: "Y", Nsp: 0}
+	Y1 = Variable{Name: "Y", Nsp: 1}
 	Y2 = Variable{Name: "Y", Nsp: 2}
 
 	Z  = Variable{Name: "Z", Nsp: 0}
+	Z2 = Variable{Name: "Z", Nsp: 2}
 	Z3 = Variable{Name: "Z", Nsp: 3}
 )
 
@@ -169,6 +172,7 @@ func runConstraintSimplify2x2Test(t *testing.T, cc []Constraint) *strings.Builde
 		for j := i; j < len(cc); j++ {
 			fmt.Fprintln(sb)
 			do(sb, i, j, cc)
+			fmt.Fprintln(sb)
 			do(sb, j, i, cc)
 
 		}

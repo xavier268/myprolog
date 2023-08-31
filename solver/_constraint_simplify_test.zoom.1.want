@@ -1,0 +1,27 @@
+Test name : TestSimplify
+This file : _constraint_simplify_test.zoom.1.want
+
+
+USE        :	X$2 = [c, b, a]
+TO SIMPLIFY:	X$2 = [c, b, a]
+	 -- >	REMOVE
+
+USE        :	X$2 = [c, b, a]
+TO SIMPLIFY:	X$2 = [c, b, a]
+	 -- >	REMOVE
+
+USE        :	X$2 = [c, b, a]
+TO SIMPLIFY:	Z = [Y$2|X$2]
+	 -- >	REPLACE WITH:	  Z = [Y$2, c, b, a]
+
+USE        :	Z = [Y$2|X$2]
+TO SIMPLIFY:	X$2 = [c, b, a]
+	 -- >	NO CHANGE
+
+USE        :	Z = [Y$2|X$2]
+TO SIMPLIFY:	Z = [Y$2|X$2]
+	 -- >	REMOVE
+
+USE        :	Z = [Y$2|X$2]
+TO SIMPLIFY:	Z = [Y$2|X$2]
+	 -- >	REMOVE

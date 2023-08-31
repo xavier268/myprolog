@@ -5,6 +5,8 @@ import (
 	"testing"
 
 	"github.com/xavier268/myprolog/mytest"
+
+	_ "github.com/xavier268/myprolog/parser"
 )
 
 func TestSimplify(t *testing.T) {
@@ -32,5 +34,80 @@ func TestSimplify(t *testing.T) {
 
 	sb = runConstraintSimplify2x2Test(t, append(tstring, tvar...))
 	mytest.Verify(t, sb.String(), "constraint_simplify_test.strings.vars")
+
+	var c1, c2 Constraint
+
+	// details zoom1
+	c1 = VarIsCompoundTerm{ // X2 = [c,b,a]
+		V: X2,
+		T: CompoundTerm{
+			Functor: "dot",
+			Children: []Term{
+				Atom{Value: "c"},
+				CompoundTerm{
+					Functor: "dot",
+					Children: []Term{
+						Atom{Value: "b"},
+						CompoundTerm{
+							Functor: "dot",
+							Children: []Term{
+								Atom{Value: "a"},
+								CompoundTerm{
+									Functor: "dot",
+								},
+							},
+						},
+					},
+				},
+			},
+		},
+	}
+	c2 = VarIsCompoundTerm{ // Z = [Y2,X2]
+		V: Z,
+		T: CompoundTerm{
+			Functor: "dot",
+			Children: []Term{
+				Y2, X2,
+			},
+		},
+	}
+
+	sb = runConstraintSimplify2x2Test(t, []Constraint{c1, c2})
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.zoom.1")
+
+	// detail zoom2
+	c1 = VarIsCompoundTerm{ // X2 = 4
+		V: X2,
+		T: Number{
+			Num:        4,
+			Den:        1,
+			Normalized: true,
+		},
+	}
+
+	c2 = VarIsVar{ // Z = X2
+		V: Z,
+		W: X2,
+	}
+
+	sb = runConstraintSimplify2x2Test(t, []Constraint{c1, c2})
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.zoom.2")
+
+	// detail zoom3
+	c1 = VarIsCompoundTerm{ // X2 = 4
+		V: X2,
+		T: Number{
+			Num:        4,
+			Den:        1,
+			Normalized: true,
+		},
+	}
+
+	c2 = VarIsVar{ // X2 = Z
+		V: X2,
+		W: Z,
+	}
+	sb = runConstraintSimplify2x2Test(t, []Constraint{c1, c2})
+	mytest.Verify(t, sb.String(), "constraint_simplify_test.zoom.3")
 
 }

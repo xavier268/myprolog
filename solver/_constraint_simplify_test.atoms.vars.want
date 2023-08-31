@@ -5,6 +5,7 @@ This file : _constraint_simplify_test.atoms.vars.want
 USE        :	X = toto
 TO SIMPLIFY:	X = toto
 	 -- >	REMOVE
+
 USE        :	X = toto
 TO SIMPLIFY:	X = toto
 	 -- >	REMOVE
@@ -12,6 +13,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -19,6 +21,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -26,6 +29,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -33,6 +37,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y = X
 	 -- >	REPLACE WITH:	  Y = toto
+
 USE        :	Y = X
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -40,6 +45,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REPLACE WITH:	  Y$2 = toto
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -47,6 +53,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -54,6 +61,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REPLACE WITH:	  Z$3 = toto
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -61,6 +69,7 @@ TO SIMPLIFY:	X = toto
 USE        :	X = toto
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	X = toto
 	 -- >	NO CHANGE
@@ -68,6 +77,7 @@ TO SIMPLIFY:	X = toto
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REMOVE
+
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REMOVE
@@ -75,6 +85,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -82,6 +93,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -89,6 +101,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
+
 USE        :	Y = X
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -96,6 +109,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REPLACE WITH:	  X = tata
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REPLACE WITH:	  X = tata
@@ -103,6 +117,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REPLACE WITH:	  Y = tata
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	REPLACE WITH:	  Y = tata
@@ -110,6 +125,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -117,6 +133,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y$2 = tata
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REPLACE WITH:	  Z$3 = tata
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y$2 = tata
 	 -- >	NO CHANGE
@@ -124,6 +141,7 @@ TO SIMPLIFY:	Y$2 = tata
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = tutu
 	 -- >	REMOVE
+
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = tutu
 	 -- >	REMOVE
@@ -131,6 +149,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -138,6 +157,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Y = X
 	 -- >	REPLACE WITH:	  X = tutu
+
 USE        :	Y = X
 TO SIMPLIFY:	Y = tutu
 	 -- >	REPLACE WITH:	  X = tutu
@@ -145,6 +165,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -152,6 +173,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REPLACE WITH:	  Y$2 = tutu
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -159,6 +181,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -166,6 +189,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Y = tutu
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y = tutu
 	 -- >	NO CHANGE
@@ -173,6 +197,7 @@ TO SIMPLIFY:	Y = tutu
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REMOVE
+
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REMOVE
@@ -180,6 +205,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
+
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
@@ -187,6 +213,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
@@ -194,6 +221,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	NO CHANGE
@@ -201,6 +229,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REPLACE WITH:	  X = titi
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REPLACE WITH:	  X = titi
@@ -208,6 +237,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Z$3 = titi
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REPLACE WITH:	  Y$2 = titi
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = titi
 	 -- >	REPLACE WITH:	  Y$2 = titi
@@ -215,6 +245,7 @@ TO SIMPLIFY:	Z$3 = titi
 USE        :	Y = X
 TO SIMPLIFY:	Y = X
 	 -- >	REMOVE
+
 USE        :	Y = X
 TO SIMPLIFY:	Y = X
 	 -- >	REMOVE
@@ -222,6 +253,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -229,6 +261,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -236,6 +269,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -243,6 +277,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y = X
 	 -- >	NO CHANGE
@@ -250,6 +285,7 @@ TO SIMPLIFY:	Y = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REMOVE
+
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	REMOVE
@@ -257,6 +293,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -264,6 +301,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -271,6 +309,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y$2 = X
 	 -- >	NO CHANGE
@@ -278,6 +317,7 @@ TO SIMPLIFY:	Y$2 = X
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REMOVE
+
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	REMOVE
@@ -285,6 +325,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
@@ -292,6 +333,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Y$2 = Y
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Y$2 = Y
 	 -- >	NO CHANGE
@@ -299,6 +341,7 @@ TO SIMPLIFY:	Y$2 = Y
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REMOVE
+
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = X
 	 -- >	REMOVE
@@ -306,6 +349,7 @@ TO SIMPLIFY:	Z$3 = X
 USE        :	Z$3 = X
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	NO CHANGE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = X
 	 -- >	NO CHANGE
@@ -313,6 +357,7 @@ TO SIMPLIFY:	Z$3 = X
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REMOVE
+
 USE        :	Z$3 = Y$2
 TO SIMPLIFY:	Z$3 = Y$2
 	 -- >	REMOVE

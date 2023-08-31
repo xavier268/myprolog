@@ -1,0 +1,27 @@
+Test name : TestSimplify
+This file : _constraint_simplify_test.zoom.3.want
+
+
+USE        :	X$2 = 4
+TO SIMPLIFY:	X$2 = 4
+	 -- >	REMOVE
+
+USE        :	X$2 = 4
+TO SIMPLIFY:	X$2 = 4
+	 -- >	REMOVE
+
+USE        :	X$2 = 4
+TO SIMPLIFY:	X$2 = Z
+	 -- >	REPLACE WITH:	  Z = 4
+
+USE        :	X$2 = Z
+TO SIMPLIFY:	X$2 = 4
+	 -- >	NO CHANGE
+
+USE        :	X$2 = Z
+TO SIMPLIFY:	X$2 = Z
+	 -- >	REMOVE
+
+USE        :	X$2 = Z
+TO SIMPLIFY:	X$2 = Z
+	 -- >	REMOVE

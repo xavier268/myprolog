@@ -60,26 +60,24 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 		if c1.V.Eq(c2.V) { // same variable {
 			return nil, false, ErrInvalidConstraintSimplify
 		}
-		if !FindVar(c1.V, c2.T) {
-			return nil, false, nil // no change, keep all
-		}
 		// here, we try to substitute c1.V by c1.A in c2.T
 		t3, found := ReplaceVar(c1.V, c2.T, c1.A)
-		if !found {
-			return nil, false, nil // no change, keep all
-		}
-		c3 := VarIsCompoundTerm{
-			V: c2.V,
-			T: t3}
-		c4, err := c3.Check() // verify, possible positive occur check ?
-		if err == nil {       // c4 could also be nil
-			if c4 == nil {
-				return nil, true, nil // remove
+		if found {
+			c3, err := VarIsCompoundTerm{
+				V: c2.V,
+				T: t3,
+			}.Check() // verify
+			if err != nil {
+				return nil, false, err // report err
 			}
-			return []Constraint{c4}, true, nil
-		} else {
-			return nil, false, err
+			if c3 == nil {
+				return nil, true, nil // remove
+			} else {
+				return []Constraint{c3}, true, nil // change
+			}
 		}
+
+		return nil, false, nil // keep
 
 	case VarIsVar:
 		if c1.V.Eq(c2.V) { // same variable in LHS
