@@ -72,6 +72,7 @@ func TestEndToEnd(t *testing.T) {
 
 	for i, input := range inputData { // one file per input
 
+		ResetDB()
 		sb := new(strings.Builder)
 
 		// simple solution handler, prints all solutions sucessively, until nil state reached.

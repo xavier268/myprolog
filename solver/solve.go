@@ -15,8 +15,6 @@ type String = parser.String
 type Number = parser.Number
 
 // useful numbers
-type Numbre = parser.Number
-
 var ZeroNumber, OneNumber = parser.ZeroNumber, parser.OneNumber
 
 // Solve for a given state.
@@ -29,7 +27,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 			return nil
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
-			st := sh(st)
+			st := sh(st)   // handle the solution and ensure the state moves backward
 			if st == nil { // stop !
 				return st
 			} else {
@@ -102,5 +100,5 @@ func Solve(st *State, sh SolutionHandler) *State {
 
 // Handles a solution. Return value indicates what to do next.
 // The state MAY be modified.
-// If returned state is nil, search for solution stops.
+// If returned state is nil, Solver stops.
 type SolutionHandler func(st *State) *State

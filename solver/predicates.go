@@ -68,7 +68,7 @@ func DoPredicate(st *State) (*State, error) {
 				return st, ErrPred
 			case "rules": // print the rules currently known
 				fmt.Println("\n-------- rules --------")
-				for i, r := range st.Rules.rules {
+				for i, r := range MYDB.rules {
 					fmt.Printf("#%d:\t%s\n", i, r.Pretty())
 				}
 				fmt.Println("-----------------------")
@@ -95,7 +95,7 @@ func DoPredicate(st *State) (*State, error) {
 			case "rule":
 				// a rule appering as a goal will be added to the rule set
 				// No dedup !
-				st.AddRule(g)
+				AddDBRule(g)
 				st.Goals = st.Goals[1:] // eat goal
 				st.NextRule = 0         // when goal change, reset the next rule pointer ...
 				continue

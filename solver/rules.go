@@ -1,50 +1,5 @@
 package solver
 
-import (
-	"fmt"
-	"strings"
-
-	"github.com/xavier268/myprolog/parser"
-)
-
-// Set of rules that can be applied in a state
-type Database struct {
-	rules []CompoundTerm
-}
-
-func (r *Database) Count() int {
-	if r == nil {
-		return 0
-	}
-	return len(r.rules)
-}
-
-func (r *Database) String() string {
-	sb := new(strings.Builder)
-	for _, rule := range r.rules {
-		fmt.Fprintln(sb, rule.Pretty())
-	}
-	return sb.String()
-}
-
-func (rs *Database) AddRule(rule Term) {
-	if rule == nil {
-		panic("trying to add a nil rule")
-	}
-	r, ok := rule.(CompoundTerm)
-	if !ok {
-		panic("Trying to add a Term as rule that is not a CompoundTerm")
-	}
-	if r.Functor != "rule" {
-		panic("Trying to add a Term that is not a rule")
-	}
-	if len(r.Children) == 0 {
-		fmt.Println(parser.RED, "WARNING : trying to add a rule with no children - ignored", parser.RESET)
-		return
-	}
-	rs.rules = append(rs.rules, r)
-}
-
 // Find the next rule applicable in the current context.
 // Returns an alpha-transformed rule.
 // Only consider rules whose index is higher or equal to st.NextRule
@@ -71,8 +26,8 @@ func FindNextRule(st *State) (*State, Term) {
 	// iterate over all rules, starting with index st.NextRule.
 	// check which are applicable.
 	// return the first we find, whos'e index is >= NextRule.
-	for i := st.NextRule; i < len(st.Rules.rules); i++ {
-		rule := st.Rules.rules[i]
+	for i := st.NextRule; i < len(MYDB.rules); i++ {
+		rule := MYDB.rules[i]
 		if rule.Functor != "" && len(rule.Children) > 0 && SameStructure(rule.Children[0], goal) {
 			selected = i
 			break // found a matching rule
@@ -88,7 +43,7 @@ func FindNextRule(st *State) (*State, Term) {
 	st.NextRule = selected + 1 // st becomes the old state we will backtrack into
 	nst := NewState(st)        // fork a new state to continue with
 	nst.NextRule = 0           // reset next rule for new state
-	rule := st.Rules.rules[selected].CloneNsp(nst.Uid)
+	rule := MYDB.rules[selected].CloneNsp(nst.Uid)
 	return nst, rule
 }
 

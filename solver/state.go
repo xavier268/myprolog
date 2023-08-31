@@ -3,14 +3,11 @@ package solver
 import (
 	"fmt"
 	"strings"
-
-	"github.com/xavier268/myprolog/parser"
 )
 
 // State maintains the current state of the puzzle current state, and is used for backtracking.
 // A new state is created if and only if we have to make a choice and backtracking may be necessary.
 type State struct {
-	Rules       *Database // pointer to applicable ruleset.
 	Constraints []Constraint
 	Goals       []Term // Goals we are trying to erase. They are ordered in the order they should be executed.
 	Parent      *State // for backtracking
@@ -27,13 +24,11 @@ func NewState(parent *State) *State {
 
 	if parent == nil {
 		st := new(State)
-		st.Rules = &Database{rules: []parser.CompoundTerm{}}
 		st.Uid = 1
 		return st
 	}
 
 	st := new(State)
-	st.Rules = parent.Rules // default is to point to the same ruleset
 	st.Parent = parent
 	st.Uid = parent.Uid + 1
 	st.Constraints = append(st.Constraints, parent.Constraints...) // deep copy the constraints
@@ -41,18 +36,10 @@ func NewState(parent *State) *State {
 	return st
 }
 
-func (st *State) AddRule(rule ...CompoundTerm) {
-	if st.Rules == nil {
-		st.Rules = &Database{rules: []parser.CompoundTerm{}}
-	}
-	st.Rules.rules = append(st.Rules.rules, rule...)
-}
-
 func (st *State) String() string {
 	sb := new(strings.Builder)
 
 	fmt.Fprintf(sb, "State: \n")
-	fmt.Fprintf(sb, "Rules :\n%s", st.Rules)
 	fmt.Fprintf(sb, "Constraints : %s\n", st.Constraints)
 	fmt.Fprintf(sb, "Goals : %s\n", st.Goals)
 	fmt.Fprintf(sb, "NextRule : %d\n", st.NextRule)
@@ -74,7 +61,7 @@ func (st *State) RulesHistory() string {
 		if s.NextRule <= 0 {
 			continue
 		}
-		rule := s.Rules.rules[s.NextRule-1]
+		rule := MYDB.rules[s.NextRule-1]
 		res = fmt.Sprintf("rule#%d\t%s\n%s", s.NextRule, rule.Pretty(), res)
 	}
 

@@ -31,7 +31,7 @@ func Repl() {
 // solution handler
 func solHandlr(st *State) *State {
 
-	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'h' for help"
+	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'z': zero the rules, 'h' for help"
 
 	if st == nil {
 		fmt.Println("No (more) solutions.")
@@ -71,6 +71,9 @@ func solHandlr(st *State) *State {
 			// loop
 		case 0:
 			os.Exit(1)
+		case 'z': // reset
+			ResetDB()
+			return nil
 		case 'h':
 			fmt.Println(help) // loop
 		case '\n', '\r', '\t':
