@@ -2,6 +2,8 @@ package solver
 
 import (
 	"fmt"
+
+	"golang.org/x/exp/slices"
 )
 
 // a Constraint is immutable
@@ -87,6 +89,8 @@ func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 			cc = append(cc, c)
 		}
 	}
+	SortConstraintsDescending(cc)
+
 	return cc, nil
 }
 
@@ -94,14 +98,29 @@ func SimplifyConstraints(constraints []Constraint) ([]Constraint, error) {
 func FilterSolutions(cc []Constraint) []Constraint {
 	ncc := make([]Constraint, 0, len(cc))
 	for _, c := range cc {
-
 		if c == nil {
 			continue
 		}
-
 		if c.GetV().Nsp == 0 {
 			ncc = append(ncc, c)
 		}
 	}
 	return ncc
+}
+
+// compare constraints based on their variable.
+// Panic if nil constraint.
+func SortConstraintsDescending(constraints []Constraint) {
+	slices.SortStableFunc(constraints, func(a, b Constraint) int {
+		return -a.GetV().Compare(b.GetV()) // larger Nsp at the beginning to maximise opportunities for simplification
+	})
+
+}
+
+// compare constraints based on their variable.
+// Panic if nil constraint.
+func SortConstraintAscending(constraints []Constraint) {
+	slices.SortStableFunc(constraints, func(a, b Constraint) int {
+		return a.GetV().Compare(b.GetV()) // normal order
+	})
 }

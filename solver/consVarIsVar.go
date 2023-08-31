@@ -27,15 +27,17 @@ func (c VarIsVar) Clone() Constraint {
 // An error means the constraint is impossible to satisfy (e.g. positive occur check, empty number interval, ...)
 // There is a cannonical order of variables, with Y = Y means Y is latest (highest Nsp)
 func (c VarIsVar) Check() (Constraint, error) {
-	if c.V.Eq(c.W) { // Ignore X=X silently
+
+	switch c.V.Compare(c.W) {
+	case 0: // Ignore X=X silently
 		return nil, nil
-	} else {
+	case -1:
 		// Put in canonical order, to facilitate substitution and dedup. Ensure in V = W,   V appeared later than W (nsp >)
-		if c.V.Less(c.W) {
-			return VarIsVar{c.W, c.V}, nil
-		} else {
-			return c, nil
-		}
+		return VarIsVar{c.W, c.V}, nil
+	case 1:
+		return c, nil
+	default:
+		panic("case unimplemented")
 	}
 }
 

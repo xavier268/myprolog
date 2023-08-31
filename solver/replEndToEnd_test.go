@@ -1,4 +1,4 @@
-package repl
+package solver
 
 import (
 	"fmt"
@@ -7,7 +7,6 @@ import (
 
 	"github.com/xavier268/myprolog/mytest"
 	"github.com/xavier268/myprolog/parser"
-	"github.com/xavier268/myprolog/solver"
 )
 
 // use as test harness to control there are no changes whean developping the code
@@ -76,12 +75,12 @@ func TestEndToEnd(t *testing.T) {
 		sb := new(strings.Builder)
 
 		// simple solution handler, prints all solutions sucessively, until nil state reached.
-		sh := func(st *solver.State) *solver.State {
+		sh := func(st *State) *State {
 			if st == nil {
 				fmt.Fprintf(sb, "\nsolution:\tnil state")
 				return st
 			} else {
-				fmt.Fprintf(sb, "\nsolution:\t%v", solver.FilterSolutions(st.Constraints))
+				fmt.Fprintf(sb, "\nsolution:\t%v", FilterSolutions(st.Constraints))
 				fmt.Fprintf(sb, "\nRules applied : \n%s\n", st.RulesHistory())
 				return st.Parent
 			}
@@ -95,14 +94,14 @@ func TestEndToEnd(t *testing.T) {
 		}
 		fmt.Fprintf(sb, "\nParsed:\t%v", tt)
 
-		st := solver.NewState(nil)         // create new state
+		st := NewState(nil)                // create new state
 		st.Goals = append(st.Goals, tt...) // add input to goal list
 
 		for {
 			if st == nil || sb.Len() > 10_000 {
 				break
 			}
-			st = solver.Solve(st, sh)
+			st = Solve(st, sh)
 			fmt.Fprintf(sb, "\nState:\t%v", st)
 		}
 		mytest.Verify(t, sb.String(), fmt.Sprintf("endToEnd_test.%d", i))
@@ -124,7 +123,7 @@ func TestEndToEndDetail(t *testing.T) {
 	sb := new(strings.Builder)
 
 	// simple solution handler, prints all solutions sucessively, until nil state reached.
-	sh := func(st *solver.State) *solver.State {
+	sh := func(st *State) *State {
 
 		if st == nil {
 			fmt.Fprint(sb, "\n\n : Solution handler : nil state\n")
@@ -133,14 +132,14 @@ func TestEndToEndDetail(t *testing.T) {
 
 			fmt.Fprintf(sb, "\n%v\n", st)
 			fmt.Fprintf(sb, "\n\n=========> solution:\t%v\n", st.Constraints)
-			fmt.Fprintf(sb, "\n\n=========> solution cleaned:\t%v\n", solver.FilterSolutions(st.Constraints))
+			fmt.Fprintf(sb, "\n\n=========> solution cleaned:\t%v\n", FilterSolutions(st.Constraints))
 
 			return st.Parent
 		}
 	}
 
 	fmt.Fprintf(sb, "\n==================\nInput:\t%v\n==================\n\n", input)
-	st := solver.NewState(nil)                     // create new state
+	st := NewState(nil)                            // create new state
 	tt, err := parser.ParseString(input, t.Name()) // parse input
 	if err != nil {
 		t.Fatalf("Error parsing input: %v", err)
@@ -152,7 +151,7 @@ func TestEndToEndDetail(t *testing.T) {
 			break
 		}
 		fmt.Fprintf(sb, "\nState:\t%v", st)
-		st = solver.Solve(st, sh)
+		st = Solve(st, sh)
 		fmt.Fprintf(sb, "\nState:\t%v", st)
 	}
 	mytest.Verify(t, sb.String(), "endToEnd_test.detail")

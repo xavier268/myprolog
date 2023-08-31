@@ -281,6 +281,7 @@ type Variable struct { // a named variable
 }
 
 // Less means v.nsp is strictly smaller than w.nsp, and if equal, v.Name is smaller than w.Name
+/*
 func (v Variable) Less(w Variable) bool {
 	if v.Nsp < w.Nsp {
 		return true
@@ -290,6 +291,19 @@ func (v Variable) Less(w Variable) bool {
 	}
 	// v.Nsp == w.Nsp
 	return v.Name < w.Name
+}
+*/
+
+// Ordering of variables is defined by their name space and name.
+func (v Variable) Compare(w Variable) int {
+	switch {
+	case v.Nsp < w.Nsp:
+		return -1
+	case v.Nsp > w.Nsp:
+		return 1
+	default:
+		return strings.Compare(v.Name, w.Name)
+	}
 }
 
 // True if and only if t is a Variable and t Name and Nsp are identical to V

@@ -1,4 +1,4 @@
-package repl
+package solver
 
 import (
 	"bufio"
@@ -7,31 +7,30 @@ import (
 	"strings"
 
 	"github.com/xavier268/myprolog/parser"
-	"github.com/xavier268/myprolog/solver"
 	"golang.org/x/term"
 )
 
 // Solution Handler would display solutions, if any.
 // It should be a function that takes a state and returns a state.
 // It tmodifies the state according to the the next expected task to do : look fore more solutions, stop, ...
-var _ solver.SolutionHandler = solHandlr
+var _ SolutionHandler = solHandlr
 
 // main repl
 func Repl() {
-	st := solver.NewState(nil) // create initial, non nil, state
+	st := NewState(nil) // create initial, non nil, state
 	for {
 
 		if st == nil {
 			fmt.Println("There are no solutions")
-			st = solver.NewState(nil) // recreate empty state
+			st = NewState(nil) // recreate empty state
 		}
 
-		st = solver.Solve(st, solHandlr)
+		st = Solve(st, solHandlr)
 	}
 }
 
 // Accept new rule or query as input, add input as goals.
-func AcceptRuleQuery(st *solver.State) *solver.State {
+func AcceptRuleQuery(st *State) *State {
 
 	if st == nil {
 		return nil
@@ -48,7 +47,7 @@ func AcceptRuleQuery(st *solver.State) *solver.State {
 }
 
 // naive (debugging) solution handler
-func solHandlr(st *solver.State) *solver.State {
+func solHandlr(st *State) *State {
 
 	if st == nil {
 		fmt.Println("No (more) solutions.")
@@ -60,7 +59,7 @@ func solHandlr(st *solver.State) *solver.State {
 	if len(st.Constraints) == 0 {
 		// fmt.Println("\nNo constraints.")
 	} else {
-		fmt.Println("Solution :", solver.FilterSolutions(st.Constraints))
+		fmt.Println("Solution :", FilterSolutions(st.Constraints))
 	}
 	fmt.Println("Enter 'x' to exit, 's' to dump state, 'n' for next solution, 'e' to enter new query or rules, 'r' to see the rules used")
 	for {
