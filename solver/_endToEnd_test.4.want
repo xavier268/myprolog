@@ -4,17 +4,17 @@ This file : _endToEnd_test.4.want
 
 Input:	a(b,c). a(c,d).a(e,f). ?- a(X,Y).
 Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(e, f)) query(a(X, Y))]
-solution:	[Y = c X = b]
+solution:	[X = b Y = c]
 Rules applied : 
 rule#1	a(b, c) :-  
 
 
-solution:	[Y = d X = c]
+solution:	[X = c Y = d]
 Rules applied : 
 rule#2	a(c, d) :-  
 
 
-solution:	[Y = f X = e]
+solution:	[X = e Y = f]
 Rules applied : 
 rule#3	a(e, f) :-  
 

@@ -21,32 +21,14 @@ func Repl() {
 	for {
 
 		if st == nil {
-			fmt.Println("There are no solutions")
+			fmt.Println("Nothing to do.")
 			st = NewState(nil) // recreate empty state
 		}
-
 		st = Solve(st, solHandlr)
 	}
 }
 
-// Accept new rule or query as input, add input as goals.
-func AcceptRuleQuery(st *State) *State {
-
-	if st == nil {
-		return nil
-	}
-
-	fmt.Println("Enter new rules or queries, terminated by empty line :")
-	input := readLinesUntilEmptyLine()
-	terms, err := parser.ParseString(input, "keyboard entry")
-	if err != nil {
-		fmt.Println(err)
-	}
-	st.Goals = append(st.Goals, terms...)
-	return st
-}
-
-// naive solution handler
+// solution handler
 func solHandlr(st *State) *State {
 
 	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'h' for help"
@@ -65,16 +47,23 @@ func solHandlr(st *State) *State {
 	}
 	fmt.Println(help)
 	for {
-		switch ReadCharRawMode() {
+		switch readCharRawMode() {
 		case 's': // print states
 			for ss := st; ss != nil; ss = ss.Parent {
 				fmt.Println(ss)
 			}
 			return st
 		case 'n':
-			return st.Parent
+			if st.Parent != nil {
+				return st.Parent
+			}
+			if st.Parent == nil {
+				fmt.Println("No more solutions.")
+				return st
+			}
+
 		case 'e', ' ': // enter new query or rules
-			return AcceptRuleQuery(st)
+			return acceptRuleQuery(st)
 		case 'x':
 			os.Exit(0)
 		case 'r':
@@ -93,6 +82,23 @@ func solHandlr(st *State) *State {
 		}
 
 	}
+}
+
+// Accept and parse new rule or query as input from stdin, add input as goals.
+func acceptRuleQuery(st *State) *State {
+
+	if st == nil {
+		return nil
+	}
+
+	fmt.Println("Enter new rules or queries, terminated by empty line :")
+	input := readLinesUntilEmptyLine()
+	terms, err := parser.ParseString(input, "keyboard entry")
+	if err != nil {
+		fmt.Println(err)
+	}
+	st.Goals = append(st.Goals, terms...)
+	return st
 }
 
 // basic interactive entry.
@@ -122,7 +128,7 @@ func readLinesUntilEmptyLine() string {
 }
 
 // Read a byte in raw mode.
-func ReadCharRawMode() rune {
+func readCharRawMode() rune {
 	b := make([]byte, 1)
 	oldstate, err := term.MakeRaw(int(os.Stdin.Fd()))
 	if err != nil {

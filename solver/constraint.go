@@ -105,6 +105,7 @@ func FilterSolutions(cc []Constraint) []Constraint {
 			ncc = append(ncc, c)
 		}
 	}
+	SortConstraintAscending(ncc)
 	return ncc
 }
 

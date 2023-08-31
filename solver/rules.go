@@ -8,18 +8,18 @@ import (
 )
 
 // Set of rules that can be applied in a state
-type RuleSet struct {
+type Database struct {
 	rules []CompoundTerm
 }
 
-func (r *RuleSet) Count() int {
+func (r *Database) Count() int {
 	if r == nil {
 		return 0
 	}
 	return len(r.rules)
 }
 
-func (r *RuleSet) String() string {
+func (r *Database) String() string {
 	sb := new(strings.Builder)
 	for _, rule := range r.rules {
 		fmt.Fprintln(sb, rule.Pretty())
@@ -27,7 +27,7 @@ func (r *RuleSet) String() string {
 	return sb.String()
 }
 
-func (rs *RuleSet) AddRule(rule Term) {
+func (rs *Database) AddRule(rule Term) {
 	if rule == nil {
 		panic("trying to add a nil rule")
 	}

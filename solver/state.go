@@ -10,7 +10,7 @@ import (
 // State maintains the current state of the puzzle current state, and is used for backtracking.
 // A new state is created if and only if we have to make a choice and backtracking may be necessary.
 type State struct {
-	Rules       *RuleSet // pointer to applicable ruleset.
+	Rules       *Database // pointer to applicable ruleset.
 	Constraints []Constraint
 	Goals       []Term // Goals we are trying to erase. They are ordered in the order they should be executed.
 	Parent      *State // for backtracking
@@ -27,7 +27,7 @@ func NewState(parent *State) *State {
 
 	if parent == nil {
 		st := new(State)
-		st.Rules = &RuleSet{rules: []parser.CompoundTerm{}}
+		st.Rules = &Database{rules: []parser.CompoundTerm{}}
 		st.Uid = 1
 		return st
 	}
@@ -43,7 +43,7 @@ func NewState(parent *State) *State {
 
 func (st *State) AddRule(rule ...CompoundTerm) {
 	if st.Rules == nil {
-		st.Rules = &RuleSet{rules: []parser.CompoundTerm{}}
+		st.Rules = &Database{rules: []parser.CompoundTerm{}}
 	}
 	st.Rules.rules = append(st.Rules.rules, rule...)
 }

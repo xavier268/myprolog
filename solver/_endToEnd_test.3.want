@@ -4,7 +4,7 @@ This file : _endToEnd_test.3.want
 
 Input:	a(b,c).a(c,d).     ?- a(U,V),a(V,W).
 Parsed:	[rule(a(b, c)) rule(a(c, d)) query(and(a(U, V), a(V, W)))]
-solution:	[W = d V = c U = b]
+solution:	[U = b V = c W = d]
 Rules applied : 
 rule#1	a(b, c) :-  
 rule#2	a(c, d) :-  
