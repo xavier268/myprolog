@@ -27,6 +27,7 @@ func NewState(parent *State) *State {
 
 	if parent == nil {
 		st := new(State)
+		st.Rules = &RuleSet{rules: []parser.CompoundTerm{}}
 		st.Uid = 1
 		return st
 	}

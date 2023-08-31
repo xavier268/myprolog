@@ -14,9 +14,7 @@ import (
 // Solution Handler would display solutions, if any.
 // It should be a function that takes a state and returns a state.
 // It tmodifies the state according to the the next expected task to do : look fore more solutions, stop, ...
-type SolutionHandler = solver.SolutionHandler
-
-var _ SolutionHandler = solHandlr
+var _ solver.SolutionHandler = solHandlr
 
 // main repl
 func Repl() {
@@ -53,7 +51,7 @@ func AcceptRuleQuery(st *solver.State) *solver.State {
 func solHandlr(st *solver.State) *solver.State {
 
 	if st == nil {
-		fmt.Println("There are no solutions.")
+		fmt.Println("No (more) solutions.")
 		return st
 	} else {
 		fmt.Println("Ok.")
@@ -62,9 +60,9 @@ func solHandlr(st *solver.State) *solver.State {
 	if len(st.Constraints) == 0 {
 		// fmt.Println("\nNo constraints.")
 	} else {
-		fmt.Println("Solution :", st.Constraints)
+		fmt.Println("Solution :", solver.FilterSolutions(st.Constraints))
 	}
-	fmt.Println("Enter 'x' to exit, 's' to dump state, 'n' for next solution, 'e' to enter new query or rules")
+	fmt.Println("Enter 'x' to exit, 's' to dump state, 'n' for next solution, 'e' to enter new query or rules, 'r' to see the rules used")
 	for {
 		switch ReadCharRawMode() {
 		case 's': // print states
@@ -78,6 +76,9 @@ func solHandlr(st *solver.State) *solver.State {
 			return AcceptRuleQuery(st)
 		case 'x':
 			os.Exit(0)
+		case 'r':
+			fmt.Printf("Rules used :\n%s\n", st.RulesHistory())
+			// loop
 		case 0:
 			os.Exit(1)
 		default: // loop

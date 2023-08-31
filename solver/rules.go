@@ -53,6 +53,10 @@ func (rs *RuleSet) AddRule(rule Term) {
 // Will enforce the constraints of MAX_DEPTH when doing alpha-substitution.
 func FindNextRule(st *State) (*State, Term) {
 
+	if st == nil {
+		return nil, nil
+	}
+
 	if len(st.Goals) == 0 {
 		return st, nil // no rule can be found for a non existing goal
 	}
