@@ -7,6 +7,10 @@ type VarIsVar struct {
 
 var _ Constraint = VarIsVar{}
 
+func (c VarIsVar) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarIsVar) String() string {
 	return c.V.Pretty() + " = " + c.W.Pretty()

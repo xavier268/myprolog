@@ -8,6 +8,10 @@ type VarGTE struct { // greater than or equal to
 
 var _ Constraint = VarGTE{}
 
+func (c VarGTE) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarGTE) String() string {
 	return c.Value.Pretty() + " <= " + c.V.Pretty()

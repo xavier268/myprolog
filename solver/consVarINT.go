@@ -6,6 +6,10 @@ type VarINT struct{ V Variable }
 
 var _ Constraint = VarINT{}
 
+func (c VarINT) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarINT) String() string {
 	return c.V.Pretty() + " is an integer"

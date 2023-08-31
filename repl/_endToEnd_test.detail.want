@@ -15,7 +15,7 @@ Input:	 	// reverse a list
 
 State:	State: 
 Rules :
-<nil>Constraints : []
+Constraints : []
 Goals : [rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(X, dot(Y, dot()))), Reversed))]
 NextRule : 0
 Uid : 1
@@ -23,7 +23,7 @@ Parent : YES
 
 State:	State: 
 Rules :
-<nil>Constraints : []
+Constraints : []
 Goals : [rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(X, dot(Y, dot()))), Reversed))]
 NextRule : 0
 Uid : 1

@@ -21,6 +21,7 @@ type Constraint interface {
 	// Output constraints are checkedutput.
 	Simplify(c Constraint) (cc []Constraint, changed bool, err error)
 	String() string
+	GetV() Variable // Get (a copy of) the main variable forthe constraint
 }
 
 // X = ...
@@ -98,49 +99,8 @@ func FilterSolutions(cc []Constraint) []Constraint {
 			continue
 		}
 
-		switch cv := c.(type) {
-		case VarIsVar:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarIsAtom:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarIsString:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarIsCompoundTerm:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarEQ:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarLT:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarGT:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarLTE:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarGTE:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		case VarINT:
-			if cv.V.Nsp == 0 {
-				ncc = append(ncc, c)
-			}
-		default:
-			panic("case unimplemented")
+		if c.GetV().Nsp == 0 {
+			ncc = append(ncc, c)
 		}
 	}
 	return ncc

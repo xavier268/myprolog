@@ -111,7 +111,7 @@ func TestEndToEnd(t *testing.T) {
 
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
-	// t.Skip()
+
 	input := ` 	// reverse a list
 	reverse_list(List, Reversed) :-
 	reverse_list(List, [], Reversed).

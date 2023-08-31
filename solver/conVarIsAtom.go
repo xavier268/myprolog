@@ -7,6 +7,10 @@ type VarIsAtom struct {
 
 var _ Constraint = VarIsAtom{}
 
+func (c VarIsAtom) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarIsAtom) String() string {
 	return c.V.Pretty() + " = " + c.A.Pretty()

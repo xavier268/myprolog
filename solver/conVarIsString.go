@@ -9,6 +9,10 @@ type VarIsString struct {
 
 var _ Constraint = VarIsString{}
 
+func (c VarIsString) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarIsString) String() string {
 	return fmt.Sprintf("%s = %q", c.V.Pretty(), c.S)

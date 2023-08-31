@@ -8,6 +8,10 @@ type VarIsCompoundTerm struct {
 
 var _ Constraint = VarIsCompoundTerm{}
 
+func (c VarIsCompoundTerm) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (v VarIsCompoundTerm) String() string {
 	if v.T == nil {

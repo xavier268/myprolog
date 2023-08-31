@@ -8,6 +8,10 @@ type VarEQ struct { // =
 
 var _ Constraint = VarEQ{}
 
+func (c VarEQ) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarEQ) String() string {
 	return c.V.Pretty() + " = " + c.Value.Pretty()

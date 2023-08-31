@@ -8,6 +8,10 @@ type VarLT struct { // less than
 
 var _ Constraint = VarLT{}
 
+func (c VarLT) GetV() Variable {
+	return c.V
+}
+
 // String implements Constraint.
 func (c VarLT) String() string {
 	return c.V.Pretty() + " < " + c.Value.Pretty()
