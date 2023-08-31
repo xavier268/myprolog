@@ -46,7 +46,7 @@ func AcceptRuleQuery(st *State) *State {
 	return st
 }
 
-// naive (debugging) solution handler
+// naive solution handler
 func solHandlr(st *State) *State {
 
 	const help = "'x':exit, 's' dump state, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'h' for help"
