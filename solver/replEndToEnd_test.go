@@ -68,11 +68,15 @@ func TestEndToEnd(t *testing.T) {
     	reverse_list(Tail, [Head|Acc], Reversed).	
 		?- reverse_list([a,X,Y], Reversed).
 		`,
+
+		// constraints =
+		"a(a,b). a(X,c) :- X=2 ; X=3 .  ?- a(X,Y).",
+		"a(a,b). a(X,c) :- X=2 , X=3 .  ?- a(X,Y).",
+		"a(a,b). a(X,c) :- X='a' , X=3 .  ?- a(X,Y).",
 	}
 
 	for i, input := range inputData { // one file per input
 
-		ResetDB()
 		sb := new(strings.Builder)
 
 		// simple solution handler, prints all solutions sucessively, until nil state reached.
@@ -112,14 +116,7 @@ func TestEndToEnd(t *testing.T) {
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
 
-	input := ` 	// reverse a list
-	reverse_list(List, Reversed) :-
-	reverse_list(List, [], Reversed).
-	reverse_list([], Acc, Acc).
-	reverse_list([Head|Tail], Acc, Reversed) :-
-	reverse_list(Tail, [Head|Acc], Reversed).	
-	?- reverse_list([a,X,Y], Reversed).
-	`
+	input := "a(a,b). a(X,c) :- X=2 ; X=3 .  ?- a(X,Y)."
 
 	sb := new(strings.Builder)
 
@@ -131,9 +128,13 @@ func TestEndToEndDetail(t *testing.T) {
 			return st
 		} else {
 
-			fmt.Fprintf(sb, "\n%v\n", st)
-			fmt.Fprintf(sb, "\n\n=========> solution:\t%v\n", st.Constraints)
-			fmt.Fprintf(sb, "\n\n=========> solution cleaned:\t%v\n", FilterSolutions(st.Constraints))
+			fmt.Fprintf(sb, "\n=========> solution cleaned:\t%v", FilterSolutions(st.Constraints))
+			fmt.Fprintf(sb, "\n=========> All constraints :\t%v", st.Constraints)
+			fmt.Fprintf(sb, "\n=========> Known rules:\n%s", st.Session.ListRules())
+			fmt.Fprintf(sb, "\n=========> Rules applied :\n%s", st.RulesHistory())
+			fmt.Fprintf(sb, "\n State:\n%v", st)
+
+			fmt.Fprintln(sb)
 
 			return st.Parent
 		}
@@ -143,7 +144,7 @@ func TestEndToEndDetail(t *testing.T) {
 	st := NewState(nil)                            // create new state
 	tt, err := parser.ParseString(input, t.Name()) // parse input
 	if err != nil {
-		t.Fatalf("Error parsing input: %v", err)
+		t.Fatalf("Error parsing input: %v\n%s", err, input)
 	}
 	st.Goals = append(st.Goals, tt...) // add input to goal list
 	fmt.Fprintf(sb, "\nState:\t%v", st)

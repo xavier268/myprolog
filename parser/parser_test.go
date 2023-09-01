@@ -94,6 +94,11 @@ func TestParser(t *testing.T) {
 
 		// specify constraint in rule body.
 		"a(X,x) :- X=Y.",
+
+		//
+		"a(a,b). a(X,c) :- X=2 .  ?- a(X,Y).",
+		"a(a,b). a(X,c) :- X=2, X=4 .  ?- a(X,Y).",
+		"a(a,b). a(X,c) :- X=2 ; X=4 .  ?- a(X,Y).",
 	}
 
 	res := run(tdata)

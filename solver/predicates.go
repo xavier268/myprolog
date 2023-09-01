@@ -24,6 +24,7 @@ var CompPredicateMap = map[string]int{
 	"integer": 1,  // children must be an integer or unify to an integer
 	"load":    -1, // load a file and evaluate it. Children must be one or more string, that will be joined with system file separator.
 	"print":   -1, // print children, that should be strings or numbers.
+	"eq":      2,  // children must be equal or unifiable
 }
 
 // Known atomic predicates.
@@ -40,6 +41,7 @@ var ErrPred = fmt.Errorf("predicate cannot apply")
 // State MAY change, if  alternative must be considered (eg : 'or'), but only by forking.
 // No backtracking is performed at this level, error is returned instead.
 func DoPredicate(st *State) (*State, error) {
+	db := st.Session // access the database
 	for {
 		if len(st.Goals) == 0 {
 			return st, nil
@@ -68,8 +70,8 @@ func DoPredicate(st *State) (*State, error) {
 				return st, ErrPred
 			case "rules": // print the rules currently known
 				fmt.Println("\n-------- rules --------")
-				for i, r := range MYDB.rules {
-					fmt.Printf("#%d:\t%s\n", i, r.Pretty())
+				for i, r := range db.rules {
+					fmt.Printf("#%d:\t%s\n", i+1, r.Pretty()) // rules are numbrered from 1 ...
 				}
 				fmt.Println("-----------------------")
 
@@ -95,7 +97,7 @@ func DoPredicate(st *State) (*State, error) {
 			case "rule":
 				// a rule appering as a goal will be added to the rule set
 				// No dedup !
-				AddDBRule(g)
+				db.AddRule(g)
 				st.Goals = st.Goals[1:] // eat goal
 				st.NextRule = 0         // when goal change, reset the next rule pointer ...
 				continue
@@ -232,6 +234,27 @@ func DoPredicate(st *State) (*State, error) {
 				st.Goals = st.Goals[1:] // eat the print goal
 				st.NextRule = 0         // when goal change, reset the next rule pointer ...
 				continue                // there could be predicates in the file
+
+			case "eq":
+				c1 := g.Children[0]
+				c2 := g.Children[1]
+				cc, err := Unify([]Constraint{}, c1, c2)
+				if err != nil {
+					return st, err
+				}
+				cc, err = CheckAddConstraint(st.Constraints, cc...)
+				if err != nil {
+					return st, err
+				}
+				cc, err = SimplifyConstraints(cc)
+				if err != nil {
+					return st, err
+				}
+				// update state, since everything is fine
+				st.Constraints = cc     // new constraints
+				st.Goals = st.Goals[1:] // eat the goal
+				st.NextRule = 0         // when goal change, reset the next rule pointer ...
+				return st, nil
 
 			default:
 				panic("internal error for predicate : " + g.String())

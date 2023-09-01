@@ -1,0 +1,12 @@
+Test name : TestEndToEnd
+This file : _endToEnd_test.16.want
+
+
+Input:	a(a,b). a(X,c) :- X=2 , X=3 .  ?- a(X,Y).
+Parsed:	[rule(a(a, b)) rule(a(X, c), and(eq(X, 2/1), eq(X, 3/1))) query(a(X, Y))]
+solution:	[X = a Y = b]
+Rules applied : 
+rule#1>	a(a, b) :-  
+
+
+State:	<nil>

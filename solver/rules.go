@@ -26,8 +26,8 @@ func FindNextRule(st *State) (*State, Term) {
 	// iterate over all rules, starting with index st.NextRule.
 	// check which are applicable.
 	// return the first we find, whos'e index is >= NextRule.
-	for i := st.NextRule; i < len(MYDB.rules); i++ {
-		rule := MYDB.rules[i]
+	for i := st.NextRule; i < len(st.Session.rules); i++ {
+		rule := st.Session.rules[i]
 		if rule.Functor != "" && len(rule.Children) > 0 && SameStructure(rule.Children[0], goal) {
 			selected = i
 			break // found a matching rule
@@ -43,7 +43,7 @@ func FindNextRule(st *State) (*State, Term) {
 	st.NextRule = selected + 1 // st becomes the old state we will backtrack into
 	nst := NewState(st)        // fork a new state to continue with
 	nst.NextRule = 0           // reset next rule for new state
-	rule := MYDB.rules[selected].CloneNsp(nst.Uid)
+	rule := st.Session.rules[selected].CloneNsp(nst.Uid)
 	return nst, rule
 }
 

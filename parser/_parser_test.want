@@ -297,3 +297,33 @@ This file : _parser_test.want
 55		(string)    rule(a(X, x), eq(X, Y))
 55		(pretty)    a(X, x) :- eq(X, Y) 
 55 		(nofailparse)[rule(a(X, x), eq(X, Y))]
+
+56 		<a(a,b). a(X,c) :- X=2 .  ?- a(X,Y).>
+56		err=<nil>
+56		(string)    rule(a(a, b))
+56		(pretty)    a(a, b) :-  
+56		(string)    rule(a(X, c), eq(X, 2/1))
+56		(pretty)    a(X, c) :- eq(X, 2) 
+56		(string)    query(a(X, Y))
+56		(pretty)    ?- a(X, Y) 
+56 		(nofailparse)[rule(a(a, b)) rule(a(X, c), eq(X, 2/1)) query(a(X, Y))]
+
+57 		<a(a,b). a(X,c) :- X=2, X=4 .  ?- a(X,Y).>
+57		err=<nil>
+57		(string)    rule(a(a, b))
+57		(pretty)    a(a, b) :-  
+57		(string)    rule(a(X, c), and(eq(X, 2/1), eq(X, 4/1)))
+57		(pretty)    a(X, c) :- and(eq(X, 2), eq(X, 4)) 
+57		(string)    query(a(X, Y))
+57		(pretty)    ?- a(X, Y) 
+57 		(nofailparse)[rule(a(a, b)) rule(a(X, c), and(eq(X, 2/1), eq(X, 4/1))) query(a(X, Y))]
+
+58 		<a(a,b). a(X,c) :- X=2 ; X=4 .  ?- a(X,Y).>
+58		err=<nil>
+58		(string)    rule(a(a, b))
+58		(pretty)    a(a, b) :-  
+58		(string)    rule(a(X, c), or(eq(X, 2/1), eq(X, 4/1)))
+58		(pretty)    a(X, c) :- or(eq(X, 2), eq(X, 4)) 
+58		(string)    query(a(X, Y))
+58		(pretty)    ?- a(X, Y) 
+58 		(nofailparse)[rule(a(a, b)) rule(a(X, c), or(eq(X, 2/1), eq(X, 4/1))) query(a(X, Y))]

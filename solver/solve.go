@@ -17,6 +17,12 @@ type Number = parser.Number
 // useful numbers
 var ZeroNumber, OneNumber = parser.ZeroNumber, parser.OneNumber
 
+// Handles a solution. A solution is assumed when goals are empty.
+// Return value indicates what to do next.
+// The state MAY be modified, typically by changing to parent state for backtracking.
+// If returned state is nil, Solve exits.
+type SolutionHandler func(st *State) *State
+
 // Solve for a given state.
 // Backtracking is managed only in this function.
 func Solve(st *State, sh SolutionHandler) *State {
@@ -46,7 +52,7 @@ func Solve(st *State, sh SolutionHandler) *State {
 			continue // loop again
 		}
 		if len(st.Goals) == 0 { // we have found a solution, answer is available in the state constraints.
-			// it is the responsability of sh to replace st by st.Parent if we want to search next soltions
+			// it is the responsability of sh to replace st by st.Parent if we want to search next solutions
 			st = sh(st)
 			if st == nil { // stop solving !
 				return st
@@ -97,8 +103,3 @@ func Solve(st *State, sh SolutionHandler) *State {
 		// Iterate ...
 	}
 }
-
-// Handles a solution. Return value indicates what to do next.
-// The state MAY be modified.
-// If returned state is nil, Solver stops.
-type SolutionHandler func(st *State) *State

@@ -10,31 +10,33 @@ import (
 	"golang.org/x/term"
 )
 
-// Solution Handler would display solutions, if any.
-// It should be a function that takes a state and returns a state.
-// It tmodifies the state according to the the next expected task to do : look fore more solutions, stop, ...
-var _ SolutionHandler = solHandlr
-
 const helpRepl = "'x':exit, 's' status, 'n' next solution, 'e' or <space>: enter new query or rule, 'r' : explain rules, 'z': zero the rules, 'h' for help"
 
-// main repl
+// convenience entry point, same as NewSession().Repl()
 func Repl() {
+	NewSession().Repl()
+}
+
+// main repl loop
+func (sess *Session) Repl() {
 	st := NewState(nil) // create initial, non nil, state
+	sess = st.Session   // save session for future resets accross states
 	fmt.Println(helpRepl)
 	for {
-		st = Solve(st, solHandlr) // display all solution, return nil on empty solutions.
+		st = Solve(st, sess.interactiveSolutionHandler) // display all solutions, return nil on empty solutions.
+		//fmt.Println("DEBUG - Solve returned with state : ", st)
 		if st == nil {
-			st = NewState(nil) // prevent exit, rules are kept
+			st = NewStateWithSession(sess) // re-create new state , keeping known rules.
 		}
 	}
 }
 
 // solution handler
-func solHandlr(st *State) *State {
+func (sess *Session) interactiveSolutionHandler(st *State) *State {
 
 	if st == nil {
 		fmt.Println("No (more) solutions.")
-		return NewState(nil)
+		return NewStateWithSession(sess) // do not loose the rules already entered !
 	} else {
 		fmt.Println("Ok.")
 	}
@@ -42,14 +44,14 @@ func solHandlr(st *State) *State {
 	if len(st.Constraints) == 0 {
 		// fmt.Println("\nNo constraints.")
 	} else {
-		fmt.Println("Solution :", FilterSolutions(st.Constraints))
+		fmt.Println("Solution, if ", FilterSolutions(st.Constraints))
 	}
 	for {
 		switch readCharRawMode() {
 		case 's': // print states
 			fmt.Print(st)
-			fmt.Printf("\nKnown rules :\n%s-------------------\n", ListDBRules())
-			return st
+			fmt.Printf("\nKnown rules :\n%s-------------------\n", sess.ListRules())
+			// loop
 		case 'n':
 			return st.Parent
 
@@ -63,9 +65,16 @@ func solHandlr(st *State) *State {
 			// loop
 		case 0:
 			os.Exit(1)
-		case 'z': // reset
-			ResetDB()
-			return nil
+		case 'z': // reset both current state and database
+			fmt.Printf("%sCAUTION : ALL RULES AND CONTEXT WILL BE DESTROYEDBE ZEROED%s\nPlease confirm that is what you really want ('y')\n", RED, RESET)
+			if readCharRawMode() == 'y' {
+				sess.ResetSession()
+				st = nil
+				fmt.Printf("%sALL RULES AND CONTEXT HAVE BEEN DESTROYED%s\n", RED, RESET)
+				return nil
+			}
+			fmt.Println("Request was canceled ...")
+			// else, loop ...
 		case 'h':
 			fmt.Println(helpRepl) // loop
 		case '\n', '\r', '\t':
