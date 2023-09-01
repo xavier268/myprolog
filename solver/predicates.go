@@ -128,7 +128,7 @@ func DoPredicate(st *State) (*State, error) {
 					st.NextRule = 0         //since goals changed, reset the next rule pointer ...
 					return st, nil
 				case Variable: // create a constraint on the variable
-					c := VarLT{
+					c := VarLTNum{
 						V:     child.Clone().(Variable),
 						Value: parser.MaxNumber,
 					}

@@ -28,7 +28,7 @@ func (c VarINT) Clone() Constraint {
 // Simplify implements Constraint.
 func (c1 VarINT) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
-	case VarEQ:
+	case VarEQNum:
 		if c1.V == c2.V {
 			if c2.Value.IsInteger() {
 				return nil, false, nil // keep, no change
@@ -37,46 +37,46 @@ func (c1 VarINT) Simplify(c2 Constraint) (cc []Constraint, changed bool, err err
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarLT:
+	case VarLTNum:
 		if c1.V == c2.V { // X is INT & X < a
 			if c2.Value.IsInteger() { // a is int
 
-				c3 := VarLTE{V: c2.V, Value: c2.Value.Minus(OneNumber)} // c3: X <= a-1
+				c3 := VarLTENum{V: c2.V, Value: c2.Value.Minus(OneNumber)} // c3: X <= a-1
 				return []Constraint{c3}, true, nil
 			} else { // a is NOT an int
-				c3 := VarLTE{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
+				c3 := VarLTENum{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
 				return []Constraint{c3}, true, nil
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarGT:
+	case VarGTNum:
 		if c1.V == c2.V { // X is INT & X > a
 			if c2.Value.IsInteger() { // a is int
 
-				c3 := VarLTE{V: c2.V, Value: c2.Value.Plus(OneNumber)} // c3: X >= a+1
+				c3 := VarLTENum{V: c2.V, Value: c2.Value.Plus(OneNumber)} // c3: X >= a+1
 				return []Constraint{c3}, true, nil
 			} else { // a is NOT an int
-				c3 := VarLTE{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
+				c3 := VarLTENum{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
 				return []Constraint{c3}, true, nil
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarGTE:
+	case VarGTENum:
 		if c1.V == c2.V { // X is INT & X > a
 			if c2.Value.IsInteger() { // a is int
 				return nil, false, nil // keep, no change
 			} else { // a is NOT an int
-				c3 := VarGTE{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
+				c3 := VarGTENum{V: c2.V, Value: c2.Value.Ceil()} // X >= ceiling(a)
 				return []Constraint{c3}, true, nil
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarLTE:
+	case VarLTENum:
 		if c1.V == c2.V { // X is INT & X <= a
 			if c2.Value.IsInteger() { // a is int
 				return nil, false, nil // keep, no change
 			} else { // a is NOT an int
-				c3 := VarLTE{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
+				c3 := VarLTENum{V: c2.V, Value: c2.Value.Floor()} // X <= floor(a)
 				return []Constraint{c3}, true, nil
 			}
 		}

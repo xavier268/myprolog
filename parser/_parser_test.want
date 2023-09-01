@@ -81,12 +81,12 @@ This file : _parser_test.want
 12 		(nofailparse)[rule(a(X))]
 
 13 		<?- 3 .>
-13		err=error : [error in test # 13 <?- 3 .>, line 1 : syntax error: unexpected NUMBER, expecting '[' or ATOM]
-13 		(nofailparse)[error("error : error : [error in test # 13 <?- 3 .>, line 1 : syntax error: unexpected NUMBER, expecting '[' or ATOM]")]
+13		err=error : [error in test # 13 <?- 3 .>, line 1 : syntax error: unexpected '.', expecting '=']
+13 		(nofailparse)[error("error : error : [error in test # 13 <?- 3 .>, line 1 : syntax error: unexpected '.', expecting '=']")]
 
 14 		<?- 3.>
-14		err=error : [error in test # 14 <?- 3.>, line 1 : syntax error: unexpected NUMBER, expecting '[' or ATOM]
-14 		(nofailparse)[error("error : error : [error in test # 14 <?- 3.>, line 1 : syntax error: unexpected NUMBER, expecting '[' or ATOM]")]
+14		err=error : [error in test # 14 <?- 3.>, line 1 : syntax error: unexpected $end, expecting '=']
+14 		(nofailparse)[error("error : error : [error in test # 14 <?- 3.>, line 1 : syntax error: unexpected $end, expecting '=']")]
 
 15 		<?- test.>
 15		err=<nil>
@@ -215,8 +215,8 @@ This file : _parser_test.want
 35 		(nofailparse)[query(and(un(_, _, X, 2/1, 3/1), deux(X, _, 5/1)))]
 
 36 		<?- _.>
-36		err=error : [error in test # 36 <?- _.>, line 1 : syntax error: unexpected '_', expecting '[' or ATOM]
-36 		(nofailparse)[error("error : error : [error in test # 36 <?- _.>, line 1 : syntax error: unexpected '_', expecting '[' or ATOM]")]
+36		err=error : [error in test # 36 <?- _.>, line 1 : syntax error: unexpected '.', expecting '=']
+36 		(nofailparse)[error("error : error : [error in test # 36 <?- _.>, line 1 : syntax error: unexpected '.', expecting '=']")]
 
 37 		<_ .>
 37		err=error : [error in test # 37 <_ .>, line 1 : syntax error: unexpected '_', expecting '[' or OPQUERY or ATOM]
@@ -281,3 +281,19 @@ This file : _parser_test.want
 52 		<a(right).another(wrong)>
 52		err=error : [error in test # 52 <a(right).another(wrong)>, line 1 : syntax error: unexpected $end, expecting '.' or OPRULE]
 52 		(nofailparse)[error("error : error : [error in test # 52 <a(right).another(wrong)>, line 1 : syntax error: unexpected $end, expecting '.' or OPRULE]")]
+
+53 		<?- X=Y.>
+53		err=<nil>
+53		(string)    query(eq(X, Y))
+53		(pretty)    ?- eq(X, Y) 
+53 		(nofailparse)[query(eq(X, Y))]
+
+54 		<X = Y .>
+54		err=error : [error in test # 54 <X = Y .>, line 1 : syntax error: unexpected VARIABLE, expecting '[' or OPQUERY or ATOM]
+54 		(nofailparse)[error("error : error : [error in test # 54 <X = Y .>, line 1 : syntax error: unexpected VARIABLE, expecting '[' or OPQUERY or ATOM]")]
+
+55 		<a(X,x) :- X=Y.>
+55		err=<nil>
+55		(string)    rule(a(X, x), eq(X, Y))
+55		(pretty)    a(X, x) :- eq(X, Y) 
+55 		(nofailparse)[rule(a(X, x), eq(X, Y))]

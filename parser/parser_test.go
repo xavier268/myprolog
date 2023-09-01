@@ -85,6 +85,15 @@ func TestParser(t *testing.T) {
 
 		"a(b,c)",                  // missing final point
 		"a(right).another(wrong)", // missing final point
+
+		// specified constraints in queries
+		"?- X=Y.",
+
+		// specify constraints in head, should always fail
+		"X = Y .", // should fail
+
+		// specify constraint in rule body.
+		"a(X,x) :- X=Y.",
 	}
 
 	res := run(tdata)

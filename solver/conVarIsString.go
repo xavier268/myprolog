@@ -97,27 +97,27 @@ func (c1 VarIsString) Simplify(c2 Constraint) (cc []Constraint, changed bool, er
 			return []Constraint{c3}, true, nil // c1.V substituted by c1.A
 		}
 		return nil, false, nil // no change, keep all
-	case VarEQ:
+	case VarEQNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarLT:
+	case VarLTNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarGT:
+	case VarGTNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarGTE:
+	case VarGTENum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarLTE:
+	case VarLTENum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}

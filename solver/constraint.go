@@ -35,12 +35,12 @@ var _ Constraint = VarIsString{}
 var _ Constraint = VarIsAtom{}
 
 // constraint on numbers
-var _ Constraint = VarINT{} // X is integer number
-var _ Constraint = VarEQ{}  // X = n
-var _ Constraint = VarLTE{} // X <= n
-var _ Constraint = VarLT{}  // X < n
-var _ Constraint = VarGT{}  // X > n
-var _ Constraint = VarGTE{} // X >! n
+var _ Constraint = VarINT{}    // X is integer number
+var _ Constraint = VarEQNum{}  // X = n
+var _ Constraint = VarLTENum{} // X <= n
+var _ Constraint = VarLTNum{}  // X < n
+var _ Constraint = VarGTNum{}  // X > n
+var _ Constraint = VarGTENum{} // X >! n
 
 var ErrInvalidConstraintNaN = fmt.Errorf("invalid constraint (NaN)")
 var ErrInvalidConstraintEmptyRange = fmt.Errorf("invalid constraint, specified range is empty")

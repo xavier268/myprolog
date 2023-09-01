@@ -33,12 +33,13 @@ var lastParseResult []Term
 
 %type <list> top phrases params
 %type <value> phrase disjterms conjterms conjterm head
-%type <value> compterm list param number
+%type <value> compterm list param number contraint
 
 
-%token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_'
+%token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_' '='
 %token <value> OPRULE OPQUERY // :-  and ?-
-%token <value> ATOM STRING NUMBER VARIABLE LEXERROR
+%token <value> ATOM STRING NUMBER VARIABLE 
+%token <value> LEXERROR
 
 %% 
 
@@ -79,7 +80,10 @@ phrase:
                                                 }
                                         }
 
-head: conjterm                          { $$ = $1 }
+
+head:  
+    ATOM                                { $$ = $1 }
+    | compterm                          { $$ = $1 }
     
 
 
@@ -102,6 +106,15 @@ conjterms:
 conjterm:
     ATOM                                { $$ = $1 }
     | compterm                          { $$ = $1 }
+    | contraint                         { $$ = $1 }
+
+contraint:
+    param '=' param                     { $$ = CompoundTerm {
+                                                Functor:  "eq" ,
+                                                Children: []Term{ $1, $3},
+                                                }
+                                        }
+    
 
 compterm:
     ATOM '(' params ')'                 { $$ = CompoundTerm {

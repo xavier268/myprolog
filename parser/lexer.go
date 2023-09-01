@@ -149,7 +149,7 @@ func (lx *myLex) Lex(lval *mySymType) int {
 		}
 		return NUMBER
 
-	case '(', ')', '[', ']', ',', ';', '.', '|', '-': // single char tokens recognized by parser, cannot begin a multichar operator.
+	case '(', ')', '[', ']', ',', ';', '.', '|', '-', '=': // single char tokens recognized by parser, cannot begin a multichar operator.
 		// yylval is not set for these.
 		return int(tk)
 

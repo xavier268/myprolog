@@ -7,23 +7,23 @@ This file : _constraint_test.check.want
 0	<nil>
 
 1	(original)	 = 0
-1	(raw form)	solver.VarEQ{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+1	(raw form)	solver.VarEQNum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 1	(checked)	 = 0
 
 2	(original)	0 < 
-2	(raw form)	solver.VarGT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+2	(raw form)	solver.VarGTNum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 2	(checked)	0 < 
 
 3	(original)	0 <= 
-3	(raw form)	solver.VarGTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+3	(raw form)	solver.VarGTENum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 3	(checked)	0 <= 
 
 4	(original)	 < 0
-4	(raw form)	solver.VarLT{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+4	(raw form)	solver.VarLTNum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 4	(checked)	 < 0
 
 5	(original)	 <= 0
-5	(raw form)	solver.VarLTE{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+5	(raw form)	solver.VarLTENum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 5	(checked)	 <= 0
 
 6	(original)	 is an integer

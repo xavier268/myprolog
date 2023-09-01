@@ -50,22 +50,22 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 
 	switch c2 := c2.(type) {
-	case VarEQ:
+	case VarEQNum:
 		if c1.V == c2.V { // same value - can unify both contents !
-			c3 := VarEQ{
+			c3 := VarEQNum{
 				V:     c1.W,
 				Value: c2.Value,
 			}
 			return []Constraint{c3}, true, nil
 		}
 		return nil, false, nil // no change
-	case VarLT:
+	case VarLTNum:
 		return nil, false, nil // keep, no change - will be handled in the other direction
-	case VarGT:
+	case VarGTNum:
 		return nil, false, nil // keep, no change - will be handled in the other direction
-	case VarGTE:
+	case VarGTENum:
 		return nil, false, nil // keep, no change - will be handled in the other direction
-	case VarLTE:
+	case VarLTENum:
 		return nil, false, nil // keep, no change - will be handled in the other direction
 	case VarINT:
 		return nil, false, nil // keep, no change - will be handled in the other direction

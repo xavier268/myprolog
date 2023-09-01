@@ -1,24 +1,24 @@
 package solver
 
 // Ensure V = Number Value
-type VarEQ struct { // =
+type VarEQNum struct { // =
 	V     Variable
 	Value Number
 }
 
-var _ Constraint = VarEQ{}
+var _ Constraint = VarEQNum{}
 
-func (c VarEQ) GetV() Variable {
+func (c VarEQNum) GetV() Variable {
 	return c.V
 }
 
 // String implements Constraint.
-func (c VarEQ) String() string {
+func (c VarEQNum) String() string {
 	return c.V.Pretty() + " = " + c.Value.Pretty()
 }
 
 // Check implements Constraint.
-func (c VarEQ) Check() (Constraint, error) {
+func (c VarEQNum) Check() (Constraint, error) {
 	c.Value = c.Value.Normalize()
 	if c.Value.IsNaN() {
 		return nil, ErrNaN
@@ -27,14 +27,14 @@ func (c VarEQ) Check() (Constraint, error) {
 }
 
 // Clone implements Constraint.
-func (c VarEQ) Clone() Constraint {
+func (c VarEQNum) Clone() Constraint {
 	return c
 }
 
 // Simplify implements Constraint.
-func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+func (c1 VarEQNum) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
-	case VarEQ:
+	case VarEQNum:
 		if c1.V == c2.V {
 			if c1.Value.Eq(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -43,7 +43,7 @@ func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err erro
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarLT:
+	case VarLTNum:
 		if c1.V == c2.V {
 			if c1.Value.Less(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -52,7 +52,7 @@ func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err erro
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarGT:
+	case VarGTNum:
 		if c1.V == c2.V {
 			if c1.Value.Greater(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -61,7 +61,7 @@ func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err erro
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarGTE:
+	case VarGTENum:
 		if c1.V == c2.V {
 			if c1.Value.Greater(c2.Value) || c1.Value.Eq(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -70,7 +70,7 @@ func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err erro
 			}
 		}
 		return nil, false, nil // keep, no change
-	case VarLTE:
+	case VarLTENum:
 		if c1.V == c2.V {
 			if c1.Value.Less(c2.Value) || c1.Value.Eq(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -90,13 +90,13 @@ func (c1 VarEQ) Simplify(c2 Constraint) (cc []Constraint, changed bool, err erro
 		return nil, false, nil // keep, no change
 	case VarIsVar:
 		if c1.V.Eq(c2.V) {
-			c3 := VarEQ{
+			c3 := VarEQNum{
 				V:     c2.W,
 				Value: c1.Value}
 			return []Constraint{c3}, true, nil
 		}
 		if c1.V.Eq(c2.W) {
-			c3 := VarEQ{
+			c3 := VarEQNum{
 				V:     c2.V,
 				Value: c1.Value}
 			return []Constraint{c3}, true, nil

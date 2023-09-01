@@ -97,27 +97,27 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 			return []Constraint{c3}, true, nil // c2.V = c1.A
 		}
 		return nil, false, nil // no change, keep all
-	case VarEQ:
+	case VarEQNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarLT:
+	case VarLTNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarGT:
+	case VarGTNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarGTE:
+	case VarGTENum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}
 		return nil, false, nil // no change, keep all
-	case VarLTE:
+	case VarLTENum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}

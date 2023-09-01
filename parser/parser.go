@@ -53,6 +53,7 @@ var myToknames = [...]string{
 	"']'",
 	"'|'",
 	"'_'",
+	"'='",
 	"OPRULE",
 	"OPQUERY",
 	"ATOM",
@@ -69,72 +70,83 @@ const myEofCode = 1
 const myErrCode = 2
 const myInitialStackSize = 16
 
-//line grammar.y:166
+//line grammar.y:179
 
 //line yacctab:1
 var myExca = [...]int8{
 	-1, 1,
 	1, -1,
 	-2, 0,
+	-1, 14,
+	13, 23,
+	-2, 14,
+	-1, 15,
+	13, 28,
+	-2, 15,
 }
 
 const myPrivate = 57344
 
-const myLast = 85
+const myLast = 109
 
 var myAct = [...]int8{
-	8, 36, 13, 19, 40, 12, 32, 48, 10, 10,
-	10, 26, 20, 4, 7, 7, 7, 37, 26, 15,
-	30, 34, 33, 38, 10, 47, 16, 25, 31, 43,
-	21, 23, 27, 24, 42, 28, 41, 29, 44, 26,
-	26, 46, 45, 35, 38, 17, 3, 10, 39, 11,
-	25, 22, 9, 21, 23, 27, 24, 5, 28, 10,
-	18, 2, 25, 1, 0, 21, 23, 27, 24, 10,
-	28, 0, 25, 0, 0, 21, 23, 27, 24, 0,
-	28, 14, 6, 0, 6,
+	17, 36, 28, 35, 31, 7, 12, 7, 11, 15,
+	29, 9, 52, 43, 21, 53, 24, 44, 30, 19,
+	22, 20, 42, 23, 25, 9, 33, 41, 43, 39,
+	15, 4, 6, 34, 38, 48, 47, 32, 15, 15,
+	49, 46, 45, 40, 41, 51, 50, 9, 26, 3,
+	21, 16, 10, 18, 30, 19, 22, 20, 37, 23,
+	8, 9, 5, 13, 21, 2, 1, 0, 14, 19,
+	22, 20, 0, 23, 9, 27, 0, 21, 0, 0,
+	0, 30, 19, 22, 20, 9, 23, 0, 21, 0,
+	0, 0, 30, 19, 22, 20, 9, 23, 0, 21,
+	0, 0, 0, 14, 19, 22, 20, 0, 23,
 }
 
 var myPact = [...]int16{
-	-1, -1000, -1, -1000, 1, 13, -1000, 41, -1000, -1000,
-	50, -1000, 31, 12, 21, -1000, 0, 38, -1000, 7,
-	37, 41, -1000, -1000, -1000, -1000, -1000, -1000, -13, -1000,
-	1, 1, -1000, 23, 33, -1000, 16, -1000, 60, 15,
-	-1000, -1000, -1000, -1000, -1000, -1000, -3, -1000, -1000,
+	16, -1000, 16, -1000, 87, 10, 44, -1000, -1000, 65,
+	-1000, 31, 18, 26, 44, -1000, -1000, -10, -1000, -1000,
+	-1000, -1000, -1000, -17, -1000, 52, 38, -1000, 12, 6,
+	44, -1000, -1000, 87, 87, 76, -1000, -1000, 29, 35,
+	-1000, 21, -1000, 76, 2, -1000, -1000, -1000, -1000, -1000,
+	-1000, 5, -1000, -1000,
 }
 
 var myPgo = [...]int8{
-	0, 63, 61, 3, 46, 5, 2, 81, 57, 0,
-	52, 1, 51,
+	0, 66, 65, 2, 49, 8, 6, 63, 62, 4,
+	60, 0, 53, 51,
 }
 
 var myR1 = [...]int8{
-	0, 1, 2, 2, 4, 4, 4, 4, 8, 5,
-	5, 6, 6, 7, 7, 9, 9, 9, 3, 3,
-	11, 11, 11, 11, 11, 11, 10, 10, 10, 10,
-	12, 12,
+	0, 1, 2, 2, 4, 4, 4, 4, 8, 8,
+	5, 5, 6, 6, 7, 7, 7, 13, 9, 9,
+	9, 3, 3, 11, 11, 11, 11, 11, 11, 10,
+	10, 10, 10, 12, 12,
 }
 
 var myR2 = [...]int8{
 	0, 1, 1, 2, 3, 2, 3, 4, 1, 1,
-	3, 1, 3, 1, 1, 4, 3, 1, 1, 3,
-	1, 1, 1, 1, 1, 1, 2, 3, 5, 4,
-	1, 2,
+	1, 3, 1, 3, 1, 1, 1, 3, 4, 3,
+	1, 1, 3, 1, 1, 1, 1, 1, 1, 2,
+	3, 5, 4, 1, 2,
 }
 
 var myChk = [...]int16{
-	-1000, -1, -2, -4, 14, -8, -7, 15, -9, -10,
-	9, -4, -5, -6, -7, 6, 13, 4, 10, -3,
-	-11, 15, -12, 16, 18, 12, -9, 17, 20, 6,
-	8, 7, 6, -5, -3, 5, -11, 10, 7, 11,
-	17, -5, -6, 6, 5, -3, -11, 10, 10,
+	-1000, -1, -2, -4, 15, -8, 16, -9, -10, 9,
+	-4, -5, -6, -7, 16, -9, -13, -11, -12, 17,
+	19, 12, 18, 21, 6, 14, 4, 10, -3, -11,
+	16, -9, 6, 8, 7, 13, 18, 6, -5, -3,
+	5, -11, 10, 7, 11, -5, -6, -11, 6, 5,
+	-3, -11, 10, 10,
 }
 
 var myDef = [...]int8{
-	0, -2, 1, 2, 0, 0, 8, 13, 14, 17,
-	0, 3, 0, 9, 11, 5, 0, 0, 26, 0,
-	18, 20, 21, 22, 23, 24, 25, 30, 0, 4,
-	0, 0, 6, 0, 0, 16, 18, 27, 0, 0,
-	31, 10, 12, 7, 15, 19, 0, 29, 28,
+	0, -2, 1, 2, 0, 0, 8, 9, 20, 0,
+	3, 0, 10, 12, -2, -2, 16, 0, 24, 25,
+	26, 27, 33, 0, 5, 0, 0, 29, 0, 21,
+	23, 28, 4, 0, 0, 0, 34, 6, 0, 0,
+	19, 21, 30, 0, 0, 11, 13, 17, 7, 18,
+	22, 0, 32, 31,
 }
 
 var myTok1 = [...]int8{
@@ -142,9 +154,9 @@ var myTok1 = [...]int8{
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	4, 5, 3, 3, 7, 20, 6, 3, 3, 3,
+	4, 5, 3, 3, 7, 21, 6, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 8,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
+	3, 13, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 9, 3, 10, 3, 12, 3, 3, 3, 3,
@@ -154,7 +166,7 @@ var myTok1 = [...]int8{
 }
 
 var myTok2 = [...]int8{
-	2, 3, 13, 14, 15, 16, 17, 18, 19,
+	2, 3, 14, 15, 16, 17, 18, 19, 20,
 }
 
 var myTok3 = [...]int8{
@@ -500,7 +512,7 @@ mydefault:
 
 	case 1:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:46
+//line grammar.y:47
 		{
 			myVAL.list = myDollar[1].list
 			// save final result in the provided variable, results
@@ -508,19 +520,19 @@ mydefault:
 		}
 	case 2:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:53
+//line grammar.y:54
 		{
 			myVAL.list = append(myVAL.list, myDollar[1].value)
 		}
 	case 3:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:54
+//line grammar.y:55
 		{
 			myVAL.list = append(myDollar[1].list, myDollar[2].value)
 		}
 	case 4:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:57
+//line grammar.y:58
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "query",
@@ -529,7 +541,7 @@ mydefault:
 		}
 	case 5:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:63
+//line grammar.y:64
 		{ // implicit OPRULE
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -538,7 +550,7 @@ mydefault:
 		}
 	case 6:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:69
+//line grammar.y:70
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -547,7 +559,7 @@ mydefault:
 		}
 	case 7:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:75
+//line grammar.y:76
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -556,165 +568,186 @@ mydefault:
 		}
 	case 8:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:82
+//line grammar.y:85
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 9:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:87
+//line grammar.y:86
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 10:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:91
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 11:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:88
+//line grammar.y:92
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "or",
 				Children: []Term{myDollar[1].value, myDollar[3].value},
 			}
 		}
-	case 11:
+	case 12:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:95
+//line grammar.y:99
 		{
 			myVAL.value = myDollar[1].value
 		}
-	case 12:
+	case 13:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:96
+//line grammar.y:100
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "and",
 				Children: []Term{myDollar[1].value, myDollar[3].value},
 			}
 		}
-	case 13:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:103
-		{
-			myVAL.value = myDollar[1].value
-		}
 	case 14:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:104
+//line grammar.y:107
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 15:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:108
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 16:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:109
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 17:
+		myDollar = myS[mypt-3 : mypt+1]
+//line grammar.y:112
+		{
+			myVAL.value = CompoundTerm{
+				Functor:  "eq",
+				Children: []Term{myDollar[1].value, myDollar[3].value},
+			}
+		}
+	case 18:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:107
+//line grammar.y:120
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  myDollar[1].value.String(),
 				Children: myDollar[3].list,
 			}
 		}
-	case 16:
+	case 19:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:112
+//line grammar.y:125
 		{
 			myVAL.value = CompoundTerm{
 				Functor: myDollar[1].value.String(),
 			}
 		}
-	case 17:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:117
-		{
-			myVAL.value = myDollar[1].value
-		}
-	case 18:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:122
-		{
-			myVAL.list = []Term{myDollar[1].value}
-		}
-	case 19:
-		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:123
-		{
-			myVAL.list = append([]Term{myDollar[1].value}, myDollar[3].list...)
-		}
 	case 20:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:128
-		{
-			myVAL.value = myDollar[1].value
-		}
-	case 21:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:129
-		{
-			myVAL.value = myDollar[1].value
-		}
-	case 22:
 		myDollar = myS[mypt-1 : mypt+1]
 //line grammar.y:130
 		{
 			myVAL.value = myDollar[1].value
 		}
+	case 21:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:135
+		{
+			myVAL.list = []Term{myDollar[1].value}
+		}
+	case 22:
+		myDollar = myS[mypt-3 : mypt+1]
+//line grammar.y:136
+		{
+			myVAL.list = append([]Term{myDollar[1].value}, myDollar[3].list...)
+		}
 	case 23:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:131
+//line grammar.y:141
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 24:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:132
+//line grammar.y:142
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 25:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:133
+//line grammar.y:143
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 26:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:144
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 27:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:145
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 28:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:146
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 29:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:137
+//line grammar.y:150
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{},
 			}
 		}
-	case 27:
+	case 30:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:142
+//line grammar.y:155
 		{
 			myVAL.value = newList(myDollar[2].list...)
 		}
-	case 28:
+	case 31:
 		myDollar = myS[mypt-5 : mypt+1]
-//line grammar.y:145
+//line grammar.y:158
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{myDollar[2].value, myDollar[4].value},
 			}
 		}
-	case 29:
+	case 32:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:150
+//line grammar.y:163
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{myDollar[2].value},
 			}
 		}
-	case 30:
+	case 33:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:158
+//line grammar.y:171
 		{
 			myVAL.value = myDollar[1].value
 		}
-	case 31:
+	case 34:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:159
+//line grammar.y:172
 		{
 			myVAL.value = Number{
 				Num: -myDollar[2].value.(Number).Num,
