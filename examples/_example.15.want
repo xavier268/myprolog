@@ -1,0 +1,27 @@
+Test name : TestExamples
+This file : _example.15.want
+
+
+Input:
+
+		// reverse a list with named variables
+		reverse_list(List, Reversed) :-
+    	reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) :-
+    	reverse_list(Tail, [Head|Acc], Reversed).	
+		?- reverse_list([a,X,Y], Reversed).
+		
+
+
+----------
+Solution:	[Reversed = [Y, X, a]]
+Because of : 
+rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#2>	reverse_list([], Acc, Acc) :-  
+
+
+State:	<nil>

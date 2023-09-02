@@ -14,7 +14,7 @@ To display the menu option, type 'h'.
 
 You can enter facts, rules or queries, in any order, always terminating with a '.'.
 
-See examples in the test files named *_endToEnd_test.xxx*. For instance :
+See examples in this [folder](./examples) For instance :
 
 ```
         // reverse a list

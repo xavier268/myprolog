@@ -1,0 +1,25 @@
+Test name : TestExamples
+This file : _example.2.want
+
+
+Input:
+
+		a(b,c).
+		a(d,e).
+		?- a(Y,X).
+
+
+----------
+Solution:	[X = c Y = b]
+Because of : 
+rule#1>	a(b, c) :-  
+
+
+
+----------
+Solution:	[X = e Y = d]
+Because of : 
+rule#2>	a(d, e) :-  
+
+
+State:	<nil>

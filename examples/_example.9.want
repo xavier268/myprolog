@@ -1,0 +1,30 @@
+Test name : TestExamples
+This file : _example.9.want
+
+
+Input:
+
+		a(b,c). a(c,d).a(e,f).  ?- a(T,_).
+
+
+----------
+Solution:	[T = b]
+Because of : 
+rule#1>	a(b, c) :-  
+
+
+
+----------
+Solution:	[T = c]
+Because of : 
+rule#2>	a(c, d) :-  
+
+
+
+----------
+Solution:	[T = e]
+Because of : 
+rule#3>	a(e, f) :-  
+
+
+State:	<nil>

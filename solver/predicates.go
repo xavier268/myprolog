@@ -114,13 +114,15 @@ func DoPredicate(st *State) (*State, error) {
 			case "or": // fork state.
 				// st becomes parent state and  will handle the second alternative,
 				// new state handles the first and becomes current.
-				nst := NewState(st)
 
 				st.Goals = append(g.Children[1:2], st.Goals[1:]...)
-				nst.Goals = append(g.Children[0:1], st.Goals[1:]...)
-
 				st.NextRule = 0 // since goals changed, reset the next rule pointer ...
+
+				nst := NewState(st)
+
+				nst.Goals = append(g.Children[0:1], st.Goals[1:]...)
 				nst.NextRule = 0
+
 				return nst, nil
 
 			case "number": // force a number, any number

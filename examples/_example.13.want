@@ -1,0 +1,27 @@
+Test name : TestExamples
+This file : _example.13.want
+
+
+Input:
+
+		// define reverse a list of strings
+		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
+		reverse_list([], Acc, Acc).
+		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
+		// query
+		?- reverse_list(["a","b","c","d"], Reversed).
+		
+
+
+----------
+Solution:	[Reversed = ["d", "c", "b", "a"]]
+Because of : 
+rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
+rule#2>	reverse_list([], Acc, Acc) :-  
+
+
+State:	<nil>

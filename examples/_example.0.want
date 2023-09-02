@@ -1,0 +1,17 @@
+Test name : TestExamples
+This file : _example.0.want
+
+
+Input:
+
+		a(b,c).  
+		?- a(X,Y).
+
+
+----------
+Solution:	[X = b Y = c]
+Because of : 
+rule#1>	a(b, c) :-  
+
+
+State:	<nil>

@@ -1,0 +1,36 @@
+Test name : TestExamples
+This file : _example.16.want
+
+
+Input:
+
+		// constraints disjonction
+		a(a,b). 
+		a(X,c) :- X=2 ; X=3 . // means X is 2 or 3, will generate 2 more solutions.
+		                      // IMPORTANT : notice that the period (.) must never follow immediately a number, 
+							  // because that would mean a float, and the end of phrase marker will not be found, 
+							  // triggering a parser error.
+		?- a(X,Y).
+
+
+----------
+Solution:	[X = a Y = b]
+Because of : 
+rule#1>	a(a, b) :-  
+
+
+
+----------
+Solution:	[X = 2 Y = c]
+Because of : 
+rule#2>	a(X, c) :- or(eq(X, 2), eq(X, 3)) 
+
+
+
+----------
+Solution:	[X = 3 Y = c]
+Because of : 
+rule#2>	a(X, c) :- or(eq(X, 2), eq(X, 3)) 
+
+
+State:	<nil>

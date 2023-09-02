@@ -1,0 +1,40 @@
+Test name : TestExamples
+This file : _example.5.want
+
+
+Input:
+
+		a(b,c). 
+		a(d,e).    
+		// here, we make multiple queries at once - explicitely require one of them to besatisfied.
+		?-  a(X,Y) ; a(T,_) .
+
+
+----------
+Solution:	[X = b Y = c]
+Because of : 
+rule#1>	a(b, c) :-  
+
+
+
+----------
+Solution:	[X = d Y = e]
+Because of : 
+rule#2>	a(d, e) :-  
+
+
+
+----------
+Solution:	[T = b]
+Because of : 
+rule#1>	a(b, c) :-  
+
+
+
+----------
+Solution:	[T = d]
+Because of : 
+rule#2>	a(d, e) :-  
+
+
+State:	<nil>

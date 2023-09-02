@@ -1,0 +1,17 @@
+Test name : TestExamples
+This file : _example.6.want
+
+
+Input:
+
+		a(b,c).a(c,d).     ?- a(U,V),a(V,W).
+
+
+----------
+Solution:	[U = b V = c W = d]
+Because of : 
+rule#1>	a(b, c) :-  
+rule#2>	a(c, d) :-  
+
+
+State:	<nil>

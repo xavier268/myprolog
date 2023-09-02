@@ -12,7 +12,8 @@ import (
 // Set of rules that can be applied in a state
 type Session struct {
 	rules      []CompoundTerm // known usable, non deduplicated, rules.
-	depthStats int            // count of truncated searches
+	depthCount int            // count of truncated searches because beyond depth limit
+	depthLimit int            // max depth of search
 }
 
 func NewSession() *Session {
@@ -29,7 +30,8 @@ func (sess Session) CountRules() int {
 // Reset the global session
 func (sess *Session) ResetSession() {
 	sess.rules = make([]CompoundTerm, 0, 10)
-	sess.depthStats = 0
+	sess.depthCount = 0
+	sess.depthLimit = MIN_DEPTH
 }
 
 func (sess Session) ListRules() string {
@@ -54,8 +56,9 @@ func (sess *Session) AddRule(rules ...CompoundTerm) {
 		}
 		if len(r.Children) == 0 {
 			fmt.Println(parser.RED, "WARNING : trying to add a rule with no children - ignored", parser.RESET)
-			return
+			continue
 		}
 		sess.rules = append(sess.rules, r)
 	}
+	sess.AdjustDepthControl() // compute a new depth limit ...
 }
