@@ -18,13 +18,10 @@ func init() {
 	myDebug = 0
 }
 
-// where the parse results are available
-var lastParseResult []Term
-
 // To keep the compiler happy ...
 var _ = __yyfmt__.Printf
 
-//line grammar.y:28
+//line grammar.y:25
 type mySymType struct {
 	yys int
 	// define the SymType structure
@@ -70,7 +67,7 @@ const myEofCode = 1
 const myErrCode = 2
 const myInitialStackSize = 16
 
-//line grammar.y:179
+//line grammar.y:176
 
 //line yacctab:1
 var myExca = [...]int8{
@@ -512,27 +509,27 @@ mydefault:
 
 	case 1:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:47
+//line grammar.y:44
 		{
 			myVAL.list = myDollar[1].list
 			// save final result in the provided variable, results
-			lastParseResult = myVAL.list
+			mylex.(*myLex).LastResult = myVAL.list
 		}
 	case 2:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:54
+//line grammar.y:51
 		{
 			myVAL.list = append(myVAL.list, myDollar[1].value)
 		}
 	case 3:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:55
+//line grammar.y:52
 		{
 			myVAL.list = append(myDollar[1].list, myDollar[2].value)
 		}
 	case 4:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:58
+//line grammar.y:55
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "query",
@@ -541,7 +538,7 @@ mydefault:
 		}
 	case 5:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:64
+//line grammar.y:61
 		{ // implicit OPRULE
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -550,7 +547,7 @@ mydefault:
 		}
 	case 6:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:70
+//line grammar.y:67
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -559,7 +556,7 @@ mydefault:
 		}
 	case 7:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:76
+//line grammar.y:73
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "rule",
@@ -568,25 +565,25 @@ mydefault:
 		}
 	case 8:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:85
+//line grammar.y:82
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 9:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:86
+//line grammar.y:83
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 10:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:91
+//line grammar.y:88
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 11:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:92
+//line grammar.y:89
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "or",
@@ -595,13 +592,13 @@ mydefault:
 		}
 	case 12:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:99
+//line grammar.y:96
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 13:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:100
+//line grammar.y:97
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "and",
@@ -610,25 +607,25 @@ mydefault:
 		}
 	case 14:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:107
+//line grammar.y:104
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 15:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:108
+//line grammar.y:105
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 16:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:109
+//line grammar.y:106
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 17:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:112
+//line grammar.y:109
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "eq",
@@ -637,7 +634,7 @@ mydefault:
 		}
 	case 18:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:120
+//line grammar.y:117
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  myDollar[1].value.String(),
@@ -646,7 +643,7 @@ mydefault:
 		}
 	case 19:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:125
+//line grammar.y:122
 		{
 			myVAL.value = CompoundTerm{
 				Functor: myDollar[1].value.String(),
@@ -654,61 +651,61 @@ mydefault:
 		}
 	case 20:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:130
+//line grammar.y:127
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 21:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:135
+//line grammar.y:132
 		{
 			myVAL.list = []Term{myDollar[1].value}
 		}
 	case 22:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:136
+//line grammar.y:133
 		{
 			myVAL.list = append([]Term{myDollar[1].value}, myDollar[3].list...)
 		}
 	case 23:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:141
+//line grammar.y:138
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 24:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:142
+//line grammar.y:139
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 25:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:143
+//line grammar.y:140
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 26:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:144
+//line grammar.y:141
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 27:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:145
+//line grammar.y:142
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 28:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:146
+//line grammar.y:143
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 29:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:150
+//line grammar.y:147
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
@@ -717,13 +714,13 @@ mydefault:
 		}
 	case 30:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:155
+//line grammar.y:152
 		{
 			myVAL.value = newList(myDollar[2].list...)
 		}
 	case 31:
 		myDollar = myS[mypt-5 : mypt+1]
-//line grammar.y:158
+//line grammar.y:155
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
@@ -732,7 +729,7 @@ mydefault:
 		}
 	case 32:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:163
+//line grammar.y:160
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
@@ -741,13 +738,13 @@ mydefault:
 		}
 	case 33:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:171
+//line grammar.y:168
 		{
 			myVAL.value = myDollar[1].value
 		}
 	case 34:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:172
+//line grammar.y:169
 		{
 			myVAL.value = Number{
 				Num: -myDollar[2].value.(Number).Num,
