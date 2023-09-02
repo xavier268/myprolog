@@ -4,24 +4,33 @@ This file : _example.15.want
 
 Input:
 
-		// reverse a list with named variables
-		reverse_list(List, Reversed) :-
-    	reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) :-
-    	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,X,Y], Reversed).
-		
+		// this will create infinite recursion, that will need to be managed by depth control		
+		a(b,c). 
+		a(c,d).
+		a(X,Y) :- a(X,V),a(V,Y).		
+		?- a(A,B).
 
 
 ----------
-Solution:	[Reversed = [Y, X, a]]
+Solution:	[A = b B = c]
 Because of : 
-rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#2>	reverse_list([], Acc, Acc) :-  
+rule#1>	a(b, c) :-  
+
+
+
+----------
+Solution:	[A = c B = d]
+Because of : 
+rule#2>	a(c, d) :-  
+
+
+
+----------
+Solution:	[A = b B = d]
+Because of : 
+rule#3>	a(X, Y) :- and(a(X, V), a(V, Y)) 
+rule#1>	a(b, c) :-  
+rule#2>	a(c, d) :-  
 
 
 State:	<nil>

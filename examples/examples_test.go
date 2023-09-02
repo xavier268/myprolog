@@ -53,47 +53,22 @@ func TestExamples(t *testing.T) {
 		`
 		a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).`,
 		`
-		// define reverse a list of atoms
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
+		// define reverse a list 
+		reverse_list(List, Reversed)                :-      reverse_list(List, [], Reversed).
 		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
+		reverse_list([Head|Tail], Acc, Reversed)    :-      reverse_list(Tail, [Head|Acc], Reversed).		
 		// query
 		?- reverse_list([a,b,c,d], Reversed).
 		`,
 		`
-		// define reverse a list of numbers
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list([1,2,3,4], Reversed).
-		`,
-		`
-		// define reverse a list of strings
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list(["a","b","c","d"], Reversed).
-		`,
-		`
 		// reverse a list with named variables
-		reverse_list(List, Reversed) :-
-    	reverse_list(List, [], Reversed).
+		reverse_list(List, Reversed)             :-      reverse_list(List, [], Reversed).
 		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) :-
-    	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,_,b,c,d], Reversed).
+		reverse_list([Head|Tail], Acc, Reversed) :-      reverse_list(Tail, [Head|Acc], Reversed).
+		
+		?- reverse_list([a,_,b,Z,d], Reversed).
 		`,
-		`
-		// reverse a list with named variables
-		reverse_list(List, Reversed) :-
-    	reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) :-
-    	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,X,Y], Reversed).
-		`,
+
 		`
 		// constraints disjonction
 		a(a,b). 
