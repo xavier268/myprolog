@@ -36,7 +36,7 @@ var _ Constraint = VarIsAtom{}
 
 // constraint on numbers
 var _ Constraint = VarINT{}    // X is integer number
-var _ Constraint = VarEQNum{}  // X = n
+var _ Constraint = VarIsNum{}  // X = n
 var _ Constraint = VarLTENum{} // X <= n
 var _ Constraint = VarLTNum{}  // X < n
 var _ Constraint = VarGTNum{}  // X > n

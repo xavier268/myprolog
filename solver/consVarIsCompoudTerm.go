@@ -114,7 +114,7 @@ func (c1 VarIsCompoundTerm) Simplify(c Constraint) (cc []Constraint, changed boo
 			return []Constraint{c4}, true, nil // update
 		}
 		return nil, false, nil // keep, no change
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}

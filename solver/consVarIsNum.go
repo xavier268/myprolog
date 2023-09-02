@@ -1,24 +1,24 @@
 package solver
 
 // Ensure V = Number Value
-type VarEQNum struct { // =
+type VarIsNum struct { // =
 	V     Variable
 	Value Number
 }
 
-var _ Constraint = VarEQNum{}
+var _ Constraint = VarIsNum{}
 
-func (c VarEQNum) GetV() Variable {
+func (c VarIsNum) GetV() Variable {
 	return c.V
 }
 
 // String implements Constraint.
-func (c VarEQNum) String() string {
+func (c VarIsNum) String() string {
 	return c.V.Pretty() + " = " + c.Value.Pretty()
 }
 
 // Check implements Constraint.
-func (c VarEQNum) Check() (Constraint, error) {
+func (c VarIsNum) Check() (Constraint, error) {
 	c.Value = c.Value.Normalize()
 	if c.Value.IsNaN() {
 		return nil, ErrNaN
@@ -27,14 +27,14 @@ func (c VarEQNum) Check() (Constraint, error) {
 }
 
 // Clone implements Constraint.
-func (c VarEQNum) Clone() Constraint {
+func (c VarIsNum) Clone() Constraint {
 	return c
 }
 
 // Simplify implements Constraint.
-func (c1 VarEQNum) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
+func (c1 VarIsNum) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V == c2.V {
 			if c1.Value.Eq(c2.Value) {
 				return nil, true, nil // ignore duplicate
@@ -90,13 +90,13 @@ func (c1 VarEQNum) Simplify(c2 Constraint) (cc []Constraint, changed bool, err e
 		return nil, false, nil // keep, no change
 	case VarIsVar:
 		if c1.V.Eq(c2.V) {
-			c3 := VarEQNum{
+			c3 := VarIsNum{
 				V:     c2.W,
 				Value: c1.Value}
 			return []Constraint{c3}, true, nil
 		}
 		if c1.V.Eq(c2.W) {
-			c3 := VarEQNum{
+			c3 := VarIsNum{
 				V:     c2.V,
 				Value: c1.Value}
 			return []Constraint{c3}, true, nil

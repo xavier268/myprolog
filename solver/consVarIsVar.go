@@ -50,9 +50,9 @@ func (c VarIsVar) Check() (Constraint, error) {
 func (c1 VarIsVar) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 
 	switch c2 := c2.(type) {
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V == c2.V { // same value - can unify both contents !
-			c3 := VarEQNum{
+			c3 := VarIsNum{
 				V:     c1.W,
 				Value: c2.Value,
 			}

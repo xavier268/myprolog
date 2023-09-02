@@ -2,16 +2,21 @@ Test name : TestEndToEnd
 This file : _endToEnd_test.2.want
 
 
-Input:	a(b,c). a(d,e).    ?- a(Y,X).
-Parsed:	[rule(a(b, c)) rule(a(d, e)) query(a(Y, X))]
-solution:	[X = c Y = b]
+Input:	a(b,c). a(c,d).a(e,f).  ?- a(_,Z).
+Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(e, f)) query(a(_, Z))]
+solution:	[Z = c]
 Rules applied : 
 rule#1>	a(b, c) :-  
 
 
-solution:	[X = e Y = d]
+solution:	[Z = d]
 Rules applied : 
-rule#2>	a(d, e) :-  
+rule#2>	a(c, d) :-  
+
+
+solution:	[Z = f]
+Rules applied : 
+rule#3>	a(e, f) :-  
 
 
 State:	<nil>

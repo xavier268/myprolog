@@ -2,23 +2,11 @@ Test name : TestEndToEnd
 This file : _endToEnd_test.8.want
 
 
-Input:	a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).
-Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(X, Y), and(a(X, V), a(V, Y))) query(a(A, B))]
-solution:	[A = b B = c]
+Input:	a(a,b). a(X,c) :- X='a' , X=3 .  ?- a(X,Y).
+Parsed:	[rule(a(a, b)) rule(a(X, c), and(eq(X, "a"), eq(X, 3/1))) query(a(X, Y))]
+solution:	[X = a Y = b]
 Rules applied : 
-rule#1>	a(b, c) :-  
-
-
-solution:	[A = c B = d]
-Rules applied : 
-rule#2>	a(c, d) :-  
-
-
-solution:	[A = b B = d]
-Rules applied : 
-rule#3>	a(X, Y) :- and(a(X, V), a(V, Y)) 
-rule#1>	a(b, c) :-  
-rule#2>	a(c, d) :-  
+rule#1>	a(a, b) :-  
 
 
 State:	<nil>

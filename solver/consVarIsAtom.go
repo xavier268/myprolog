@@ -97,7 +97,7 @@ func (c1 VarIsAtom) Simplify(c2 Constraint) (cc []Constraint, changed bool, err 
 			return []Constraint{c3}, true, nil // c2.V = c1.A
 		}
 		return nil, false, nil // no change, keep all
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V.Eq(c2.V) { // same variable
 			return nil, false, ErrInvalidConstraintSimplify
 		}

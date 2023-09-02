@@ -75,7 +75,7 @@ var TEST_VAR_IS_VAR = []Constraint{
 
 var TEST_EMPTY_CONSTRAINTS = []Constraint{
 	nil,
-	VarEQNum{},
+	VarIsNum{},
 	VarGTNum{},
 	VarGTENum{},
 	VarLTNum{},
@@ -119,7 +119,7 @@ func generateConstraintsFromNumbers(nn []Number) (cc []Constraint) {
 
 	for _, n := range nn {
 
-		cc = append(cc, VarEQNum{X, n})
+		cc = append(cc, VarIsNum{X, n})
 		cc = append(cc, VarLTNum{X, n})
 		cc = append(cc, VarLTENum{X, n})
 		cc = append(cc, VarGTNum{X, n})

@@ -38,7 +38,7 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 		case String, Atom: //  do not unify
 			return cList, ErrUnificationImpossible
 		case Variable: // goal is a variable
-			c := VarEQNum{
+			c := VarIsNum{
 				V:     goal,
 				Value: head,
 			}
@@ -92,7 +92,7 @@ func Unify(cList []Constraint, head Term, goal Term) ([]Constraint, error) {
 			}
 			return CheckAddConstraint(cList, c)
 		case Number:
-			c := VarEQNum{
+			c := VarIsNum{
 				V:     head,
 				Value: goal,
 			}

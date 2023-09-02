@@ -2,26 +2,11 @@ Test name : TestEndToEnd
 This file : _endToEnd_test.7.want
 
 
-Input:	a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).
-Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(e, f)) rule(a(b, f)) query(a(_, Z))]
-solution:	[Z = c]
+Input:	a(a,b). a(X,c) :- X=2 , X=3 .  ?- a(X,Y).
+Parsed:	[rule(a(a, b)) rule(a(X, c), and(eq(X, 2/1), eq(X, 3/1))) query(a(X, Y))]
+solution:	[X = a Y = b]
 Rules applied : 
-rule#1>	a(b, c) :-  
-
-
-solution:	[Z = d]
-Rules applied : 
-rule#2>	a(c, d) :-  
-
-
-solution:	[Z = f]
-Rules applied : 
-rule#3>	a(e, f) :-  
-
-
-solution:	[Z = f]
-Rules applied : 
-rule#4>	a(b, f) :-  
+rule#1>	a(a, b) :-  
 
 
 State:	<nil>

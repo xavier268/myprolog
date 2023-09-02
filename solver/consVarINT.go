@@ -28,7 +28,7 @@ func (c VarINT) Clone() Constraint {
 // Simplify implements Constraint.
 func (c1 VarINT) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V == c2.V {
 			if c2.Value.IsInteger() {
 				return nil, false, nil // keep, no change

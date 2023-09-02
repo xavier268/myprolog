@@ -57,7 +57,6 @@ Lists can be entered as bracket lists : [ 1,2,3,] , as pairs [ a | b ] , or as d
 
 All Numbers are handled exactly, internally represented as int64 based rationnals. Rational numbers can also be entered directly, as in : lt(X,3/2). Although overflow could happen, precision is garanteed, ie 1/3 + 1/3 will always exactly equals 2/3.
 
-Interval artithmethic is performed exactly, taking into account if number is integer or not.
 
 # Predefined predicates
 
@@ -71,6 +70,8 @@ Compound form predicates require parenthesis :
 * integer (X) : true only if child is an integer number
 * load ("path","to","file.ext") : load a file and evaluate it
 * print ("message", "or", 3/4, atom, ...) : print on the console
+* eq( ... ) : takes only 2 arguments, true if arguments are unifiable. Can be written X=2/3 for the parser.
+* diff( ...) : takes only 2, true if we already know unification of arguments is impossible, true otherwise. 
 
 Atomic form predicates :
 * ! : the cut predicate, prevents backtracking

@@ -2,22 +2,40 @@ Test name : TestEndToEnd
 This file : _endToEnd_test.9.want
 
 
-Input:	 // define reverse a list
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list([a,b,c,d], Reversed).
+Input:	 
+		// testing diff
+		a(b,c).
+		a(c,d).
+		a(c,b).
+		a(e,f).
+		a(X,_) :-  a(c,X), diff(X,d).
+		?- a(X,Y) .
 		
-Parsed:	[rule(reverse_list(List, Reversed), reverse_list(List, dot(), Reversed)) rule(reverse_list(dot(), Acc, Acc)) rule(reverse_list(dot(Head, Tail), Acc, Reversed), reverse_list(Tail, dot(Head, Acc), Reversed)) query(reverse_list(dot(a, dot(b, dot(c, dot(d, dot())))), Reversed))]
-solution:	[Reversed = [d, c, b, a]]
+Parsed:	[rule(a(b, c)) rule(a(c, d)) rule(a(c, b)) rule(a(e, f)) rule(a(X, _), and(a(c, X), diff(X, d))) query(a(X, Y))]
+solution:	[X = b Y = c]
 Rules applied : 
-rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
-rule#2>	reverse_list([], Acc, Acc) :-  
+rule#1>	a(b, c) :-  
+
+
+solution:	[X = c Y = d]
+Rules applied : 
+rule#2>	a(c, d) :-  
+
+
+solution:	[X = c Y = b]
+Rules applied : 
+rule#3>	a(c, b) :-  
+
+
+solution:	[X = e Y = f]
+Rules applied : 
+rule#4>	a(e, f) :-  
+
+
+solution:	[X = b]
+Rules applied : 
+rule#5>	a(X, _) :- and(a(c, X), diff(X, d)) 
+rule#3>	a(c, b) :-  
 
 
 State:	<nil>

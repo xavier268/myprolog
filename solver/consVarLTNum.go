@@ -34,7 +34,7 @@ func (c VarLTNum) Clone() Constraint {
 // Simplify implements Constraint.
 func (c1 VarLTNum) Simplify(c2 Constraint) (cc []Constraint, changed bool, err error) {
 	switch c2 := c2.(type) {
-	case VarEQNum:
+	case VarIsNum:
 		if c1.V == c2.V {
 			if c1.Value.Greater(c2.Value) {
 				return nil, false, nil // keep, no change

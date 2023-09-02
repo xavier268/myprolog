@@ -25,6 +25,7 @@ var CompPredicateMap = map[string]int{
 	"load":    -1, // load a file and evaluate it. Children must be one or more string, that will be joined with system file separator.
 	"print":   -1, // print children, that should be strings or numbers.
 	"eq":      2,  // children must be equal or unifiable
+	"diff":    2,  // children must be different or not immediately unifiable, fail otherwise.
 }
 
 // Known atomic predicates.
@@ -34,7 +35,10 @@ var AtomPredicate = map[string]bool{
 	"rules": true, // print the rules currently known
 }
 
-var ErrPred = fmt.Errorf("predicate cannot apply")
+var (
+	ErrPred = fmt.Errorf("predicate cannot apply")
+	ErrDiff = fmt.Errorf("diff predicate fails")
+)
 
 // Execute predicates (recursively if needed) using the functor of the first goal.
 // Includes removing underscore. Constant values (numbers, strings ...) are kept.
@@ -254,6 +258,24 @@ func DoPredicate(st *State) (*State, error) {
 				}
 				// update state, since everything is fine
 				st.Constraints = cc     // new constraints
+				st.Goals = st.Goals[1:] // eat the goal
+				st.NextRule = 0         // when goal change, reset the next rule pointer ...
+				return st, nil
+
+			case "diff":
+				c1 := g.Children[0]
+				c2 := g.Children[1]
+				cc, err := Unify([]Constraint{}, c1, c2)
+				if err == nil {
+					cc, err = CheckAddConstraint(st.Constraints, cc...)
+					if err == nil {
+						_, err = SimplifyConstraints(cc)
+						if err == nil {
+							return st, ErrDiff
+						}
+					}
+				}
+				// here, we failed unification, so diff can be removed.
 				st.Goals = st.Goals[1:] // eat the goal
 				st.NextRule = 0         // when goal change, reset the next rule pointer ...
 				return st, nil

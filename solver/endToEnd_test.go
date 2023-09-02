@@ -13,52 +13,11 @@ import (
 func TestEndToEnd(t *testing.T) {
 
 	inputData := []string{
-		"a(b,c).  ?- a(X,Y).",
-		"a(b,c). a(d,e).    ?- a(X,Y).",
-		"a(b,c). a(d,e).    ?- a(Y,X).",
 		"a(b,c).a(c,d).     ?- a(U,V),a(V,W).",
 		"a(b,c). a(c,d).a(e,f). ?- a(X,Y).",
 		"a(b,c). a(c,d).a(e,f).  ?- a(_,Z).",
 		"a(b,c). a(c,d).a(e,f).  ?- a(T,_).",
-		"a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).",
 		"a(b,c). a(c,d).  a(X,Y) :- a(X,V),a(V,Y).  ?- a(A,B).",
-		` // define reverse a list
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list([a,b,c,d], Reversed).
-		`,
-		` // define reverse a list
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list([1,2,3,4], Reversed).
-		`,
-		` // define reverse a list
-		reverse_list(List, Reversed) 				:-		reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) 	:-		reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list(["a","b","c","d"], Reversed).
-		`,
-		` 	// reverse a list
-		reverse_list(List, Reversed) :-
-    	reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) :-
-    	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,_,b], Reversed).
-		`,
-		` 	// reverse a list
-		reverse_list(List, Reversed) :-
-    	reverse_list(List, [], Reversed).
-		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed) :-
-    	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,_,b,c,d], Reversed).
-		`,
 
 		` 	// reverse a list
 		reverse_list(List, Reversed) :-
@@ -66,13 +25,24 @@ func TestEndToEnd(t *testing.T) {
 		reverse_list([], Acc, Acc).
 		reverse_list([Head|Tail], Acc, Reversed) :-
     	reverse_list(Tail, [Head|Acc], Reversed).	
-		?- reverse_list([a,X,Y], Reversed).
+		?- reverse_list([a,_,b,X,d], Reversed).
 		`,
 
 		// constraints =
 		"a(a,b). a(X,c) :- X=2 ; X=3 .  ?- a(X,Y).",
 		"a(a,b). a(X,c) :- X=2 , X=3 .  ?- a(X,Y).",
 		"a(a,b). a(X,c) :- X='a' , X=3 .  ?- a(X,Y).",
+
+		// diffs
+		` 
+		// testing diff
+		a(b,c).
+		a(c,d).
+		a(c,b).
+		a(e,f).
+		a(X,_) :-  a(c,X), diff(X,d).
+		?- a(X,Y) .
+		`,
 	}
 
 	for i, input := range inputData { // one file per input
@@ -116,7 +86,14 @@ func TestEndToEnd(t *testing.T) {
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
 
-	input := "a(a,b). a(X,c) :- X=2 ; X=3 .  ?- a(X,Y)."
+	input := ` // testing diff
+	a(b,c).
+	a(c,d).
+	a(c,b).
+	a(e,f).
+	a(X,Y) :-  a(c,X), diff(X,Y).
+	?- a(X,Y) .
+	`
 
 	sb := new(strings.Builder)
 

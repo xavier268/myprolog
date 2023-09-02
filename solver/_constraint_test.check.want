@@ -7,7 +7,7 @@ This file : _constraint_test.check.want
 0	<nil>
 
 1	(original)	 = 0
-1	(raw form)	solver.VarEQNum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
+1	(raw form)	solver.VarIsNum{V:parser.Variable{Name:"", Nsp:0}, Value:parser.Number{Num:0, Den:0, Normalized:false}}
 1	(checked)	 = 0
 
 2	(original)	0 < 
