@@ -1,37 +1,30 @@
 Test name : TestExamples
-This file : _example.10.want
+This file : _example.009.want
 
 
 Input:
 
-		a(b,c). a(c,d).a(e,f).a(b,f).  ?- a(_,Z).
+		a(b,c). a(c,d).a(e,f).  ?- a(T,_).
 
 
 ----------
-Solution:	[Z = c]
+Solution:	[T = b]
 Because of : 
 rule#1>	a(b, c) :-  
 
 
 
 ----------
-Solution:	[Z = d]
+Solution:	[T = c]
 Because of : 
 rule#2>	a(c, d) :-  
 
 
 
 ----------
-Solution:	[Z = f]
+Solution:	[T = e]
 Because of : 
 rule#3>	a(e, f) :-  
-
-
-
-----------
-Solution:	[Z = f]
-Because of : 
-rule#4>	a(b, f) :-  
 
 
 State:	<nil>

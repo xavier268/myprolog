@@ -1,13 +1,14 @@
 Test name : TestExamples
-This file : _example.4.want
+This file : _example.003.want
 
 
 Input:
 
 		a(b,c). 
 		a(d,e).    
-		// here, we make multiple queries at once - explicitely require all the queries to be simultaneously satisfied.
-		?- a(X,Y),a(T,_).
+		// here, we make multiple queries at once - implicitely, we want all the queries to be simultaneously satisfied.
+		?- a(X,Y).
+		?-a(T,_).
 
 
 ----------

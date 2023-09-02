@@ -1,22 +1,23 @@
 Test name : TestExamples
-This file : _example.11.want
+This file : _example.012.want
 
 
 Input:
 
-		// define reverse a list 
-		reverse_list(List, Reversed)                :-      reverse_list(List, [], Reversed).
+		// reverse a list with named variables
+		reverse_list(List, Reversed)             :-      reverse_list(List, [], Reversed).
 		reverse_list([], Acc, Acc).
-		reverse_list([Head|Tail], Acc, Reversed)    :-      reverse_list(Tail, [Head|Acc], Reversed).		
-		// query
-		?- reverse_list([a,b,c,d], Reversed).
+		reverse_list([Head|Tail], Acc, Reversed) :-      reverse_list(Tail, [Head|Acc], Reversed).
+		
+		?- reverse_list([a,_,b,Z,d], Reversed).
 		
 
 
 ----------
-Solution:	[Reversed = [d, c, b, a]]
+Solution:	[Reversed = [d, Z, b, Head$4, a]]
 Because of : 
 rule#1>	reverse_list(List, Reversed) :- reverse_list(List, [], Reversed) 
+rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
 rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
 rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 
 rule#3>	reverse_list([Head|Tail], Acc, Reversed) :- reverse_list(Tail, [Head|Acc], Reversed) 

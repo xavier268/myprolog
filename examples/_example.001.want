@@ -1,23 +1,23 @@
 Test name : TestExamples
-This file : _example.2.want
+This file : _example.001.want
 
 
 Input:
 
-		a(b,c).
-		a(d,e).
-		?- a(Y,X).
+		a(b,c). 
+		a(d,e).    
+		?- a(X,Y).
 
 
 ----------
-Solution:	[X = c Y = b]
+Solution:	[X = b Y = c]
 Because of : 
 rule#1>	a(b, c) :-  
 
 
 
 ----------
-Solution:	[X = e Y = d]
+Solution:	[X = d Y = e]
 Because of : 
 rule#2>	a(d, e) :-  
 

@@ -1,28 +1,28 @@
 Test name : TestExamples
-This file : _example.9.want
+This file : _example.007.want
 
 
 Input:
 
-		a(b,c). a(c,d).a(e,f).  ?- a(T,_).
+		a(b,c). a(c,d).a(e,f). ?- a(X,Y).
 
 
 ----------
-Solution:	[T = b]
+Solution:	[X = b Y = c]
 Because of : 
 rule#1>	a(b, c) :-  
 
 
 
 ----------
-Solution:	[T = c]
+Solution:	[X = c Y = d]
 Because of : 
 rule#2>	a(c, d) :-  
 
 
 
 ----------
-Solution:	[T = e]
+Solution:	[X = e Y = f]
 Because of : 
 rule#3>	a(e, f) :-  
 

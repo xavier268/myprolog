@@ -127,6 +127,6 @@ func TestExamples(t *testing.T) {
 			st = solver.Solve(st, sh)
 			fmt.Fprintf(sb, "\nState:\t%v", st)
 		}
-		mytest.Verify(t, sb.String(), fmt.Sprintf("example.%d", i))
+		mytest.Verify(t, sb.String(), fmt.Sprintf("example.%03d", i))
 	}
 }
