@@ -71,9 +71,9 @@ Compound form predicates require parenthesis :
 * load ("path","to","file.ext") : load a file and evaluate it
 * print ("message", "or", 3/4, atom, ...) : print on the console
 * eq( ... ) : takes only 2 arguments, true if arguments are unifiable. Can be written X=2/3 for the parser.
-* diff( ...) : takes only 2, true if we already know unification of arguments is impossible, true otherwise. 
+* diff( ...) : takes only 2, true if we already know unification of arguments is impossible, true otherwise. Not "pure" prolog, sage can be tricky ...
 
 Atomic form predicates :
-* ! : the cut predicate, prevents backtracking
 * fail : always fails
 * "rules" : print the list of known rules and facts (debugging)
+* ! : the cut predicate, prevents backtracking. Not "pure" prolog, sage can be tricky ...

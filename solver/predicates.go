@@ -65,8 +65,10 @@ func DoPredicate(st *State) (*State, error) {
 				return st, nil
 			}
 			switch g.Value {
-			case "!": // cut
-				st.Parent = nil // cut, so no parent
+			case "!": // cut will just bypass the previous return fork, but keep the older ones.
+				if st.Parent != nil {
+					st.Parent = st.Parent.Parent
+				}
 				st.Goals = st.Goals[1:]
 				st.NextRule = 0 // when goal change, reset the next rule pointer ...
 				continue

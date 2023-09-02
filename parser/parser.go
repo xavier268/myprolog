@@ -51,6 +51,7 @@ var myToknames = [...]string{
 	"'|'",
 	"'_'",
 	"'='",
+	"'!'",
 	"OPRULE",
 	"OPQUERY",
 	"ATOM",
@@ -67,7 +68,7 @@ const myEofCode = 1
 const myErrCode = 2
 const myInitialStackSize = 16
 
-//line grammar.y:176
+//line grammar.y:177
 
 //line yacctab:1
 var myExca = [...]int8{
@@ -75,83 +76,84 @@ var myExca = [...]int8{
 	1, -1,
 	-2, 0,
 	-1, 14,
-	13, 23,
+	13, 24,
 	-2, 14,
 	-1, 15,
-	13, 28,
+	13, 29,
 	-2, 15,
 }
 
 const myPrivate = 57344
 
-const myLast = 109
+const myLast = 116
 
 var myAct = [...]int8{
-	17, 36, 28, 35, 31, 7, 12, 7, 11, 15,
-	29, 9, 52, 43, 21, 53, 24, 44, 30, 19,
-	22, 20, 42, 23, 25, 9, 33, 41, 43, 39,
-	15, 4, 6, 34, 38, 48, 47, 32, 15, 15,
-	49, 46, 45, 40, 41, 51, 50, 9, 26, 3,
-	21, 16, 10, 18, 30, 19, 22, 20, 37, 23,
-	8, 9, 5, 13, 21, 2, 1, 0, 14, 19,
-	22, 20, 0, 23, 9, 27, 0, 21, 0, 0,
-	0, 30, 19, 22, 20, 9, 23, 0, 21, 0,
-	0, 0, 30, 19, 22, 20, 9, 23, 0, 21,
-	0, 0, 0, 14, 19, 22, 20, 0, 23,
+	18, 37, 29, 25, 32, 7, 12, 7, 11, 15,
+	30, 38, 26, 9, 9, 36, 54, 22, 43, 17,
+	4, 6, 14, 20, 23, 21, 34, 24, 42, 44,
+	40, 15, 44, 45, 35, 39, 49, 48, 33, 15,
+	15, 50, 47, 46, 27, 42, 52, 51, 9, 53,
+	3, 22, 16, 10, 19, 8, 31, 20, 23, 21,
+	9, 24, 5, 22, 13, 17, 2, 1, 14, 20,
+	23, 21, 41, 24, 0, 0, 9, 0, 0, 22,
+	0, 0, 0, 0, 31, 20, 23, 21, 0, 24,
+	9, 28, 0, 22, 0, 0, 0, 0, 31, 20,
+	23, 21, 9, 24, 0, 22, 0, 0, 0, 0,
+	31, 20, 23, 21, 0, 24,
 }
 
 var myPact = [...]int16{
-	16, -1000, 16, -1000, 87, 10, 44, -1000, -1000, 65,
-	-1000, 31, 18, 26, 44, -1000, -1000, -10, -1000, -1000,
-	-1000, -1000, -1000, -17, -1000, 52, 38, -1000, 12, 6,
-	44, -1000, -1000, 87, 87, 76, -1000, -1000, 29, 35,
-	-1000, 21, -1000, 76, 2, -1000, -1000, -1000, -1000, -1000,
-	-1000, 5, -1000, -1000,
+	4, -1000, 4, -1000, 51, -3, 40, -1000, -1000, 81,
+	-1000, 32, 18, 27, 40, -1000, -1000, -1000, 2, -1000,
+	-1000, -1000, -1000, -1000, -18, -1000, 5, 67, -1000, 8,
+	22, 40, -1000, -1000, 51, 51, 93, -1000, -1000, 30,
+	36, -1000, 25, -1000, 93, 39, -1000, -1000, -1000, -1000,
+	-1000, -1000, 6, -1000, -1000,
 }
 
 var myPgo = [...]int8{
-	0, 66, 65, 2, 49, 8, 6, 63, 62, 4,
-	60, 0, 53, 51,
+	0, 67, 66, 2, 50, 8, 6, 64, 62, 4,
+	55, 0, 54, 52,
 }
 
 var myR1 = [...]int8{
 	0, 1, 2, 2, 4, 4, 4, 4, 8, 8,
-	5, 5, 6, 6, 7, 7, 7, 13, 9, 9,
-	9, 3, 3, 11, 11, 11, 11, 11, 11, 10,
-	10, 10, 10, 12, 12,
+	5, 5, 6, 6, 7, 7, 7, 7, 13, 9,
+	9, 9, 3, 3, 11, 11, 11, 11, 11, 11,
+	10, 10, 10, 10, 12, 12,
 }
 
 var myR2 = [...]int8{
 	0, 1, 1, 2, 3, 2, 3, 4, 1, 1,
-	1, 3, 1, 3, 1, 1, 1, 3, 4, 3,
-	1, 1, 3, 1, 1, 1, 1, 1, 1, 2,
-	3, 5, 4, 1, 2,
+	1, 3, 1, 3, 1, 1, 1, 1, 3, 4,
+	3, 1, 1, 3, 1, 1, 1, 1, 1, 1,
+	2, 3, 5, 4, 1, 2,
 }
 
 var myChk = [...]int16{
-	-1000, -1, -2, -4, 15, -8, 16, -9, -10, 9,
-	-4, -5, -6, -7, 16, -9, -13, -11, -12, 17,
-	19, 12, 18, 21, 6, 14, 4, 10, -3, -11,
-	16, -9, 6, 8, 7, 13, 18, 6, -5, -3,
-	5, -11, 10, 7, 11, -5, -6, -11, 6, 5,
-	-3, -11, 10, 10,
+	-1000, -1, -2, -4, 16, -8, 17, -9, -10, 9,
+	-4, -5, -6, -7, 17, -9, -13, 14, -11, -12,
+	18, 20, 12, 19, 22, 6, 15, 4, 10, -3,
+	-11, 17, -9, 6, 8, 7, 13, 19, 6, -5,
+	-3, 5, -11, 10, 7, 11, -5, -6, -11, 6,
+	5, -3, -11, 10, 10,
 }
 
 var myDef = [...]int8{
-	0, -2, 1, 2, 0, 0, 8, 9, 20, 0,
-	3, 0, 10, 12, -2, -2, 16, 0, 24, 25,
-	26, 27, 33, 0, 5, 0, 0, 29, 0, 21,
-	23, 28, 4, 0, 0, 0, 34, 6, 0, 0,
-	19, 21, 30, 0, 0, 11, 13, 17, 7, 18,
-	22, 0, 32, 31,
+	0, -2, 1, 2, 0, 0, 8, 9, 21, 0,
+	3, 0, 10, 12, -2, -2, 16, 17, 0, 25,
+	26, 27, 28, 34, 0, 5, 0, 0, 30, 0,
+	22, 24, 29, 4, 0, 0, 0, 35, 6, 0,
+	0, 20, 22, 31, 0, 0, 11, 13, 18, 7,
+	19, 23, 0, 33, 32,
 }
 
 var myTok1 = [...]int8{
 	1, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
-	4, 5, 3, 3, 7, 21, 6, 3, 3, 3,
+	3, 3, 3, 14, 3, 3, 3, 3, 3, 3,
+	4, 5, 3, 3, 7, 22, 6, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 8,
 	3, 13, 3, 3, 3, 3, 3, 3, 3, 3,
 	3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
@@ -163,7 +165,7 @@ var myTok1 = [...]int8{
 }
 
 var myTok2 = [...]int8{
-	2, 3, 14, 15, 16, 17, 18, 19, 20,
+	2, 3, 15, 16, 17, 18, 19, 20, 21,
 }
 
 var myTok3 = [...]int8{
@@ -624,54 +626,54 @@ mydefault:
 			myVAL.value = myDollar[1].value
 		}
 	case 17:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:107
+		{
+			myVAL.value = Atom{"cut"}
+		}
+	case 18:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:109
+//line grammar.y:110
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "eq",
 				Children: []Term{myDollar[1].value, myDollar[3].value},
 			}
 		}
-	case 18:
+	case 19:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:117
+//line grammar.y:118
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  myDollar[1].value.String(),
 				Children: myDollar[3].list,
 			}
 		}
-	case 19:
+	case 20:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:122
+//line grammar.y:123
 		{
 			myVAL.value = CompoundTerm{
 				Functor: myDollar[1].value.String(),
 			}
 		}
-	case 20:
+	case 21:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:127
+//line grammar.y:128
 		{
 			myVAL.value = myDollar[1].value
 		}
-	case 21:
+	case 22:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:132
+//line grammar.y:133
 		{
 			myVAL.list = []Term{myDollar[1].value}
 		}
-	case 22:
+	case 23:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:133
+//line grammar.y:134
 		{
 			myVAL.list = append([]Term{myDollar[1].value}, myDollar[3].list...)
-		}
-	case 23:
-		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:138
-		{
-			myVAL.value = myDollar[1].value
 		}
 	case 24:
 		myDollar = myS[mypt-1 : mypt+1]
@@ -704,47 +706,53 @@ mydefault:
 			myVAL.value = myDollar[1].value
 		}
 	case 29:
+		myDollar = myS[mypt-1 : mypt+1]
+//line grammar.y:144
+		{
+			myVAL.value = myDollar[1].value
+		}
+	case 30:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:147
+//line grammar.y:148
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{},
 			}
 		}
-	case 30:
+	case 31:
 		myDollar = myS[mypt-3 : mypt+1]
-//line grammar.y:152
+//line grammar.y:153
 		{
 			myVAL.value = newList(myDollar[2].list...)
 		}
-	case 31:
+	case 32:
 		myDollar = myS[mypt-5 : mypt+1]
-//line grammar.y:155
+//line grammar.y:156
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{myDollar[2].value, myDollar[4].value},
 			}
 		}
-	case 32:
+	case 33:
 		myDollar = myS[mypt-4 : mypt+1]
-//line grammar.y:160
+//line grammar.y:161
 		{
 			myVAL.value = CompoundTerm{
 				Functor:  "dot",
 				Children: []Term{myDollar[2].value},
 			}
 		}
-	case 33:
+	case 34:
 		myDollar = myS[mypt-1 : mypt+1]
-//line grammar.y:168
+//line grammar.y:169
 		{
 			myVAL.value = myDollar[1].value
 		}
-	case 34:
+	case 35:
 		myDollar = myS[mypt-2 : mypt+1]
-//line grammar.y:169
+//line grammar.y:170
 		{
 			myVAL.value = Number{
 				Num: -myDollar[2].value.(Number).Num,

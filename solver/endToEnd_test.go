@@ -86,12 +86,13 @@ func TestEndToEnd(t *testing.T) {
 // Test to work in detail on a single expression
 func TestEndToEndDetail(t *testing.T) {
 
-	input := ` // testing diff
-	a(b,c).
+	input := ` // testing cut
+	
 	a(c,d).
 	a(c,b).
 	a(e,f).
-	a(X,Y) :-  a(c,X), diff(X,Y).
+	a(X,Y) :-  a(c,X) , ! .
+	
 	?- a(X,Y) .
 	`
 

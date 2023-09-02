@@ -2,58 +2,39 @@ Test name : TestEndToEndDetail
 This file : _endToEnd_test.detail.want
 
 ==================
-Input:	 // testing diff
-	a(b,c).
+Input:	 // testing cut
+	
 	a(c,d).
 	a(c,b).
 	a(e,f).
-	a(X,Y) :-  a(c,X), diff(X,Y).
+	a(X,Y) :-  a(c,X) , ! .
+	
 	?- a(X,Y) .
 	
 ==================
 
 
 State:	Constraints : []
-Goals : [rule(a(b, c)) rule(a(c, d)) rule(a(c, b)) rule(a(e, f)) rule(a(X, Y), and(a(c, X), diff(X, Y))) query(a(X, Y))]
+Goals : [rule(a(c, d)) rule(a(c, b)) rule(a(e, f)) rule(a(X, Y), and(a(c, X), cut)) query(a(X, Y))]
 NextRule : 0
 Uid : 1
 Parent : YES
 
 State:	Constraints : []
-Goals : [rule(a(b, c)) rule(a(c, d)) rule(a(c, b)) rule(a(e, f)) rule(a(X, Y), and(a(c, X), diff(X, Y))) query(a(X, Y))]
+Goals : [rule(a(c, d)) rule(a(c, b)) rule(a(e, f)) rule(a(X, Y), and(a(c, X), cut)) query(a(X, Y))]
 NextRule : 0
 Uid : 1
 Parent : YES
 
-=========> solution cleaned:	[X = b Y = c]
-=========> All constraints :	[Y = c X = b]
-=========> Known rules:
-rule#1>	a(b, c) :-  
-rule#2>	a(c, d) :-  
-rule#3>	a(c, b) :-  
-rule#4>	a(e, f) :-  
-rule#5>	a(X, Y) :- and(a(c, X), diff(X, Y)) 
-=========> Rules applied :
-rule#1>	a(b, c) :-  
-
- State:
-Constraints : [Y = c X = b]
-Goals : []
-NextRule : 0
-Uid : 2
-Parent : NO
-
-
 =========> solution cleaned:	[X = c Y = d]
 =========> All constraints :	[Y = d X = c]
 =========> Known rules:
-rule#1>	a(b, c) :-  
-rule#2>	a(c, d) :-  
-rule#3>	a(c, b) :-  
-rule#4>	a(e, f) :-  
-rule#5>	a(X, Y) :- and(a(c, X), diff(X, Y)) 
+rule#1>	a(c, d) :-  
+rule#2>	a(c, b) :-  
+rule#3>	a(e, f) :-  
+rule#4>	a(X, Y) :- and(a(c, X), cut) 
 =========> Rules applied :
-rule#2>	a(c, d) :-  
+rule#1>	a(c, d) :-  
 
  State:
 Constraints : [Y = d X = c]
@@ -66,13 +47,12 @@ Parent : NO
 =========> solution cleaned:	[X = c Y = b]
 =========> All constraints :	[Y = b X = c]
 =========> Known rules:
-rule#1>	a(b, c) :-  
-rule#2>	a(c, d) :-  
-rule#3>	a(c, b) :-  
-rule#4>	a(e, f) :-  
-rule#5>	a(X, Y) :- and(a(c, X), diff(X, Y)) 
+rule#1>	a(c, d) :-  
+rule#2>	a(c, b) :-  
+rule#3>	a(e, f) :-  
+rule#4>	a(X, Y) :- and(a(c, X), cut) 
 =========> Rules applied :
-rule#3>	a(c, b) :-  
+rule#2>	a(c, b) :-  
 
  State:
 Constraints : [Y = b X = c]
@@ -85,13 +65,12 @@ Parent : NO
 =========> solution cleaned:	[X = e Y = f]
 =========> All constraints :	[Y = f X = e]
 =========> Known rules:
-rule#1>	a(b, c) :-  
-rule#2>	a(c, d) :-  
-rule#3>	a(c, b) :-  
-rule#4>	a(e, f) :-  
-rule#5>	a(X, Y) :- and(a(c, X), diff(X, Y)) 
+rule#1>	a(c, d) :-  
+rule#2>	a(c, b) :-  
+rule#3>	a(e, f) :-  
+rule#4>	a(X, Y) :- and(a(c, X), cut) 
 =========> Rules applied :
-rule#4>	a(e, f) :-  
+rule#3>	a(e, f) :-  
 
  State:
 Constraints : [Y = f X = e]

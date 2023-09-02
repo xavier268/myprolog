@@ -33,7 +33,7 @@ func init() {
 %type <value> compterm list param number contraint
 
 
-%token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_' '='
+%token <value> '(' ')' '.' ',' ';' '[' ']' '|' '_' '=' '!'
 %token <value> OPRULE OPQUERY // :-  and ?-
 %token <value> ATOM STRING NUMBER VARIABLE 
 %token <value> LEXERROR
@@ -104,6 +104,7 @@ conjterm:
     ATOM                                { $$ = $1 }
     | compterm                          { $$ = $1 }
     | contraint                         { $$ = $1 }
+    | '!'                               { $$ = Atom {"cut"}}
 
 contraint:
     param '=' param                     { $$ = CompoundTerm {
