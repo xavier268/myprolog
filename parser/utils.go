@@ -25,8 +25,7 @@ func Parse(rdr io.Reader, sourcename string) ([]Term, error) {
 	if e != 0 {
 		err = fmt.Errorf("error : %v", lx.LastErr)
 	}
-	r := append([]Term{}, lastParseResult...) // copy slice before returning to avoid mutating the original slice
-	lastParseResult = nil
+	r := append([]Term{}, lx.LastResult...) // copy slice before returning to avoid mutating the original slice
 	return r, err
 }
 

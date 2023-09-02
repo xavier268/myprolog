@@ -13,4 +13,4 @@ package parser
 
 //go:generate go fmt ./...
 
-const VERSION = "0.8.4"
+const VERSION = "0.8.5"

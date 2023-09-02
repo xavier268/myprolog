@@ -17,9 +17,6 @@ func init() {
     myDebug = 0
 }
 
-// where the parse results are available
-var lastParseResult []Term
-
 // To keep the compiler happy ...
  var _ = __yyfmt__.Printf
 
@@ -47,7 +44,7 @@ top:
     phrases                             { 
                                         $$ = $1
                                         // save final result in the provided variable, results
-                                        lastParseResult = $$
+                                        mylex.(*myLex).LastResult = $$
                                         }
 
 phrases:

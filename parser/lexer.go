@@ -17,8 +17,9 @@ const eof = 0
 // The parser uses the type <prefix>Lex as a lexer. It must provide
 // the methods Lex(*<prefix>SymType) int and Error(string).
 type myLex struct {
-	s       scanner.Scanner // golang scanner
-	LastErr []error         // errors emitted
+	s          scanner.Scanner // golang scanner
+	LastErr    []error         // errors emitted
+	LastResult []Term          // result of parsing
 }
 
 // Required to satisfy interface.
