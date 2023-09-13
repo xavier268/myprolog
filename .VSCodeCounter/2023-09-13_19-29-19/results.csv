@@ -1,0 +1,50 @@
+"filename", "language", "go", "Go Checksum File", "Go Module File", "Perl", "Shell Script", "Bison", "Markdown", "comment", "blank", "total"
+"c:\Users\xavie\Desktop\myprolog\README.md", "Markdown", 0, 0, 0, 0, 0, 0, 54, 0, 26, 80
+"c:\Users\xavie\Desktop\myprolog\demos\dem1.pl", "Perl", 0, 0, 0, 3, 0, 0, 0, 0, 7, 10
+"c:\Users\xavie\Desktop\myprolog\examples\examples_test.go", "go", 103, 0, 0, 0, 0, 0, 0, 16, 14, 133
+"c:\Users\xavie\Desktop\myprolog\go.mod", "Go Module File", 0, 0, 7, 0, 0, 0, 0, 0, 4, 11
+"c:\Users\xavie\Desktop\myprolog\go.sum", "Go Checksum File", 0, 6, 0, 0, 0, 0, 0, 0, 1, 7
+"c:\Users\xavie\Desktop\myprolog\mytest\colors.go", "go", 9, 0, 0, 0, 0, 0, 0, 2, 3, 14
+"c:\Users\xavie\Desktop\myprolog\mytest\verify.go", "go", 61, 0, 0, 0, 0, 0, 0, 6, 12, 79
+"c:\Users\xavie\Desktop\myprolog\parser\definitions.go", "go", 439, 0, 0, 0, 0, 0, 0, 70, 73, 582
+"c:\Users\xavie\Desktop\myprolog\parser\definitions_number_test.go", "go", 51, 0, 0, 0, 0, 0, 0, 0, 12, 63
+"c:\Users\xavie\Desktop\myprolog\parser\gcd.go", "go", 13, 0, 0, 0, 0, 0, 0, 3, 2, 18
+"c:\Users\xavie\Desktop\myprolog\parser\gcd_test.go", "go", 18, 0, 0, 0, 0, 0, 0, 0, 7, 25
+"c:\Users\xavie\Desktop\myprolog\parser\grammar.y", "Bison", 0, 0, 0, 0, 0, 137, 0, 7, 35, 179
+"c:\Users\xavie\Desktop\myprolog\parser\lexer.go", "go", 150, 0, 0, 0, 0, 0, 0, 14, 21, 185
+"c:\Users\xavie\Desktop\myprolog\parser\lexer_test.go", "go", 60, 0, 0, 0, 0, 0, 0, 2, 11, 73
+"c:\Users\xavie\Desktop\myprolog\parser\parser.go", "go", 628, 0, 0, 0, 0, 0, 0, 66, 71, 765
+"c:\Users\xavie\Desktop\myprolog\parser\parser_test.go", "go", 88, 0, 0, 0, 0, 0, 0, 14, 26, 128
+"c:\Users\xavie\Desktop\myprolog\parser\utils.go", "go", 55, 0, 0, 0, 0, 0, 0, 2, 9, 66
+"c:\Users\xavie\Desktop\myprolog\parser\version.go", "go", 2, 0, 0, 0, 0, 0, 0, 7, 8, 17
+"c:\Users\xavie\Desktop\myprolog\profile.sh", "Shell Script", 0, 0, 0, 0, 6, 0, 0, 1, 7, 14
+"c:\Users\xavie\Desktop\myprolog\prolog.go", "go", 12, 0, 0, 0, 0, 0, 0, 0, 5, 17
+"c:\Users\xavie\Desktop\myprolog\solver\TEST_DATASET_test.go", "go", 146, 0, 0, 0, 0, 0, 0, 4, 32, 182
+"c:\Users\xavie\Desktop\myprolog\solver\consVarGTENum.go", "go", 96, 0, 0, 0, 0, 0, 0, 5, 8, 109
+"c:\Users\xavie\Desktop\myprolog\solver\consVarGTNum.go", "go", 96, 0, 0, 0, 0, 0, 0, 5, 8, 109
+"c:\Users\xavie\Desktop\myprolog\solver\consVarINT.go", "go", 99, 0, 0, 0, 0, 0, 0, 6, 10, 115
+"c:\Users\xavie\Desktop\myprolog\solver\consVarIsAtom.go", "go", 109, 0, 0, 0, 0, 0, 0, 13, 12, 134
+"c:\Users\xavie\Desktop\myprolog\solver\consVarIsCompoudTerm.go", "go", 130, 0, 0, 0, 0, 0, 0, 12, 12, 154
+"c:\Users\xavie\Desktop\myprolog\solver\consVarIsNum.go", "go", 126, 0, 0, 0, 0, 0, 0, 6, 10, 142
+"c:\Users\xavie\Desktop\myprolog\solver\consVarIsString.go", "go", 111, 0, 0, 0, 0, 0, 0, 13, 13, 137
+"c:\Users\xavie\Desktop\myprolog\solver\consVarIsVar.go", "go", 86, 0, 0, 0, 0, 0, 0, 15, 11, 112
+"c:\Users\xavie\Desktop\myprolog\solver\consVarLTENum.go", "go", 94, 0, 0, 0, 0, 0, 0, 5, 8, 107
+"c:\Users\xavie\Desktop\myprolog\solver\consVarLTNum.go", "go", 96, 0, 0, 0, 0, 0, 0, 5, 8, 109
+"c:\Users\xavie\Desktop\myprolog\solver\constraint.go", "go", 85, 0, 0, 0, 0, 0, 0, 26, 17, 128
+"c:\Users\xavie\Desktop\myprolog\solver\constraint_number_test.go", "go", 10, 0, 0, 0, 0, 0, 0, 0, 6, 16
+"c:\Users\xavie\Desktop\myprolog\solver\constraint_simplify_test.go", "go", 90, 0, 0, 0, 0, 0, 0, 3, 21, 114
+"c:\Users\xavie\Desktop\myprolog\solver\constraint_test.go", "go", 30, 0, 0, 0, 0, 0, 0, 1, 12, 43
+"c:\Users\xavie\Desktop\myprolog\solver\depthControl.go", "go", 36, 0, 0, 0, 0, 0, 0, 9, 8, 53
+"c:\Users\xavie\Desktop\myprolog\solver\endToEnd_test.go", "go", 107, 0, 0, 0, 0, 0, 0, 7, 26, 140
+"c:\Users\xavie\Desktop\myprolog\solver\predicates.go", "go", 252, 0, 0, 0, 0, 0, 0, 22, 20, 294
+"c:\Users\xavie\Desktop\myprolog\solver\rules.go", "go", 132, 0, 0, 0, 0, 0, 0, 32, 25, 189
+"c:\Users\xavie\Desktop\myprolog\solver\session.go", "go", 50, 0, 0, 0, 0, 0, 0, 5, 10, 65
+"c:\Users\xavie\Desktop\myprolog\solver\session.repl.go.go", "go", 115, 0, 0, 0, 0, 0, 0, 15, 21, 151
+"c:\Users\xavie\Desktop\myprolog\solver\solve.go", "go", 78, 0, 0, 0, 0, 0, 0, 16, 12, 106
+"c:\Users\xavie\Desktop\myprolog\solver\state.go", "go", 62, 0, 0, 0, 0, 0, 0, 10, 11, 83
+"c:\Users\xavie\Desktop\myprolog\solver\substitution.go", "go", 64, 0, 0, 0, 0, 0, 0, 4, 5, 73
+"c:\Users\xavie\Desktop\myprolog\solver\substitution_test.go", "go", 56, 0, 0, 0, 0, 0, 0, 1, 20, 77
+"c:\Users\xavie\Desktop\myprolog\solver\unify.go", "go", 160, 0, 0, 0, 0, 0, 0, 11, 16, 187
+"c:\Users\xavie\Desktop\myprolog\solver\utils.go", "go", 9, 0, 0, 0, 0, 0, 0, 0, 3, 12
+"c:\Users\xavie\Desktop\myprolog\solver\version.go", "go", 2, 0, 0, 0, 0, 0, 0, 1, 2, 5
+"Total", "-", 4216, 6, 7, 3, 6, 137, 54, 462, 721, 5612
