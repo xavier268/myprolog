@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/xavier268/myprolog/mytest"
+	"github.com/xavier268/mytest"
 )
 
 func TestGcd(t *testing.T) {

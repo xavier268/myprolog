@@ -4,7 +4,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/xavier268/myprolog/mytest"
+	"github.com/xavier268/mytest"
 
 	_ "github.com/xavier268/myprolog/parser"
 )

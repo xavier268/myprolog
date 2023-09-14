@@ -3,7 +3,7 @@ package solver
 import (
 	"testing"
 
-	"github.com/xavier268/myprolog/mytest"
+	"github.com/xavier268/mytest"
 )
 
 func TestNumberConstraints(t *testing.T) {

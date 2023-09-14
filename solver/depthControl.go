@@ -3,7 +3,7 @@ package solver
 import (
 	"fmt"
 
-	"github.com/xavier268/myprolog/mytest"
+	"github.com/xavier268/mytest"
 )
 
 const MIN_DEPTH = 30  // minimum depth control for state/uids

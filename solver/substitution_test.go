@@ -5,8 +5,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/xavier268/myprolog/mytest"
 	"github.com/xavier268/myprolog/parser"
+	"github.com/xavier268/mytest"
 )
 
 var subTestData = []Term{
